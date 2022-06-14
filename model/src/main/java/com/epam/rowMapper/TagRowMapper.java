@@ -14,6 +14,7 @@ public class TagRowMapper implements RowMapper<Tag> {
         tag.setId(rs.getInt("id"));
         tag.setName(rs.getString("name"));
         return tag;
+        // TODO Logger to add
     }
 }
 

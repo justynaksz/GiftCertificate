@@ -14,7 +14,5 @@ public interface GiftCertificate_TagDAO {
 
     GiftCertificate_Tag createGiftCertificate_Tag(GiftCertificate_Tag giftCertificate_Tag);
 
-    GiftCertificate_Tag updateGiftCertificate_Tag(GiftCertificate_Tag giftCertificate_Tag);
-
-    void deleteGiftCertificate_Tag(GiftCertificate_Tag giftCertificate_Tag);
+    void deleteGiftCertificate_Tag(int id);
 }

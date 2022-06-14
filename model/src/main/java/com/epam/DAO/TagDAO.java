@@ -10,6 +10,8 @@ public interface TagDAO {
 
     List<Tag> findByName(String name);
 
+    List<Tag> findAll();
+
     Tag createTag(Tag tag);
 
     void deleteTag(int id);

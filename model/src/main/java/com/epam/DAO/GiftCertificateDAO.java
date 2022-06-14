@@ -9,11 +9,11 @@ public interface GiftCertificateDAO {
 
     GiftCertificate findById(int id);
 
-    List<GiftCertificate> findByTag(Tag tag);
+    List<GiftCertificate> findByTag(String tagName);
 
-    List<GiftCertificate> findByName(String name);
+    List<GiftCertificate> findByNameOrDescription(String key);
 
-    List<GiftCertificate> findByDescription(String description);
+    List<GiftCertificate> findAll();
 
     List<GiftCertificate> sortAscending();
 
@@ -21,7 +21,7 @@ public interface GiftCertificateDAO {
 
     GiftCertificate createGiftCertificate(GiftCertificate giftCertificate);
 
-    GiftCertificate updateGiftCertificate(GiftCertificate giftCertificate);
+    void updateGiftCertificate(GiftCertificate giftCertificate);
 
-    void deleteGiftCertificate(GiftCertificate giftCertificate);
+    void deleteGiftCertificate(int id);
 }
