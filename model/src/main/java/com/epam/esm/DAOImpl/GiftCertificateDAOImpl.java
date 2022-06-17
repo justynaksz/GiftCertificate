@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -19,6 +20,7 @@ import java.util.Map;
 /**
  * Implements CRUD operations for GiftCertificate entity.
  */
+@Repository
 public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertificateDAO {
 
     /**
