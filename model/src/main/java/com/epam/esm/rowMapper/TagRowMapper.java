@@ -1,13 +1,22 @@
-package com.epam.rowMapper;
+package com.epam.esm.rowMapper;
 
-import com.epam.model.Tag;
+import com.epam.esm.model.Tag;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+* Implementation which maps each row to a result Tag object.
+*/
 public class TagRowMapper implements RowMapper<Tag> {
 
+    /**
+     * Maps each row of data in the ResultSet to Tag object.
+     * @param rs        ResultSet to be mapped
+     * @param rowNum    the number of current row
+     * @return tag      Tag instance
+     */
     @Override
     public Tag mapRow(ResultSet rs, int rowNum) throws SQLException {
         Tag tag = new Tag();

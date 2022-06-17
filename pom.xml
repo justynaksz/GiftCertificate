@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.epam.configuration</groupId>
+    <groupId>com.epam.esm</groupId>
     <artifactId>GiftCertificate</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
@@ -12,6 +12,7 @@
         <module>model</module>
         <module>logging</module>
         <module>database</module>
+        <module>web</module>
     </modules>
 
     <properties>

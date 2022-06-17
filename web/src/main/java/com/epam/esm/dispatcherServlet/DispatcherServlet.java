@@ -1,7 +1,12 @@
-package com.epam.configuration;
+package com.epam.esm.dispatcherServlet;
 
+import com.epam.esm.configuration.RootConfig;
+import com.epam.esm.configuration.WebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+/**
+ * Central dispatcher for appropriate HTTP controller methods.
+ */
 public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override

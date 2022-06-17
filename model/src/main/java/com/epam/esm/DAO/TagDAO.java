@@ -1,6 +1,6 @@
-package com.epam.DAO;
+package com.epam.esm.DAO;
 
-import com.epam.model.Tag;
+import com.epam.esm.model.Tag;
 
 import java.util.List;
 

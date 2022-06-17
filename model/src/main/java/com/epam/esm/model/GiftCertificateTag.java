@@ -1,8 +1,11 @@
-package com.epam.model;
+package com.epam.esm.model;
 
 import java.util.Objects;
 
-public class GiftCertificate_Tag {
+/**
+ * GiftCertificateTag entity with methods defined in Object class.
+ */
+public class GiftCertificateTag {
 
     private int id;
     private int giftCertificateId;
@@ -36,7 +39,7 @@ public class GiftCertificate_Tag {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GiftCertificate_Tag that = (GiftCertificate_Tag) o;
+        GiftCertificateTag that = (GiftCertificateTag) o;
         return id == that.id && giftCertificateId == that.giftCertificateId && tagId == that.tagId;
     }
 

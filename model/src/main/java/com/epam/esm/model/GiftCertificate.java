@@ -1,9 +1,13 @@
-package com.epam.model;
+package com.epam.esm.model;
 
 import java.time.Duration;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * GiftCertificate entity with methods defined in Object class.
+ */
 public class GiftCertificate {
 
     private int id;
@@ -13,8 +17,8 @@ public class GiftCertificate {
     private Duration duration;
 
     // TODO adjust to ISO 8601 format
-    private Date createDate;
-    private Date lastUpdateDate;
+    private LocalDate createDate;
+    private LocalDate lastUpdateDate;
 
     public int getId() {
         return id;
@@ -56,19 +60,19 @@ public class GiftCertificate {
         this.duration = duration;
     }
 
-    public Date getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 
-    public Date getLastUpdateDate() {
+    public LocalDate getLastUpdateDate() {
         return lastUpdateDate;
     }
 
-    public void setLastUpdateDate(Date lastUpdateDate) {
+    public void setLastUpdateDate(LocalDate lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
 

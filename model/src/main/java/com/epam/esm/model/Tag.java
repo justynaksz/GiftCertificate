@@ -1,7 +1,10 @@
-package com.epam.model;
+package com.epam.esm.model;
 
 import java.util.Objects;
 
+/**
+ * Tag entity with methods defined in Object class.
+ */
 public class Tag {
 
     private int id;
