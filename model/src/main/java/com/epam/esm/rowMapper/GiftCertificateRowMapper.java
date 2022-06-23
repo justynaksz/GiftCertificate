@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
 
 /**
  * Implementation which maps each row to a result GiftCertificateTag object.
@@ -25,7 +24,13 @@ public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
         giftCertificate.setName(rs.getString("name"));
         giftCertificate.setDescription(rs.getString("description"));
         giftCertificate.setPrice(rs.getDouble("price"));
-        giftCertificate.setDuration((Duration) rs.getObject("duration"));
+        giftCertificate.setDuration(rs.getLong("duration"));
+        giftCertificate.setCreateDate(rs.getTimestamp("create_date").toLocalDateTime());
+        if (rs.getTimestamp("last_update_date") != null) {
+            giftCertificate.setLastUpdateDate(rs.getTimestamp("last_update_date").toLocalDateTime());
+        } else {
+            giftCertificate.setLastUpdateDate(null);
+        }
         return giftCertificate;
         // TODO Logger to add
     }

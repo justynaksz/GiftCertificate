@@ -35,12 +35,12 @@ public class TagDAOImpl extends AbstractDAO implements TagDAO {
     /**
      * Finds tags of given name.
      * @param  name    String name value
-     * @return tags    list of tags of given name
+     * @return tags    tag of given name
      */
     @Override
-    public List<Tag> findByName(String name) {
+    public Tag findByName(String name) {
         String query = "SELECT id, name FROM tag WHERE name = ?";
-        List<Tag> tags = getJdbcTemplate().query(query, new TagRowMapper(), name);
+        Tag tags = getJdbcTemplate().queryForObject(query, new TagRowMapper(), name);
         return tags;
     }
 

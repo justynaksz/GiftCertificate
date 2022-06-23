@@ -10,6 +10,13 @@ public class Tag {
     private int id;
     private String name;
 
+    public Tag(String name) {
+        this.name = name;
+    }
+
+    public Tag() {
+    }
+
     public int getId() {
         return id;
     }
@@ -42,8 +49,8 @@ public class Tag {
     @Override
     public String toString() {
         return "Tag[" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
                 ']';
     }
 }

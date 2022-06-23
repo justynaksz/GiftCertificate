@@ -1,8 +1,7 @@
 package com.epam.esm.model;
 
 import java.time.Duration;
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -15,10 +14,8 @@ public class GiftCertificate {
     private String description;
     private double price;
     private Duration duration;
-
-    // TODO adjust to ISO 8601 format
-    private LocalDate createDate;
-    private LocalDate lastUpdateDate;
+    private LocalDateTime createDate;
+    private LocalDateTime lastUpdateDate;
 
     public int getId() {
         return id;
@@ -52,27 +49,27 @@ public class GiftCertificate {
         this.price = price;
     }
 
-    public Duration getDuration() {
-        return duration;
+    public long getDuration() {
+        return duration.toDays();
     }
 
-    public void setDuration(Duration duration) {
-        this.duration = duration;
+    public void setDuration(long duration) {
+        this.duration = Duration.ofDays(duration);
     }
 
-    public LocalDate getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDate createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public LocalDate getLastUpdateDate() {
+    public LocalDateTime getLastUpdateDate() {
         return lastUpdateDate;
     }
 
-    public void setLastUpdateDate(LocalDate lastUpdateDate) {
+    public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
 
@@ -81,8 +78,13 @@ public class GiftCertificate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GiftCertificate that = (GiftCertificate) o;
-        return id == that.id && Double.compare(that.price, price) == 0 && name.equals(that.name) && description.equals(that.description) && duration.equals(that.duration) && createDate.equals(that.createDate) && lastUpdateDate.equals(that.lastUpdateDate);
+        if (lastUpdateDate != null) {
+            return id == that.id && Double.compare(that.price, price) == 0 && name.equals(that.name) && description.equals(that.description) && duration.equals(that.duration) && createDate.equals(that.createDate) && lastUpdateDate.equals(that.lastUpdateDate);
+        } else {
+            return id == that.id && Double.compare(that.price, price) == 0 && name.equals(that.name) && description.equals(that.description) && duration.equals(that.duration) && createDate.equals(that.createDate) && this.lastUpdateDate == null;
+        }
     }
+
 
     @Override
     public int hashCode() {
@@ -92,13 +94,23 @@ public class GiftCertificate {
     @Override
     public String toString() {
         return "GiftCertificate[" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", duration=" + duration +
-                ", createDate=" + createDate +
-                ", lastUpdateDate=" + lastUpdateDate +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", price=" + getPrice() +
+                ", duration=" + getDuration() +
+                ", createDate=" + getCreateDate() +
+                ", lastUpdateDate=" + getLastUpdateDate() +
                 ']';
+    }
+
+    public GiftCertificate() {
+    }
+
+    public GiftCertificate(String name, String description, double price, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
     }
 }

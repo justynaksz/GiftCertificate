@@ -11,8 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,8 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
 
     /**
      * Finds giftCertificate of given id value.
-     * @param  id                  int id value
+     *
+     * @param id int id value
      * @return giftCertificate     giftCertificate of given id value
      */
     @Override
@@ -37,7 +37,8 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
 
     /**
      * Finds giftCertificates assigned to given tagName value.
-     * @param  tagName                       String value of tag's name
+     *
+     * @param tagName String value of tag's name
      * @return lists of giftCertificates     giftCertificates assigned to given tag's name
      */
     @Override
@@ -45,7 +46,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
         String query = "SELECT tag.name, gift_certificate.id, gift_certificate.name, gift_certificate.description, gift_certificate.price, gift_certificate.duration, gift_certificate.create_date, gift_certificate.last_update_date " +
                 "FROM gift_certificate " +
                 "JOIN gift_certificate_tag ON gift_certificate.id = gift_certificate_tag.gift_certificate_id " +
-                "JOIN tag ON tag.id = gift_certificate_tag.tag_id" +
+                "JOIN tag ON tag.id = gift_certificate_tag.tag_id " +
                 "WHERE tag.name = ?";
         List<GiftCertificate> giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper(), tagName);
         return giftCertificates;
@@ -53,24 +54,20 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
 
     /**
      * Finds giftCertificates by part of name or description.
-     * @param  key                          String value of desired name/description word
+     *
+     * @param key String value of desired name/description word
      * @return lists of giftCertificates    giftCertificates containing key word in their name or description
      */
     @Override
     public List<GiftCertificate> findByNameOrDescription(String key) {
-        String queryName = "SELECT id, name, description, price, duration, create_date, last_update_date WHERE name LIKE %?%";
-        String queryDescription = "SELECT id, name, description, price, duration, createDate, lastUpdateDate WHERE description LIKE %?%";
-        List<GiftCertificate> giftCertificatesNames = getJdbcTemplate().query(queryName, new GiftCertificateRowMapper(), key);
-        List<GiftCertificate> giftCertificatesDescriptions = getJdbcTemplate().query(queryDescription, new GiftCertificateRowMapper(), key);
-        List<GiftCertificate> giftCertificates = new ArrayList<>(giftCertificatesNames);
-        for (GiftCertificate giftCertificate : giftCertificatesDescriptions) {
-            if (!giftCertificates.contains(giftCertificate)) giftCertificates.add(giftCertificate);
-        }
+        String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate WHERE name LIKE ? OR description LIKE ?";
+        List<GiftCertificate> giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper(), "%" + key + "%", "%" + key + "%");
         return giftCertificates;
     }
 
     /**
-     * Finds giftCertificates by part of name or description.
+     * Finds all giftCertificates.
+     *
      * @return lists of giftCertificates    all giftcertificates
      */
     @Override
@@ -82,54 +79,51 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
 
     /**
      * Sorts giftCertificates by ascending order.
+     *
      * @return giftCertificates in ascending order
      */
     @Override
     public List<GiftCertificate> sortAscending() {
-        String query = "SELECT tag.name, gift_certificate.id, gift_certificate.name, gift_certificate.description, gift_certificate.price, gift_certificate.duration, gift_certificate.create_date, gift_certificate.last_update_date " +
-                "FROM gift_certificate " +
-                "JOIN gift_certificate_tag ON gift_certificate.id = gift_certificate_tag.gift_certificate_id " +
-                "JOIN tag ON tag.id = gift_certificate_tag.tag_id" +
-                "ORDER BY gift_certificate.name ASC";
+        String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate ORDER BY name ASC";
         List<GiftCertificate> giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper());
         return giftCertificates;
     }
 
     /**
      * Sorts giftCertificates by descending order.
+     *
      * @return giftCertificates in descending order
      */
     @Override
     public List<GiftCertificate> sortDescending() {
-        String query = "SELECT tag.name, gift_certificate.id, gift_certificate.name, gift_certificate.description, gift_certificate.price, gift_certificate.duration, gift_certificate.create_date, gift_certificate.last_update_date " +
-                "FROM gift_certificate " +
-                "JOIN gift_certificate_tag ON gift_certificate.id = gift_certificate_tag.gift_certificate_id " +
-                "JOIN tag ON tag.id = gift_certificate_tag.tag_id" +
-                "ORDER BY gift_certificate.name DSC";
+        String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate ORDER BY name DESC";
         List<GiftCertificate> giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper());
         return giftCertificates;
     }
 
     /**
      * Creates new giftCertificate entity.
-     * @param  giftCertificate    GiftCertificate instance to be inserted into database
+     *
+     * @param giftCertificate GiftCertificate instance to be inserted into database
      * @return giftCertificate    GiftCertificate instance with specified id value that has been inserted into database
      */
     @Override
     public GiftCertificate createGiftCertificate(GiftCertificate giftCertificate) {
         String query = "INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date) " +
-                "VALUES (:name, :description, :price, :duration, :creation_date, :last_update_date";
+                "VALUES (:name, :description, :price, :duration, :create_date, :last_update_date);";
+
+        giftCertificate.setCreateDate(LocalDateTime.now());
         Map map = new HashMap();
         map.put("name", giftCertificate.getName());
         map.put("description", giftCertificate.getDescription());
         map.put("price", giftCertificate.getPrice());
         map.put("duration", giftCertificate.getDuration());
-        map.put("create_date", Timestamp.from(Instant.now()));
-        map.put("last_update_date", null);
+        map.put("create_date", giftCertificate.getCreateDate());
+        map.put("last_update_date", giftCertificate.getLastUpdateDate());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource parameterSource = new MapSqlParameterSource(map);
-        super.getNamedParameterJdbcTemplate().update(query, parameterSource, keyHolder);
+        super.getNamedParameterJdbcTemplate().update(query, parameterSource, keyHolder, new String[]{"id"});
         int id = keyHolder.getKey().intValue();
         giftCertificate.setId(id);
         return giftCertificate;
@@ -137,26 +131,30 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
 
     /**
      * Updates giftCertificate contained in database.
-     * @param  giftCertificate    GiftCertificate instance to be updated in database
+     *
+     * @param giftCertificate GiftCertificate instance to be updated in database
      */
     @Override
     public void updateGiftCertificate(GiftCertificate giftCertificate) {
-        String query = "UPDATE gift_certificate" +
-                "SET name = :name, description = :description, price = :price, duration = :duration, last_update_date = :last_update_date" +
+        String query = "UPDATE gift_certificate " +
+                "SET name = :name, description = :description, price = :price, duration = :duration, last_update_date = :last_update_date " +
                 "WHERE id = :id";
+
+        giftCertificate.setLastUpdateDate(LocalDateTime.now());
         Map map = new HashMap();
         map.put("name", giftCertificate.getName());
         map.put("description", giftCertificate.getDescription());
         map.put("price", giftCertificate.getPrice());
         map.put("duration", giftCertificate.getDuration());
-        map.put("last_update_date", Timestamp.from(Instant.now()));
+        map.put("last_update_date", giftCertificate.getLastUpdateDate());
         map.put("id", giftCertificate.getId());
         getNamedParameterJdbcTemplate().update(query, map);
     }
 
     /**
      * Deletes giftCertificate of given id value.
-     * @param id     int id value of giftCertificate instance to be removed
+     *
+     * @param id int id value of giftCertificate instance to be removed
      */
     @Override
     public void deleteGiftCertificate(int id) {

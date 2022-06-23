@@ -8,7 +8,7 @@ public interface TagDAO {
 
     Tag findById(int id);
 
-    List<Tag> findByName(String name);
+    Tag findByName(String name);
 
     List<Tag> findAll();
 

@@ -12,6 +12,8 @@ public interface GiftCertificateTagDAO {
 
     List<GiftCertificateTag> findGiftCertificateTagByTagId(int tagId);
 
+    List<GiftCertificateTag> findAllGiftCertificateTag();
+
     GiftCertificateTag createGiftCertificateTag(GiftCertificateTag giftCertificate_Tag);
 
     void deleteGiftCertificateTag(int id);

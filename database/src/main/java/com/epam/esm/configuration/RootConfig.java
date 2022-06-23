@@ -14,7 +14,7 @@ import javax.sql.DataSource;
  * Data source configuration class.
  */
 @Configuration
-@ComponentScan(basePackages = {"com.epam.DBconfig"})
+@ComponentScan(basePackages = {"com.epam.esm.DAOImpl"})
 @PropertySource(value={"classpath:jdbc.properties"})
 public class RootConfig {
 

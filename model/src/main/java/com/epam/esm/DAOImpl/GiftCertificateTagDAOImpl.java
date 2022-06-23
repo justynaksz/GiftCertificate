@@ -57,6 +57,18 @@ public class GiftCertificateTagDAOImpl extends AbstractDAO implements GiftCertif
     }
 
     /**
+     * Finds all giftCertificateTags.
+     *
+     * @return lists of giftCertificateTags    all giftcertificateTags
+     */
+    @Override
+    public List<GiftCertificateTag> findAllGiftCertificateTag() {
+        String query = "SELECT id, gift_certificate_id, tag_id FROM gift_certificate_tag";
+        List<GiftCertificateTag> giftCertificateTags = getJdbcTemplate().query(query, new GiftCertificateTagRowMapper());
+        return giftCertificateTags;
+    }
+
+    /**
      * Creates new giftCertificateTag entity.
      * @param  giftCertificateTag     GiftCertificateTag instance to be inserted into database
      * @return giftCertificateTag     GiftCertificateTag instance with specified id value that has been inserted into database

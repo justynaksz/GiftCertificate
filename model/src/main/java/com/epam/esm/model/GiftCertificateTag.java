@@ -35,6 +35,14 @@ public class GiftCertificateTag {
         this.tagId = tagId;
     }
 
+    public GiftCertificateTag(int giftCertificateId, int tagId) {
+        this.giftCertificateId = giftCertificateId;
+        this.tagId = tagId;
+    }
+
+    public GiftCertificateTag() {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,9 +59,9 @@ public class GiftCertificateTag {
     @Override
     public String toString() {
         return "GiftCertificate_Tag[" +
-                "id=" + id +
-                ", giftCertificateId=" + giftCertificateId +
-                ", tagId=" + tagId +
+                "id=" + getId() +
+                ", giftCertificateId=" + getGiftCertificateId() +
+                ", tagId=" + getTagId() +
                 ']';
     }
 }
