@@ -1,7 +1,9 @@
-package com.epam.esm.embeddedRepoTests;
+package com.epam.esm.embeddedrepotests;
 
-import com.epam.esm.DAOImpl.TagDAOImpl;
-import com.epam.esm.configuration.embeddedDb.EmbeddedDbConfig;
+import com.epam.esm.dao.GiftCertificateTagDAO;
+import com.epam.esm.dao.impl.GiftCertificateTagDAOImpl;
+import com.epam.esm.dao.impl.TagDAOImpl;
+import com.epam.esm.configuration.embeddeddb.EmbeddedDbConfig;
 import com.epam.esm.model.Tag;
 import org.junit.jupiter.api.*;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -98,11 +100,11 @@ public class TagTests {
         // GIVEN
         tagDAOImpl.setDataSourceObject(database);
         // WHEN
-        tagDAOImpl.createTag(new Tag("outdoor fun"));
-        int initDataBaseSize = tagDAOImpl.findAll().size();
-        tagDAOImpl.deleteTag(initDataBaseSize);
+//        tagDAOImpl.createTag(new Tag("outdoor fun"));
+        int dbSize = tagDAOImpl.findAll().size();
+        tagDAOImpl.deleteTag(1);
         // THEN
-        assertEquals(6, tagDAOImpl.findAll().size());
+        assertEquals(dbSize-1, tagDAOImpl.findAll().size());
     }
 
     /**

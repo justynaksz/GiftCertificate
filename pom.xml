@@ -12,6 +12,7 @@
         <module>model</module>
         <module>database</module>
         <module>web</module>
+        <module>service</module>
     </modules>
 
     <properties>

@@ -1,7 +1,7 @@
-package com.epam.esm.embeddedRepoTests;
+package com.epam.esm.embeddedrepotests;
 
-import com.epam.esm.DAOImpl.GiftCertificateTagDAOImpl;
-import com.epam.esm.configuration.embeddedDb.EmbeddedDbConfig;
+import com.epam.esm.dao.impl.GiftCertificateTagDAOImpl;
+import com.epam.esm.configuration.embeddeddb.EmbeddedDbConfig;
 import com.epam.esm.model.GiftCertificateTag;
 import org.junit.jupiter.api.*;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -120,11 +120,10 @@ public class GiftCertificateTagTests {
         // GIVEN
         giftCertificateTagDAOImpl.setDataSourceObject(database);
         // WHEN
-        int initDatabaseSize = giftCertificateTagDAOImpl.findAllGiftCertificateTag().size();
-        giftCertificateTagDAOImpl.createGiftCertificateTag(new GiftCertificateTag(2, 2));
-        giftCertificateTagDAOImpl.deleteGiftCertificateTag(initDatabaseSize);
+        int dbSize = giftCertificateTagDAOImpl.findAllGiftCertificateTag().size();
+        giftCertificateTagDAOImpl.deleteGiftCertificateTag(3);
         // THEN
-        assertEquals(7, giftCertificateTagDAOImpl.findAllGiftCertificateTag().size());
+        assertEquals(6, giftCertificateTagDAOImpl.findAllGiftCertificateTag().size());
     }
 
     /**

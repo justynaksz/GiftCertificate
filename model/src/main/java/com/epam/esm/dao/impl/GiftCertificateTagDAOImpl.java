@@ -1,9 +1,9 @@
-package com.epam.esm.DAOImpl;
+package com.epam.esm.dao.impl;
 
-import com.epam.esm.DAO.AbstractDAO;
-import com.epam.esm.DAO.GiftCertificateTagDAO;
+import com.epam.esm.dao.AbstractDAO;
+import com.epam.esm.dao.GiftCertificateTagDAO;
 import com.epam.esm.model.GiftCertificateTag;
-import com.epam.esm.rowMapper.GiftCertificateTagRowMapper;
+import com.epam.esm.rowmapper.GiftCertificateTagRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -77,7 +77,7 @@ public class GiftCertificateTagDAOImpl extends AbstractDAO implements GiftCertif
     public GiftCertificateTag createGiftCertificateTag(GiftCertificateTag giftCertificateTag) {
         String query = "INSERT INTO gift_certificate_tag (gift_certificate_id, tag_id) " +
              "VALUES (:gift_certificate_id, :tag_id)";
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap();
         map.put("gift_certificate_id", giftCertificateTag.getGiftCertificateId());
         map.put("tag_id", giftCertificateTag.getTagId());
 

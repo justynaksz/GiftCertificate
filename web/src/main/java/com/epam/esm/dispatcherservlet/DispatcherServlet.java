@@ -1,4 +1,4 @@
-package com.epam.esm.dispatcherServlet;
+package com.epam.esm.dispatcherservlet;
 
 import com.epam.esm.configuration.RootConfig;
 import com.epam.esm.configuration.WebConfig;

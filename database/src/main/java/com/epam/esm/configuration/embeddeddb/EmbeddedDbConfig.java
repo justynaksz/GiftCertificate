@@ -1,4 +1,4 @@
-package com.epam.esm.configuration.embeddedDb;
+package com.epam.esm.configuration.embeddeddb;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;

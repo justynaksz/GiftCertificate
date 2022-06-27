@@ -21,6 +21,6 @@ CREATE TABLE gift_certificate_tag(
     );
 
 ALTER TABLE
-    gift_certificate_tag ADD CONSTRAINT gift_certificate_tag_gift_certificate_id_foreign FOREIGN KEY(gift_certificate_id) REFERENCES gift_certificate(id);
+    gift_certificate_tag ADD CONSTRAINT gift_certificate_tag_gift_certificate_id_foreign FOREIGN KEY(gift_certificate_id) REFERENCES gift_certificate(id) ON DELETE CASCADE;
 ALTER TABLE
-    gift_certificate_tag ADD CONSTRAINT gift_certificate_tag_tag_id_foreign FOREIGN KEY(tag_id) REFERENCES tag(id);
+    gift_certificate_tag ADD CONSTRAINT gift_certificate_tag_tag_id_foreign FOREIGN KEY(tag_id) REFERENCES tag(id) ON DELETE CASCADE;
