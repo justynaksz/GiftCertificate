@@ -1,12 +1,16 @@
 package com.epam.esm.embeddedrepotests;
 
-import com.epam.esm.dao.GiftCertificateTagDAO;
-import com.epam.esm.dao.impl.GiftCertificateTagDAOImpl;
 import com.epam.esm.dao.impl.TagDAOImpl;
-import com.epam.esm.configuration.embeddeddb.EmbeddedDbConfig;
+import com.epam.esm.embeddeddbconfig.EmbeddedDbConfig;
 import com.epam.esm.model.Tag;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
@@ -14,6 +18,9 @@ import java.util.List;
 /**
  * Tests CRUD operations on Tag entity.
  */
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = EmbeddedDatabaseBuilder.class)
+@ActiveProfiles("dev")
 public class TagTests {
     EmbeddedDatabase database;
     TagDAOImpl tagDAOImpl = new TagDAOImpl();
@@ -114,5 +121,4 @@ public class TagTests {
     public void shutDb() {
         database.shutdown();
     }
-
 }

@@ -1,12 +1,11 @@
 package com.epam.esm.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -14,12 +13,19 @@ import javax.sql.DataSource;
  * Data source configuration class.
  */
 @Configuration
-@ComponentScan(basePackages = {"com.epam.esm.DAOImpl"})
+@Profile("prod")
+@EnableTransactionManagement
+@ComponentScan("com.epam.esm")
 @PropertySource(value={"classpath:jdbc.properties"})
 public class RootConfig {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    public RootConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     /**
      * Defines data source with properties specified in jdbc.properties file.
@@ -33,5 +39,14 @@ public class RootConfig {
         dataSource.setUsername((environment.getRequiredProperty("jdbc.username")));
         dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
         return dataSource;
+    }
+
+    /**
+     * Return the context for the application.
+     * @ return AnnotationConfigApplicationContext()
+     */
+    @Bean
+    public ApplicationContext getApplicationContext() {
+        return new AnnotationConfigApplicationContext();
     }
 }

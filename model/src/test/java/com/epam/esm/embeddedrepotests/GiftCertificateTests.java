@@ -1,12 +1,16 @@
 package com.epam.esm.embeddedrepotests;
 
-import com.epam.esm.dao.GiftCertificateTagDAO;
 import com.epam.esm.dao.impl.GiftCertificateDAOImpl;
-import com.epam.esm.configuration.embeddeddb.EmbeddedDbConfig;
-import com.epam.esm.dao.impl.GiftCertificateTagDAOImpl;
+import com.epam.esm.embeddeddbconfig.EmbeddedDbConfig;
 import com.epam.esm.model.GiftCertificate;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -15,6 +19,9 @@ import java.util.List;
 /**
  * Tests CRUD operations on GiftCertificateTag entity.
  */
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = EmbeddedDatabaseBuilder.class)
+@ActiveProfiles("dev")
 public class GiftCertificateTests {
     EmbeddedDatabase database;
     GiftCertificateDAOImpl giftCertificateDAOImpl = new GiftCertificateDAOImpl();
@@ -37,14 +44,12 @@ public class GiftCertificateTests {
         giftCertificateDAOImpl.setDataSourceObject(database);
         // WHEN
         GiftCertificate giftCertificateRetrieved = giftCertificateDAOImpl.findById(1);
+        GiftCertificate giftCertificate = new GiftCertificate("H&M gift card", "Gift card to the fashion store", 100.00, Duration.ofDays(90));
+        giftCertificate.setId(1);
+        giftCertificate.setCreateDate(LocalDateTime.parse("2022-06-22T18:31:44.574"));
+        giftCertificate.setLastUpdateDate(null);
         // THEN
-        assertEquals(1,giftCertificateRetrieved.getId());
-        assertEquals("H&M gift card",giftCertificateRetrieved.getName());
-        assertEquals("Gift card to the fashion store",giftCertificateRetrieved.getDescription());
-        assertEquals(100.00,giftCertificateRetrieved.getPrice());
-        assertEquals(90,giftCertificateRetrieved.getDuration());
-        assertEquals(LocalDateTime.parse("2022-06-22T18:31:44.574"),giftCertificateRetrieved.getCreateDate());
-        assertNull(giftCertificateRetrieved.getLastUpdateDate());
+        assertEquals(giftCertificate, giftCertificateRetrieved);
     }
 
     /**
@@ -103,7 +108,6 @@ public class GiftCertificateTests {
         // WHEN
         List <GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortAscending();
         // THEN
-        System.out.println(giftCertificatesInDb);
         assertEquals(3, giftCertificatesInDb.size());
         assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(0).getDescription());
         assertEquals("Gift card to cafe", giftCertificatesInDb.get(2).getDescription());
@@ -117,7 +121,6 @@ public class GiftCertificateTests {
         // WHEN
         List <GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortDescending();
         // THEN
-        System.out.println(giftCertificatesInDb);
         assertEquals(3, giftCertificatesInDb.size());
         assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(2).getDescription());
         assertEquals("Gift card to cafe", giftCertificatesInDb.get(0).getDescription());
@@ -139,8 +142,7 @@ public class GiftCertificateTests {
         GiftCertificate giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
         // THEN
         assertTrue(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted));
-        assertEquals(giftCertificate.getName(), giftCertificateInserted.getName());
-        assertEquals(giftCertificate.getDescription(), giftCertificateInserted.getDescription());
+        assertEquals(giftCertificate, giftCertificateInserted);
         assertEquals(4, giftCertificateDAOImpl.findAll().size());
     }
 

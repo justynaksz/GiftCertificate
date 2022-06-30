@@ -1,6 +1,9 @@
-package com.epam.esm.configuration.embeddeddb;
+package com.epam.esm.embeddeddbconfig;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -8,6 +11,9 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 /**
  * Embedded database configuration class.
  */
+@Configuration
+@ComponentScan("com.epam.esm")
+@Profile("dev")
 public class EmbeddedDbConfig {
 
     /**
