@@ -1,12 +1,11 @@
 package com.epam.esm.rowmapper;
 
 import com.epam.esm.model.GiftCertificate;
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Implementation which maps each row to a result GiftCertificateTag object.
@@ -38,7 +37,7 @@ public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
                 giftCertificate.setLastUpdateDate(null);
             }
         } catch (SQLException e) {
-            logger.log(Level.SEVERE, e.toString(), e);
+            logger.error(e.toString());
         }
         return giftCertificate;
     }

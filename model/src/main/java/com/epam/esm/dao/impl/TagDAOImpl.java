@@ -5,6 +5,7 @@ import com.epam.esm.dao.TagDAO;
 import com.epam.esm.model.Tag;
 import com.epam.esm.rowmapper.TagRowMapper;
 
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -14,8 +15,6 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Implements CRUD operations for Tag entity.
@@ -37,7 +36,7 @@ public class TagDAOImpl extends AbstractDAO implements TagDAO {
         try {
             tag = getJdbcTemplate().queryForObject(query, new TagRowMapper(), id);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Selecting tag of id \"" + tag.getId() + "\" has failed", e);
+            logger.error("Selecting tag of id \"" + tag.getId() + "\" has failed");
         }
         return tag;
     }
@@ -54,7 +53,7 @@ public class TagDAOImpl extends AbstractDAO implements TagDAO {
         try {
             tag = getJdbcTemplate().queryForObject(query, new TagRowMapper(), name);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Selecting tag of name \"" + tag.getName()+ "\" has failed", e);
+            logger.error("Selecting tag of name \"" + tag.getName()+ "\" has failed");
         }
         return tag;
     }
@@ -70,7 +69,7 @@ public class TagDAOImpl extends AbstractDAO implements TagDAO {
         try {
             tags = getJdbcTemplate().query(query, new TagRowMapper());
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Finding all tags has failed", e);
+            logger.error("Finding all tags has failed");
         }
         return tags;
     }
@@ -92,7 +91,7 @@ public class TagDAOImpl extends AbstractDAO implements TagDAO {
             int tagId = keyHolder.getKey().intValue();
             tag.setId(tagId);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Creating tag of name \"" + tag.getName() + "\" has failed", e);
+            logger.error("Creating tag of name \"" + tag.getName() + "\" has failed");
         } return tag;
     }
 
@@ -106,7 +105,7 @@ public class TagDAOImpl extends AbstractDAO implements TagDAO {
         try {
             getJdbcTemplate().update(query, id);
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Deleting tag of id \"" + id + "\" has failed", e);
+            logger.error("Deleting tag of id \"" + id + "\" has failed");
         }
     }
 }
