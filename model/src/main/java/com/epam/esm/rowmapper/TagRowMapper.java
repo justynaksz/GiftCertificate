@@ -11,7 +11,7 @@ import java.sql.SQLException;
 * Implementation which maps each row to a result Tag object.
 */
 public class TagRowMapper implements RowMapper<Tag> {
-    Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     /**
      * Maps each row of data in the ResultSet to Tag object.

@@ -1,12 +1,14 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.AbstractDAO;
 import com.epam.esm.dao.GiftCertificateDAO;
 import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.rowmapper.GiftCertificateRowMapper;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -23,7 +25,12 @@ import java.util.Map;
  * Implements CRUD operations for GiftCertificate entity.
  */
 @Repository
-public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertificateDAO {
+public class GiftCertificateDAOImpl implements GiftCertificateDAO {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     Logger logger = Logger.getLogger(getClass().getName());
 
@@ -38,7 +45,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
         GiftCertificate giftCertificate = null;
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate WHERE id = ?";
         try {
-            giftCertificate = getJdbcTemplate().queryForObject(query, new GiftCertificateRowMapper(), id);
+            giftCertificate = jdbcTemplate.queryForObject(query, new GiftCertificateRowMapper(), id);
         } catch (Exception e) {
             logger.error("Selecting giftCertificate of id \"" + giftCertificate.getId() + "\" has failed");
         }
@@ -60,7 +67,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
                 "JOIN tag ON tag.id = gift_certificate_tag.tag_id " +
                 "WHERE tag.name = ?";
         try {
-            giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper(), tagName);
+            giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper(), tagName);
         } catch (Exception e) {
             logger.error("Finding giftCertificate by tag name \"" + tagName + "\" has failed");
         }
@@ -78,7 +85,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate WHERE name LIKE ? OR description LIKE ?";
         try {
-            giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper(), "%" + key + "%", "%" + key + "%");
+            giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper(), "%" + key + "%", "%" + key + "%");
         } catch (Exception e) {
             logger.error("Finding giftCertificate by key word \"" + key + "\" has failed");
         }
@@ -95,7 +102,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate";
         try {
-            giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper());
+            giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
         } catch (Exception e) {
             logger.error("Finding all giftCertificates has failed");
         }
@@ -112,7 +119,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate ORDER BY name ASC";
         try {
-            giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper());
+            giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
         } catch (Exception e) {
             logger.error("Sorting giftCertificates in ascending order has failed.");
         }
@@ -129,7 +136,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate ORDER BY name DESC";
         try {
-            giftCertificates = getJdbcTemplate().query(query, new GiftCertificateRowMapper());
+            giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
         } catch (Exception e) {
             logger.error("Sorting giftCertificates in descending order has failed.");
         }
@@ -159,7 +166,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
             SqlParameterSource parameterSource = new MapSqlParameterSource(map);
-            super.getNamedParameterJdbcTemplate().update(query, parameterSource, keyHolder, new String[]{"id"});
+            namedParameterJdbcTemplate.update(query, parameterSource, keyHolder, new String[]{"id"});
             int id = keyHolder.getKey().intValue();
             giftCertificate.setId(id);
         } catch (Exception e) {
@@ -187,7 +194,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
             map.put("duration", giftCertificate.getDuration());
             map.put("last_update_date", giftCertificate.getLastUpdateDate());
             map.put("id", giftCertificate.getId());
-            getNamedParameterJdbcTemplate().update(query, map);
+            namedParameterJdbcTemplate.update(query, map);
         } catch (Exception e) {
             logger.error("Updating giftCertificate of id \"" + giftCertificate.getId() + "\" has failed");
         }
@@ -202,7 +209,7 @@ public class GiftCertificateDAOImpl extends AbstractDAO implements GiftCertifica
     public void deleteGiftCertificate(int id) {
         String query = "DELETE FROM gift_certificate WHERE id=?";
         try {
-            getJdbcTemplate().update(query, id);
+            jdbcTemplate.update(query, id);
         } catch (Exception e) {
             logger.error("Deleting giftCertificate of id \"" + id + "\" has failed");
         }

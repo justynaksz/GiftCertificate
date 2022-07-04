@@ -12,7 +12,7 @@ import java.sql.SQLException;
  */
 public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
 
-    Logger logger = Logger.getLogger(getClass().getName());
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     /**
      * Maps each row of data in the ResultSet to GiftCertificate object.

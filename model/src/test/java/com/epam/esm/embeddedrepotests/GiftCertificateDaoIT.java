@@ -5,46 +5,48 @@ import com.epam.esm.embeddeddbconfig.EmbeddedDbConfig;
 import com.epam.esm.model.GiftCertificate;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Tests CRUD operations on GiftCertificateTag entity.
  */
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = EmbeddedDatabaseBuilder.class)
+@ContextConfiguration(classes = {EmbeddedDbConfig.class}, loader = AnnotationConfigContextLoader.class)
 @ActiveProfiles("dev")
-public class GiftCertificateTests {
-    EmbeddedDatabase database;
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class GiftCertificateDaoIT {
+
+    @Autowired
     GiftCertificateDAOImpl giftCertificateDAOImpl = new GiftCertificateDAOImpl();
 
-    /**
-     * Sets up embedded database as H2 data source before each Test.
-     */
-    @BeforeEach
-    public void setUp() {
-        database = EmbeddedDbConfig.createH2DataSource();
-    }
+    GiftCertificate giftCertificate;
+    GiftCertificate giftCertificateInserted;
+    GiftCertificate giftCertificateRetrieved;
+    List <GiftCertificate> giftCertificatesInDb = new ArrayList<>();
 
     /**
      * Tests findById method, which should return giftCertificate with given id (unique).
-     * Checks if retrieved tag has correct name, description, price and duration according to sql script.
+     * Checks if retrieved giftCertificate is correct.
      */
     @Test
-    public void findByIdTest() {
+    @Order(1)
+    @DisplayName("find gift certificate by id test")
+    public void shouldReturnSpecifiedGiftCertificate() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
+
         // WHEN
-        GiftCertificate giftCertificateRetrieved = giftCertificateDAOImpl.findById(1);
-        GiftCertificate giftCertificate = new GiftCertificate("H&M gift card", "Gift card to the fashion store", 100.00, Duration.ofDays(90));
+        giftCertificateRetrieved = giftCertificateDAOImpl.findById(1);
+        giftCertificate = new GiftCertificate("H&M gift card", "Gift card to the fashion store", 100.00, Duration.ofDays(90));
         giftCertificate.setId(1);
         giftCertificate.setCreateDate(LocalDateTime.parse("2022-06-22T18:31:44.574"));
         giftCertificate.setLastUpdateDate(null);
@@ -58,11 +60,13 @@ public class GiftCertificateTests {
      * Checks if number of records is correct according to sql script.
      */
     @Test
-    public void findByTagTest() {
+    @Order(2)
+    @DisplayName("find gift certificates by tag test")
+    public void shouldReturnListOfGiftCertificatesWithSpecifiedTag() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
+
         // WHEN
-        List <GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.findByTag("shopping");
+        giftCertificatesInDb = giftCertificateDAOImpl.findByTag("shopping");
         // THEN
         assertEquals(2, giftCertificatesInDb.size());
     }
@@ -73,11 +77,13 @@ public class GiftCertificateTests {
      * Checks if number of records is correct according to sql script.
      */
     @Test
-    public void findByNameOrDescriptionTest() {
+    @Order(3)
+    @DisplayName("find gift certificates by key word in name or description test")
+    public void shouldReturnListOfGiftCertificatesWithKeyWordInNameOrDescription() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
+
         // WHEN
-        List <GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.findByNameOrDescription("store");
+        giftCertificatesInDb = giftCertificateDAOImpl.findByNameOrDescription("store");
         // THEN
         assertEquals(2, giftCertificatesInDb.size());
     }
@@ -87,14 +93,17 @@ public class GiftCertificateTests {
      * Checks if number of records is correct according to sql script.
      */
     @Test
-    public void findByAllTest() {
+    @Order(4)
+    @DisplayName("find all gift certificates test ")
+    public void shouldReturnListOfAllGiftCertificates() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
+
         // WHEN
-        List <GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.findAll();
+        giftCertificatesInDb = giftCertificateDAOImpl.findAll();
         // THEN
         assertEquals(3, giftCertificatesInDb.size());
     }
+
 
     /**
      * Tests sortAscending method, which should return list of all giftCertificates records in database in ascending order.
@@ -102,48 +111,59 @@ public class GiftCertificateTests {
      * checks if the first and the last giftCertificate are in correct position.
      */
     @Test
-    public void sortAscendingTest() {
+    @Order(5)
+    @DisplayName("sort in ascending order test")
+    public void checksIfListSizeAndASCOrderIsCorrect() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
+
         // WHEN
-        List <GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortAscending();
+        giftCertificatesInDb = giftCertificateDAOImpl.sortAscending();
         // THEN
         assertEquals(3, giftCertificatesInDb.size());
-        assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(0).getDescription());
         assertEquals("Gift card to cafe", giftCertificatesInDb.get(2).getDescription());
+        assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(0).getDescription());
     }
 
-
+    /**
+     * Tests sortDescending method, which should return list of all giftCertificates records in database in descending order.
+     * Checks if number of records is correct according to sql script,
+     * checks if the first and the last giftCertificate are in correct position.
+     */
     @Test
-    public void sortDescendingTest() {
+    @Order(6)
+    @DisplayName("sort in descending order test")
+    public void checksIfListSizeAndDSCOrderIsCorrect() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
+
         // WHEN
-        List <GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortDescending();
+        giftCertificatesInDb = giftCertificateDAOImpl.sortDescending();
         // THEN
         assertEquals(3, giftCertificatesInDb.size());
-        assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(2).getDescription());
         assertEquals("Gift card to cafe", giftCertificatesInDb.get(0).getDescription());
+        assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(2).getDescription());
     }
 
     /**
      * Tests createGiftCertificate method, which should insert new giftCertificate into database
      * and return inserted giftCertificate object.
      * Checks if list of all giftCertificate records contains inserted giftCertificate,
-     * checks if the name and description of inserted giftCertificate is correct and
+     * checks if the name and description of inserted giftCertificate is correct,
      * checks if the number of all giftCertificate records is correct (+1).
      */
     @Test
-    public void createGiftCertificateTest() {
+    @Order(7)
+    @DisplayName("create gift certificate test")
+    public void specificGiftCertificateIsPresentInDbAndCountOfGiftCertificatesInDbIsCorrect() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
-        GiftCertificate giftCertificate = new GiftCertificate("Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180));
+        giftCertificate = new GiftCertificate("Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180));
+        int initialDbSize = giftCertificateDAOImpl.findAll().size();
+        int expectedDBSizeChange = 1;
         // WHEN
-        GiftCertificate giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
+        giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
         // THEN
         assertTrue(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted));
         assertEquals(giftCertificate, giftCertificateInserted);
-        assertEquals(4, giftCertificateDAOImpl.findAll().size());
+        assertEquals(initialDbSize + expectedDBSizeChange, giftCertificateDAOImpl.findAll().size());
     }
 
     /**
@@ -152,41 +172,37 @@ public class GiftCertificateTests {
      * checks if the name and description of updated giftCertificate is correct.
      */
     @Test
-    public void updateTest() {
+    @Order(8)
+    @DisplayName("update gift certificate test")
+    public void sizeOfDbIsNotChangedAndGiftCertificateIsCorrectlyUpdated() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
-        // WHEN
         int initDatabaseSize = giftCertificateDAOImpl.findAll().size();
-        GiftCertificate giftCertificate = giftCertificateDAOImpl.findById(1);
+        giftCertificate = giftCertificateDAOImpl.findById(1);
         giftCertificate.setDescription("Gift card to the fashion shop");
+        // WHEN
         giftCertificateDAOImpl.updateGiftCertificate(giftCertificate);
         // THEN
         assertEquals(initDatabaseSize, giftCertificateDAOImpl.findAll().size());
         assertEquals(giftCertificate, giftCertificateDAOImpl.findById(1));
-
     }
 
     /**
      * Tests deleteGiftCertificate method, which should remove giftCertificate from database.
-     * Checks if the number of all giftCertificate records is correct (-1).
-     * In H2 it was necessary to insert new giftCertificate before testing delete method.
+     * Checks if the number of all giftCertificate records is correct (-1),
+     * checks if removed giftCertificate is not present in database.
      */
     @Test
-    public void deleteTest() {
+    @Order(9)
+    @DisplayName("delete gift certificate test")
+    public void countOfGiftCertificatesInDbHasShrunkAfterDeletingAndGiftCertificateIsNotPresentInDb() {
         // GIVEN
-        giftCertificateDAOImpl.setDataSourceObject(database);
-        // WHEN
         int dbSize = giftCertificateDAOImpl.findAll().size();
+        int expectedDBSizeChange = 1;
+        // WHEN
+        giftCertificate = giftCertificateDAOImpl.findById(1);
         giftCertificateDAOImpl.deleteGiftCertificate(1);
         // THEN
-        assertEquals(dbSize-1, giftCertificateDAOImpl.findAll().size());
-    }
-
-    /**
-     * Shuts down the database after each test.
-     */
-    @AfterEach
-    public void shutDb() {
-        database.shutdown();
+        assertEquals(dbSize-expectedDBSizeChange, giftCertificateDAOImpl.findAll().size());
+        assertFalse(giftCertificateDAOImpl.findAll().contains(giftCertificate));
     }
 }
