@@ -1,21 +1,17 @@
 package com.epam.esm.model;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Objects;
 
 /**
  * Tag entity with methods defined in Object class.
  */
+@Component
 public class Tag {
 
     private int id;
     private String name;
-
-    public Tag(String name) {
-        this.name = name;
-    }
-
-    public Tag() {
-    }
 
     public int getId() {
         return id;

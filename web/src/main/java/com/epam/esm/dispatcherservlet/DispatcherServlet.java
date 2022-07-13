@@ -1,12 +1,17 @@
 package com.epam.esm.dispatcherservlet;
 
-import com.epam.esm.configuration.RootConfig;
-import com.epam.esm.configuration.WebConfig;
+import com.epam.esm.service.DataSourceConfig;
+import com.epam.esm.service.WebConfig;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 /**
  * Central dispatcher for appropriate HTTP controller methods.
  */
+@Component
 public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
@@ -21,6 +26,16 @@ public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { RootConfig.class };
+        return new Class[] { DataSourceConfig.class };
+    }
+
+    /**
+     * Configures given servletContext.
+     * @param servletContext    to be configured for initializing in production environment
+     */
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        servletContext.setInitParameter("spring.profiles.active", "prod");
+        super.onStartup(servletContext);
     }
 }

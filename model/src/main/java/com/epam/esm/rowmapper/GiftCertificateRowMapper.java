@@ -3,13 +3,15 @@ package com.epam.esm.rowmapper;
 import com.epam.esm.model.GiftCertificate;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Implementation which maps each row to a result GiftCertificateTag object.
+ * Maps each row to a result GiftCertificateTag object.
  */
+@Component
 public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
 
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -19,10 +21,9 @@ public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
      * @param rs                 ResultSet to be mapped
      * @param rowNum             the number of current row
      * @return giftCertificate   GiftCertificate instance
-     * @throws SQLException
      */
     @Override
-    public GiftCertificate mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public GiftCertificate mapRow(ResultSet rs, int rowNum) {
         GiftCertificate giftCertificate = new GiftCertificate();
         try {
             giftCertificate.setId(rs.getInt("id"));
@@ -36,8 +37,8 @@ public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
             } else {
                 giftCertificate.setLastUpdateDate(null);
             }
-        } catch (SQLException e) {
-            logger.error(e.toString());
+        } catch (SQLException exception) {
+            logger.error(exception.toString());
         }
         return giftCertificate;
     }

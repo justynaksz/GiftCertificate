@@ -1,98 +1,114 @@
 package com.epam.esm.embeddedrepotests;
 
 import com.epam.esm.dao.impl.TagDAOImpl;
-import com.epam.esm.embeddeddbconfig.EmbeddedDbConfig;
 import com.epam.esm.model.Tag;
+import com.epam.esm.service.DataSourceConfig;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
 
-/**
- * Tests CRUD operations on Tag entity.
- */
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {EmbeddedDbConfig.class}, loader = AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes = {DataSourceConfig.class}, loader = AnnotationConfigContextLoader.class)
 @ActiveProfiles("dev")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class TagDaoIT {
+class TagDaoIT {
 
     @Autowired
-    TagDAOImpl tagDAOImpl = new TagDAOImpl();
-
+    TagDAOImpl tagDAOImpl;
+    @Autowired
     Tag tag;
+    @Autowired
     Tag tagInserted;
+    @Autowired
     Tag tagRetrieved;
 
-    /**
-     * Tests findById method, which should return tag with given id (unique).
-     * Checks if retrieved tag has correct name according to sql script.
-     */
-    @Test
-    @Order(1)
-    @DisplayName("find tag by id test")
-    public void findByIdShouldReturnTagWithExpectedName() {
-        // GIVEN
+    @Nested
+    @DisplayName("find by id tests")
+    class findByIdTest {
 
-        // WHEN
-        tagRetrieved = tagDAOImpl.findById(1);
-        // THEN
-        assertEquals("sweets", tagRetrieved.getName());
+        @Test
+        @Order(1)
+        @DisplayName("tag is correctly found")
+        void findByIdShouldReturnCorrectTag() {
+            // GIVEN
+            int id = 1;
+            // WHEN
+            tagRetrieved = tagDAOImpl.findById(id);
+            // THEN
+            assertEquals("sweets", tagRetrieved.getName());
+        }
+
+        @Test
+        @Order(2)
+        @DisplayName("tag of given id doesn't exist")
+        void findByIdShouldThrowExceptionIfTagDoesNotExist() {
+            // GIVEN
+            int id = 999;
+            // WHEN
+
+            // THEN
+            assertThrows(EmptyResultDataAccessException.class, () -> tagDAOImpl.findById(id));
+        }
     }
 
-    /**
-     * Tests findByName method, which should return tag with given name (unique).
-     * Checks if retrieved tag has correct id according to sql script.
-     */
-    @Test
-    @Order(2)
-    @DisplayName("find tag by name test")
-    public void findByNameShouldReturnSpecifiedTag() {
-        // GIVEN
-        tag = new Tag("fashion");
-        tag.setId(2);
-        // WHEN
-        tagRetrieved = tagDAOImpl.findByName("fashion");
-        // THEN
-        assertEquals(tag.getId(), tagRetrieved.getId());
+    @Nested
+    @DisplayName("find by name tests")
+    class findByName {
+
+        @Test
+        @Order(3)
+        @DisplayName("tag is correctly found")
+        void findByNameShouldReturnCorrectTag() {
+            // GIVEN
+            tag.setId(2);
+            tag.setName("fashion");
+            // WHEN
+            tagRetrieved = tagDAOImpl.findByName("fashion");
+            // THEN
+            assertEquals(tag.getId(), tagRetrieved.getId());
+        }
+
+        @Test
+        @Order(4)
+        @DisplayName("tag of given name doesn't exist")
+        void findByNameShouldThrowExceptionIfTagDoesNotExist() {
+            // GIVEN
+            String name = "photo";
+            // WHEN
+
+            // THEN
+            assertThrows(EmptyResultDataAccessException.class, () -> tagDAOImpl.findByName(name));
+        }
     }
 
-    /**
-     * Tests findAll method, which should return list of all tag records in database.
-     * Checks if number of records is correct according to sql script.
-     */
     @Test
-    @Order(3)
-    @DisplayName("fin all tags test")
-    public void findAllShouldReturnListOfAllTags() {
+    @Order(5)
+    @DisplayName("find all tags test")
+    void findAllShouldReturnListOfAllTags() {
         // GIVEN
 
         // WHEN
         List<Tag> tagsInDb = tagDAOImpl.findAll();
+        System.out.println(tagsInDb);
         // THEN
         assertEquals(6, tagsInDb.size());
     }
 
-    /**
-     * Tests createTag method, which should insert new tag into database
-     * and return inserted tag object.
-     * Checks if list of all tag records contains inserted tag,
-     * checks if the number of all tag records is correct after insertion (+1),
-     *
-     */
     @Test
-    @Order(4)
+    @Order(6)
     @DisplayName("create tag test")
-    public void specificTagIsPresentInDbAndCountOfTagInDbIsCorrect() {
+    void specificTagIsPresentInDbAndCountOfTagInDbIsCorrect() {
         // GIVEN
-        tag = new Tag("family time");
+        tag.setName("family time");
         // WHEN
         tagInserted = tagDAOImpl.createTag(tag);
         // THEN
@@ -100,23 +116,35 @@ public class TagDaoIT {
         assertEquals(7, tagDAOImpl.findAll().size());
     }
 
-    /**
-     * Tests delete method, which should remove tag from database.
-     * Checks if the number of all tag records is correct (-1),
-     * checks if removed giftCertificate is not present in database.
-     */
-    @Test
-    @Order(5)
-    @DisplayName("delete tag test")
-    public void countOfTagsInDbHasShrunkAfterDeletingAndTagIsNotPresentInDb() {
-        // GIVEN
-        tag = tagDAOImpl.findById(1);
-        int dbSize = tagDAOImpl.findAll().size();
-        int expectedDBSizeChange = 1;
-        // WHEN
-        tagDAOImpl.deleteTag(1);
-        // THEN
-        assertEquals(dbSize-expectedDBSizeChange, tagDAOImpl.findAll().size());
-        assertFalse(tagDAOImpl.findAll().contains(tag));
+    @Nested
+    @DisplayName("delete tag tests")
+    class deleteTagTest {
+
+        @Test
+        @Order(7)
+        @DisplayName("tag is correctly removed")
+        void deleteTagShouldRemoveTagOfGivenIdFromDatabase(){
+            // GIVEN
+            int id = 5;
+            tag = tagDAOImpl.findById(id);
+            int dbSize = tagDAOImpl.findAll().size();
+            int expectedDBSizeChange = 1;
+            // WHEN
+            tagDAOImpl.deleteTag(id);
+            // THEN
+            assertEquals(dbSize-expectedDBSizeChange, tagDAOImpl.findAll().size());
+            assertFalse(tagDAOImpl.findAll().contains(tag));}
+
+        @Test
+        @Order(8)
+        @DisplayName("delete non existing tag test")
+        void deleteNonExistingTagShouldTrowException(){
+            // GIVEN
+            int id = 999;
+            // WHEN
+
+            // THEN
+            assertThrows(EmptyResultDataAccessException.class, () -> tagDAOImpl.deleteTag(id));
+        }
     }
 }

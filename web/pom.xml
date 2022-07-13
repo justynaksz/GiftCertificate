@@ -14,19 +14,31 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <javax.version>4.0.1</javax.version>
+        <jackson.version>2.13.3</jackson.version>
     </properties>
 
     <dependencies>
+        <!-- JAVAX -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JACKSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
 
         <!-- INNER -->
         <dependency>
             <groupId>com.epam.esm</groupId>
-            <artifactId>database</artifactId>
+            <artifactId>service</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
-
-
-
 </project>
