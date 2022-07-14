@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Presents access to service operations with Tag.
+ * Presents access to service operations with {@code Tag}.
  */
 @Service
 public class TagService {
@@ -25,21 +25,21 @@ public class TagService {
 
 
     /**
-     * Finds tag of given id value.
+     * Finds {@code tag} of given id value.
      * @param  id                           int id value
      * @return tag                          tag of given id value
      * @throws IllegalArgumentException     in cas of invalid param
      */
     public TagDTO getById(int id) throws IllegalArgumentException {
         if (id <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Id value must be greater than 0.");
         }
         Tag tag = tagDAO.findById(id);
         return tagMapper.toDTO(tag);
     }
 
     /**
-     * Finds tags of given name.
+     * Finds all {@code tag} of given name.
      * @param  name      String name value
      * @return tags      tag of given name
      */
@@ -49,7 +49,7 @@ public class TagService {
     }
 
     /**
-     * Finds all tags.
+     * Finds all {@code tag}.
      * @return tags    list of all tags
      */
     public List<TagDTO> getAll() {
@@ -60,7 +60,7 @@ public class TagService {
     }
 
     /**
-     * Creates new tag entity.
+     * Creates new {@code tag} entity.
      * @param  tagDTO                      TagDTO instance to be inserted into database
      * @return tagDTO                      TagDTO instance with specified id value that has been inserted into database
      * @throws IllegalArgumentException    in case of null or empty tag name
@@ -68,12 +68,12 @@ public class TagService {
      */
     public TagDTO addTag(TagDTO tagDTO) throws IllegalArgumentException, AlreadyExistException {
         if (tagDTO.getName() == null || tagDTO.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("At least one of given parameter is null or empty.");
         }
         Tag tag = tagMapper.toModel(tagDTO);
         for (Tag tagInDb : tagDAO.findAll()) {
             if (tagInDb.getName().equals(tag.getName())) {
-                throw new AlreadyExistException();
+                throw new AlreadyExistException("Tag of given name already exists.");
             }
         }
         Tag tagInserted = tagDAO.createTag(tag);
@@ -81,7 +81,7 @@ public class TagService {
     }
 
     /**
-     * Deletes tag of given id value.
+     * Deletes {@code tag} of given id value.
      * @param id     int id value of tag instance to be removed
      */
     public void deleteTag(int id) {

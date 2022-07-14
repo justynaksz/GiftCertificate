@@ -176,7 +176,7 @@ class GiftCertificateDaoIT {
 
     @Test
     @Order(11)
-    @DisplayName("update - gift certificate is correctly updated")
+    @DisplayName("gift certificate is correctly updated")
     void sizeOfDbIsNotChangedAndGiftCertificateIsCorrectlyUpdated() {
         // GIVEN
         int initDatabaseSize = giftCertificateDAOImpl.findAll().size();
@@ -191,7 +191,7 @@ class GiftCertificateDaoIT {
 
     @Test
     @Order(12)
-    @DisplayName("update - update non existing gift certificate")
+    @DisplayName("update non existing gift certificate")
     void updateNonExistingGiftCertificateShouldTrowException() {
         // GIVEN
 
@@ -207,7 +207,7 @@ class GiftCertificateDaoIT {
 
     @Test
     @Order(13)
-    @DisplayName("delete - gift certificate is correctly removed")
+    @DisplayName("gift certificate is correctly removed")
     void countOfGiftCertificatesInDbHasShrunkAfterDeletingAndGiftCertificateIsNotPresentInDb() {
         // GIVEN
         int dbSize = giftCertificateDAOImpl.findAll().size();
@@ -222,7 +222,7 @@ class GiftCertificateDaoIT {
 
     @Test
     @Order(14)
-    @DisplayName("delete - delete non existing gift certificate test")
+    @DisplayName("delete non existing gift certificate test")
     void deleteNonExistingGiftCertificateShouldTrowException() {
         // GIVEN
         int id = 999;

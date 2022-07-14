@@ -2,18 +2,16 @@ package com.epam.esm.dao;
 
 import com.epam.esm.model.Tag;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * CRD operations for Tag entity.
+ * CRD operations for {@code Tag} entity.
  */
-@Repository
 public interface TagDAO {
 
     /**
-     * Finds tag of given id value.
+     * Finds {@code tag} of given id value.
      * @param  id                               int id value
      * @return tag                              tag of given id value
      * @throws EmptyResultDataAccessException   in case of tag not found
@@ -21,7 +19,7 @@ public interface TagDAO {
     Tag findById(int id) throws EmptyResultDataAccessException;
 
     /**
-     * Finds tags of given name.
+     * Finds all {@code tag} of given name.
      * @param  name                               String name value
      * @return tag                                of given name
      * @throws EmptyResultDataAccessException   in case of tag not found
@@ -29,20 +27,20 @@ public interface TagDAO {
     Tag findByName(String name) throws EmptyResultDataAccessException;
 
     /**
-     * Finds all tags.
+     * Finds all {@code tag}.
      * @return tags    list of all tags
      */
     List<Tag> findAll();
 
     /**
-     * Creates new tag entity.
+     * Creates new {@code tag} entity.
      * @param  tag    Tag instance to be inserted into database
      * @return tag    Tag instance with specified id value that has been inserted into database
      */
     Tag createTag(Tag tag);
 
     /**
-     * Deletes tag of given id value.
+     * Deletes {@code tag} of given id value.
      * @param id     int id value of tag instance to be removed
      * @throws EmptyResultDataAccessException   in case of tag not found
      */

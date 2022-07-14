@@ -7,8 +7,8 @@
         <groupId>com.epam.esm</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>web</artifactId>
 
     <properties>
@@ -19,26 +19,21 @@
     </properties>
 
     <dependencies>
-        <!-- JAVAX -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- JACKSON -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-        <!-- INNER -->
         <dependency>
             <groupId>com.epam.esm</groupId>
             <artifactId>service</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 </project>

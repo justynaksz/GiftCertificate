@@ -1,6 +1,6 @@
 package com.epam.esm.dto;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * DTO class fo GiftCertificate.
  */
-@Repository
+@Component
 public class GiftCertificateDTO {
 
     private int id;
@@ -74,5 +74,4 @@ public class GiftCertificateDTO {
     public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
-
 }

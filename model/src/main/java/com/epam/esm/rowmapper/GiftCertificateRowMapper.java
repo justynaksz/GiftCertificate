@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Maps each row to a result GiftCertificateTag object.
+ * Maps each row to a result {@code GiftCertificate} object.
  */
 @Component
 public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
@@ -17,7 +17,7 @@ public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
     /**
-     * Maps each row of data in the ResultSet to GiftCertificate object.
+     * Maps each row of data in the ResultSet to {@code GiftCertificate} object.
      * @param rs                 ResultSet to be mapped
      * @param rowNum             the number of current row
      * @return giftCertificate   GiftCertificate instance

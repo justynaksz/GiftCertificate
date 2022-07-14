@@ -5,12 +5,7 @@ package com.epam.esm.exceptions;
  */
 public class AlreadyExistException extends RuntimeException {
 
-    public AlreadyExistException() {
-        super();
-    }
-
-    @Override
-    public String getMessage() {
-        return "Element already exists in database.";
+    public AlreadyExistException(String message) {
+        super(message);
     }
 }

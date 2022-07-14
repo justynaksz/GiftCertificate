@@ -16,12 +16,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TagUnitTest {
+class TagServiceTest {
 
     @InjectMocks
     private TagService tagService;
@@ -90,7 +89,7 @@ class TagUnitTest {
 
     @Test
     @DisplayName("find all test")
-    void findAll() {
+    void findAllShouldReturnAllTagsFromDb() {
         // GIVEN
         int funId = 1;
         int photoId = 2;

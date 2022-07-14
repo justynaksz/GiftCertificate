@@ -5,13 +5,13 @@ import com.epam.esm.model.Tag;
 import org.springframework.stereotype.Component;
 
 /**
- * Mapper class to transform tag and tagDTO types.
+ * Mapper class to transform {@code Tag} and {@code TagDTO} types.
  */
 @Component
 public class TagMapper {
 
     /**
-     * Migrate tagDTO object to tag type.
+     * Migrate {@code TagDTO} object to {@code Tag} type.
      * @param tagDTO       object to transform into tag
      * @return tag         transformed tag
      */
@@ -23,7 +23,7 @@ public class TagMapper {
     }
 
     /**
-     * Migrate tag object to tagDTO type.
+     * Migrate {@code Tag} object to {@code TagDTO} type.
      * @param tag       object to transform into tagDTO
      * @return tagDTO   transformed tagDTO
      */

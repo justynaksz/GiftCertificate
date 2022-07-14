@@ -30,7 +30,7 @@ public class DispatcherServlet extends AbstractAnnotationConfigDispatcherServlet
     }
 
     /**
-     * Configures given servletContext.
+     * Configures given {@code servletContext}.
      * @param servletContext    to be configured for initializing in production environment
      */
     @Override

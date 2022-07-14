@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Presents access to service operations with Gift Certificate.
+ * Presents access to service operations with {@code GiftCertificate}.
  */
 @Service
 public class GiftCertificateService {
@@ -23,14 +23,14 @@ public class GiftCertificateService {
     private GiftCertificateMapper giftCertificateMapper;
 
     /**
-     * Finds giftCertificate of given id value.
-     * @param id                    int id value
-     * @return gift certificate      gift certificate of given id value
+     * Finds {@code giftCertificate} of given id value.
+     * @param id                            int id value
+     * @return gift certificate             gift certificate of given id value
      * @throws IllegalArgumentException     in cas of invalid param
      */
     public GiftCertificateDTO getById(int id) throws IllegalArgumentException {
         if (id <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Id value must be greater than 0.");
         }
         GiftCertificate giftCertificate = giftCertificateDAO.findById(id);
         return giftCertificateMapper.toDTO(giftCertificate);
@@ -38,7 +38,7 @@ public class GiftCertificateService {
     }
 
     /**
-     * Finds giftCertificates assigned to given tagName value.
+     * Finds {@code giftCertificate} assigned to given tagName value.
      * @param tagName               String value of tag's name
      * @return giftCertificates     list of giftCertificates assigned to given tag's name
      */
@@ -50,7 +50,7 @@ public class GiftCertificateService {
     }
 
     /**
-     * Finds giftCertificates by part of name or description.
+     * Finds all {@code giftCertificate} by part of name or description.
      * @param key                  String value of desired name/description word
      * @return giftCertificates    list of giftCertificates containing key word in their name or description
      */
@@ -62,7 +62,7 @@ public class GiftCertificateService {
     }
 
     /**
-     * Finds all giftCertificates.
+     * Finds all {@code giftCertificate}.
      * @return lists of giftCertificates    all giftCertificates
      */
     public List<GiftCertificateDTO> getAll() {
@@ -73,7 +73,7 @@ public class GiftCertificateService {
     }
 
     /**
-     * Sorts giftCertificates by ascending order.
+     * Sorts all {@code giftCertificate} by ascending order.
      * @return giftCertificates in ascending order
      */
     public List<GiftCertificateDTO> sortAscending() {
@@ -84,7 +84,7 @@ public class GiftCertificateService {
     }
 
     /**
-     * Sorts giftCertificates by descending order.
+     * Sorts all {@code giftCertificate} by descending order.
      * @return giftCertificates in descending order
      */
     public List<GiftCertificateDTO> sortDescending() {
@@ -95,7 +95,7 @@ public class GiftCertificateService {
     }
 
     /**
-     * Creates new giftCertificate entity.
+     * Creates new {@code giftCertificate} entity.
      * @param giftCertificateDTO            GiftCertificate instance to be inserted into database
      * @return giftCertificate              GiftCertificate instance with specified id value that has been inserted into database
      * @throws IllegalArgumentException     in case of invalid param
@@ -104,7 +104,7 @@ public class GiftCertificateService {
         if (giftCertificateDTO.getName() == null || giftCertificateDTO.getName().trim().isEmpty()
         || giftCertificateDTO.getDescription() == null || giftCertificateDTO.getDescription().trim().isEmpty()
         || giftCertificateDTO.getPrice() == 0 || giftCertificateDTO.getDuration() == 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("At least one of given parameter is null or empty.");
         }
         GiftCertificate giftCertificate = giftCertificateMapper.toModel(giftCertificateDTO);
         GiftCertificate giftCertificateInserted = giftCertificateDAO.createGiftCertificate(giftCertificate);
@@ -112,7 +112,7 @@ public class GiftCertificateService {
     }
 
     /**
-     * Updates giftCertificate contained in database.
+     * Updates {@code giftCertificate} contained in database.
      * @param giftCertificateDTO    GiftCertificate instance to be updated in database
      */
     public void updateGiftCertificate(GiftCertificateDTO giftCertificateDTO) {
@@ -121,7 +121,7 @@ public class GiftCertificateService {
     }
 
     /**
-     * Deletes giftCertificate of given id value.
+     * Deletes {@code giftCertificate} of given id value.
      * @param id    int id value of giftCertificate instance to be removed
      */
     public void deleteGiftCertificate(int id) {

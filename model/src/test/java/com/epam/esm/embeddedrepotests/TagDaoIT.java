@@ -98,7 +98,6 @@ class TagDaoIT {
 
         // WHEN
         List<Tag> tagsInDb = tagDAOImpl.findAll();
-        System.out.println(tagsInDb);
         // THEN
         assertEquals(6, tagsInDb.size());
     }

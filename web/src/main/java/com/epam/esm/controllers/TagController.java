@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Rest controller for tag objects.
+ * Rest controller for {@code tag}  objects.
  */
 @RestController
 @RequestMapping("/tags")
@@ -24,7 +24,7 @@ public class TagController {
     TagDTO tagDTO;
 
     /**
-     * Finds tag with requested id.
+     * Finds {@code tag}  with requested id.
      * Handles GET http-request.
      * @param id        requested id
      * @return TagDTO   of given id
@@ -40,7 +40,7 @@ public class TagController {
     }
 
     /**
-     * Gets all tags.
+     * Gets all {@code tag}.
      * Handles GET http-request.
      * @return tags   list of all tags in database
      */
@@ -50,7 +50,7 @@ public class TagController {
     }
 
     /**
-     * Finds tag with requested name.
+     * Finds {@code tag}  with requested name.
      * Handles GET http-request.
      * @param name       requested id
      * @return TagDTO    of given name
@@ -66,7 +66,7 @@ public class TagController {
     }
 
     /**
-     * Creates new tag.
+     * Creates new {@code tag}.
      * Handles POST http-request.
      * @param  tagDTO        tag to be inserted into database
      * @return TagDTO        tag that has been inserted into database
@@ -83,7 +83,7 @@ public class TagController {
     }
 
     /**
-     * Deletes tag with requested id.
+     * Deletes {@code tag} with requested id.
      * Handles DELETE http-request.
      * @param id        requested id
      */
@@ -95,5 +95,4 @@ public class TagController {
             logger.error(exception.getMessage());
         }
     }
-
 }

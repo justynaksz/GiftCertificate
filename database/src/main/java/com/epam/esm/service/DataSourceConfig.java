@@ -82,7 +82,7 @@ public class DataSourceConfig {
     }
 
     /**
-     * Generates jdbc template with given data source.
+     * Generates {@code jdbcTemplate} with given data source.
      * @return jdbcTemplate
      */
     @Bean
@@ -91,7 +91,7 @@ public class DataSourceConfig {
     }
 
     /**
-     * Generates namedParameterJdbcTemplate with given data source.
+     * Generates {@code namedParameterJdbcTemplate} with given data source.
      * @return namedParameterJdbcTemplate
      */
     @Bean

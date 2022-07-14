@@ -1,11 +1,11 @@
 package com.epam.esm.dto;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 /**
  * DTO class fo Tag.
  */
-@Repository
+@Component
 public class TagDTO {
 
     private int id;

@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
-* Maps each row to a result Tag object.
+* Maps each row to a result {@code Tag} object.
 */
 @Component
 public class TagRowMapper implements RowMapper<Tag> {
@@ -17,7 +17,7 @@ public class TagRowMapper implements RowMapper<Tag> {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
     /**
-     * Maps each row of data in the ResultSet to Tag object.
+     * Maps each row of data in the ResultSet to {@code Tag} object.
      * @param rs                ResultSet to be mapped
      * @param rowNum            the number of current row
      * @return tag              Tag instance
@@ -34,4 +34,3 @@ public class TagRowMapper implements RowMapper<Tag> {
         return tag;
     }
 }
-

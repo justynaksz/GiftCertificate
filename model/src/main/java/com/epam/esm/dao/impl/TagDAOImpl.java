@@ -5,6 +5,7 @@ import com.epam.esm.model.Tag;
 import com.epam.esm.rowmapper.TagRowMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,9 +18,10 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
- * Implements CRD operations for Tag entity.
+ * Implements CRD operations for {@code Tag} entity.
  */
 @Repository
 public class TagDAOImpl implements TagDAO {
@@ -30,25 +32,28 @@ public class TagDAOImpl implements TagDAO {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final Logger logger = Logger.getLogger(getClass().getName());
-
+    private static final String message = "No tag of requested id has been found.";
+    private static final String selectMessage = "Selecting tag has failed.";
     /**
-     * @See com.epam.esm.dao.TagDAO
+     * {@inheritDoc}
      */
     @Override
     public Tag findById(int id) throws EmptyResultDataAccessException {
         String query = "SELECT id, name FROM tag WHERE id = ?";
-        Tag tag;
+        Tag tag = null;
         try {
             tag = jdbcTemplate.queryForObject(query, new TagRowMapper(), id);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error("Selecting tag has failed");
-            throw new EmptyResultDataAccessException(0);
+            logger.error(message);
+            throw new EmptyResultDataAccessException(message, 0);
+        } catch (DataAccessException exception) {
+            logger.error(selectMessage);
         }
         return tag;
     }
 
     /**
-     * @See com.epam.esm.dao.TagDAO
+     * {@inheritDoc}
      */
     @Override
     public Tag findByName(String name) throws EmptyResultDataAccessException {
@@ -56,15 +61,17 @@ public class TagDAOImpl implements TagDAO {
         Tag tag = null;
         try {
             tag = jdbcTemplate.queryForObject(query, new TagRowMapper(), name);
-        } catch (Exception e) {
-            logger.error("Selecting tag has failed");
-            throw new EmptyResultDataAccessException(0);
+        } catch (EmptyResultDataAccessException exception) {
+            logger.error(message);
+            throw new EmptyResultDataAccessException(message, 0);
+        } catch (DataAccessException exception) {
+            logger.error(selectMessage);
         }
         return tag;
     }
 
     /**
-     * @See com.epam.esm.dao.TagDAO
+     * {@inheritDoc}
      */
     @Override
     public List<Tag> findAll() {
@@ -72,14 +79,14 @@ public class TagDAOImpl implements TagDAO {
         List<Tag> tags = null;
         try {
             tags = jdbcTemplate.query(query, new TagRowMapper());
-        } catch (Exception e) {
+        } catch (DataAccessException exception) {
             logger.error("Finding all tags has failed");
         }
         return tags;
     }
 
     /**
-     * @See com.epam.esm.dao.TagDAO
+     * {@inheritDoc}
      */
     @Override
     public Tag createTag(Tag tag) {
@@ -90,15 +97,15 @@ public class TagDAOImpl implements TagDAO {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             SqlParameterSource parameterSource = new MapSqlParameterSource(map);
             namedParameterJdbcTemplate.update(query, parameterSource, keyHolder, new String[] { "id" });
-            int tagId = keyHolder.getKey().intValue();
+            int tagId = Objects.requireNonNull(keyHolder.getKey()).intValue();
             tag.setId(tagId);
-        } catch (Exception e) {
-            logger.error("Creating tag of name \"" + tag.getName() + "\" has failed");
+        } catch (DataAccessException exception) {
+            logger.error("Creating tag has failed");
         } return tag;
     }
 
     /**
-     * @See com.epam.esm.dao.TagDAO
+     * {@inheritDoc}
      */
     @Override
     public void deleteTag(int id) throws EmptyResultDataAccessException {
@@ -107,8 +114,10 @@ public class TagDAOImpl implements TagDAO {
             findById(id);
             jdbcTemplate.update(query, id);
         } catch (EmptyResultDataAccessException exception) {
+            logger.error(message);
+            throw new EmptyResultDataAccessException(message, 0);
+        } catch (DataAccessException exception) {
             logger.error("Deleting tag has failed");
-            throw new EmptyResultDataAccessException(0);
         }
     }
 }

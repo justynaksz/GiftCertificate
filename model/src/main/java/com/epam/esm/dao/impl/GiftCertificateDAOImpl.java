@@ -5,6 +5,7 @@ import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.rowmapper.GiftCertificateRowMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,14 +16,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
- * Implements CRUD operations for GiftCertificate entity.
+ * Implements CRUD operations for {@code GiftCertificate} entity.
  */
 @Repository
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
@@ -33,25 +31,28 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final Logger logger = Logger.getLogger(getClass().getName());
+    private static final String message = "No tag of requested id has been found.";
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public GiftCertificate findById(int id) throws EmptyResultDataAccessException {
-        GiftCertificate giftCertificate;
+        GiftCertificate giftCertificate = null;
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate WHERE id = ?";
         try {
             giftCertificate = jdbcTemplate.queryForObject(query, new GiftCertificateRowMapper(), id);
         } catch (EmptyResultDataAccessException exception) {
+            logger.error(message);
+            throw new EmptyResultDataAccessException(message, 0);
+        } catch (DataAccessException exception) {
             logger.error("Selecting giftCertificate has failed");
-            throw new EmptyResultDataAccessException(0);
         }
        return giftCertificate;
     }
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public List<GiftCertificate> findByTag(String tagName) {
@@ -63,14 +64,14 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
                 "WHERE UPPER (tag.name) LIKE UPPER ( ? )";
         try {
             giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper(), tagName);
-        } catch (Exception exception) {
+        } catch (DataAccessException exception) {
             logger.error("Finding giftCertificate by tag name has failed");
         }
         return giftCertificates;
     }
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public List<GiftCertificate> findByNameOrDescription(String key) {
@@ -78,14 +79,14 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate WHERE UPPER (name) LIKE UPPER ( ? ) OR UPPER (description) LIKE UPPER ( ? )";
         try {
             giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper(), "%" + key + "%", "%" + key + "%");
-        } catch (Exception exception) {
+        } catch (DataAccessException exception) {
             logger.error("Finding giftCertificate by key word has failed");
         }
             return giftCertificates;
     }
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public List<GiftCertificate> findAll() {
@@ -93,14 +94,14 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate";
         try {
             giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
-        } catch (Exception exception) {
+        } catch (DataAccessException exception) {
             logger.error("Finding all giftCertificates has failed");
         }
         return giftCertificates;
     }
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public List<GiftCertificate> sortAscending() {
@@ -108,14 +109,14 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate ORDER BY name ASC";
         try {
             giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
-        } catch (Exception exception) {
+        } catch (DataAccessException exception) {
             logger.error("Sorting giftCertificates in ascending order has failed.");
         }
         return giftCertificates;
     }
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public List<GiftCertificate> sortDescending() {
@@ -123,21 +124,20 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate ORDER BY name DESC";
         try {
             giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
-        } catch (Exception exception) {
+        } catch (DataAccessException exception) {
             logger.error("Sorting giftCertificates in descending order has failed.");
         }
         return giftCertificates;
     }
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public GiftCertificate createGiftCertificate(GiftCertificate giftCertificate) {
         String query = "INSERT INTO gift_certificate (name, description, price, duration, create_date, last_update_date) " +
                 "VALUES (:name, :description, :price, :duration, :create_date, :last_update_date);";
         Map<String, Object> map = new HashMap<>();
-
         try {
             giftCertificate.setCreateDate(LocalDateTime.now());
             map.put("name", giftCertificate.getName());
@@ -150,16 +150,16 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             SqlParameterSource parameterSource = new MapSqlParameterSource(map);
             namedParameterJdbcTemplate.update(query, parameterSource, keyHolder, new String[]{"id"});
-            int id = keyHolder.getKey().intValue();
+            int id = Objects.requireNonNull(keyHolder.getKey()).intValue();
             giftCertificate.setId(id);
-        } catch (Exception exception) {
+        } catch (DataAccessException exception) {
             logger.error( "Creating tag of name has failed");
         }
         return giftCertificate;
     }
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public void updateGiftCertificate(GiftCertificate giftCertificate) throws EmptyResultDataAccessException {
@@ -177,14 +177,16 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             map.put("last_update_date", giftCertificate.getLastUpdateDate());
             map.put("id", giftCertificate.getId());
             namedParameterJdbcTemplate.update(query, map);
-        } catch (Exception exception) {
-            logger.error("Updating giftCertificate of id has failed");
-            throw new EmptyResultDataAccessException(0);
+        } catch (EmptyResultDataAccessException exception) {
+            logger.error(message);
+            throw new EmptyResultDataAccessException(message, 0);
+        } catch (DataAccessException exception) {
+            logger.error("Updating giftCertificate has failed");
         }
     }
 
     /**
-     * @See com.epam.esm.dao.GiftCertificateDAO
+     * {@inheritDoc}
      */
     @Override
     public void deleteGiftCertificate(int id) throws EmptyResultDataAccessException {
@@ -193,8 +195,10 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             findById(id);
             jdbcTemplate.update(query, id);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error("Deleting giftCertificate of id has failed");
-            throw new EmptyResultDataAccessException(0);
+            logger.error(message);
+            throw new EmptyResultDataAccessException(message, 0);
+        } catch (DataAccessException exception) {
+            logger.error("Deleting giftCertificate has failed");
         }
     }
 }
