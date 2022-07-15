@@ -31,7 +31,7 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private static final String message = "No tag of requested id has been found.";
+    private static final String MESSAGE = "No tag of requested id has been found.";
 
     /**
      * {@inheritDoc}
@@ -43,8 +43,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
         try {
             giftCertificate = jdbcTemplate.queryForObject(query, new GiftCertificateRowMapper(), id);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(message);
-            throw new EmptyResultDataAccessException(message, 0);
+            logger.error(MESSAGE);
+            throw new EmptyResultDataAccessException(MESSAGE, 0);
         } catch (DataAccessException exception) {
             logger.error("Selecting giftCertificate has failed");
         }
@@ -178,8 +178,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             map.put("id", giftCertificate.getId());
             namedParameterJdbcTemplate.update(query, map);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(message);
-            throw new EmptyResultDataAccessException(message, 0);
+            logger.error(MESSAGE);
+            throw new EmptyResultDataAccessException(MESSAGE, 0);
         } catch (DataAccessException exception) {
             logger.error("Updating giftCertificate has failed");
         }
@@ -195,8 +195,8 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             findById(id);
             jdbcTemplate.update(query, id);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(message);
-            throw new EmptyResultDataAccessException(message, 0);
+            logger.error(MESSAGE);
+            throw new EmptyResultDataAccessException(MESSAGE, 0);
         } catch (DataAccessException exception) {
             logger.error("Deleting giftCertificate has failed");
         }

@@ -32,8 +32,8 @@ public class TagDAOImpl implements TagDAO {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private static final String message = "No tag of requested id has been found.";
-    private static final String selectMessage = "Selecting tag has failed.";
+    private static final String MESSAGE = "No tag of requested id has been found.";
+    private static final String SELECT_MESSAGE = "Selecting tag has failed.";
     /**
      * {@inheritDoc}
      */
@@ -44,10 +44,10 @@ public class TagDAOImpl implements TagDAO {
         try {
             tag = jdbcTemplate.queryForObject(query, new TagRowMapper(), id);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(message);
-            throw new EmptyResultDataAccessException(message, 0);
+            logger.error(MESSAGE);
+            throw new EmptyResultDataAccessException(MESSAGE, 0);
         } catch (DataAccessException exception) {
-            logger.error(selectMessage);
+            logger.error(SELECT_MESSAGE);
         }
         return tag;
     }
@@ -62,10 +62,10 @@ public class TagDAOImpl implements TagDAO {
         try {
             tag = jdbcTemplate.queryForObject(query, new TagRowMapper(), name);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(message);
-            throw new EmptyResultDataAccessException(message, 0);
+            logger.error(MESSAGE);
+            throw new EmptyResultDataAccessException(MESSAGE, 0);
         } catch (DataAccessException exception) {
-            logger.error(selectMessage);
+            logger.error(SELECT_MESSAGE);
         }
         return tag;
     }
@@ -114,8 +114,8 @@ public class TagDAOImpl implements TagDAO {
             findById(id);
             jdbcTemplate.update(query, id);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(message);
-            throw new EmptyResultDataAccessException(message, 0);
+            logger.error(MESSAGE);
+            throw new EmptyResultDataAccessException(MESSAGE, 0);
         } catch (DataAccessException exception) {
             logger.error("Deleting tag has failed");
         }
