@@ -17,11 +17,14 @@ public class TagController {
 
     private final Logger logger = Logger.getLogger(getClass().getName());
 
-    @Autowired
     TagService tagService;
+    TagDTO tagDTO;
 
     @Autowired
-    TagDTO tagDTO;
+    public TagController(TagService tagService, TagDTO tagDTO) {
+        this.tagService = tagService;
+        this.tagDTO = tagDTO;
+    }
 
     /**
      * Finds {@code tag}  with requested id.

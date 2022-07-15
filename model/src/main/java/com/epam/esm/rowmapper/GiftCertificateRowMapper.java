@@ -38,7 +38,7 @@ public class GiftCertificateRowMapper implements RowMapper<GiftCertificate> {
                 giftCertificate.setLastUpdateDate(null);
             }
         } catch (SQLException exception) {
-            logger.error(exception.toString());
+            logger.error(exception.getMessage());
         }
         return giftCertificate;
     }

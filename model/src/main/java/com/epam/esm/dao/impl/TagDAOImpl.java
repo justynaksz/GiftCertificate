@@ -26,14 +26,18 @@ import java.util.Objects;
 @Repository
 public class TagDAOImpl implements TagDAO {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @Autowired
+    public TagDAOImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private static final String MESSAGE = "No tag of requested id has been found.";
-    private static final String SELECT_MESSAGE = "Selecting tag has failed.";
+    private static final String EXCEPTION_MESSAGE = "No tag of requested id has been found.";
+    private static final String SELECT_EXCEPTION_MESSAGE = "Selecting tag has failed.";
     /**
      * {@inheritDoc}
      */
@@ -44,10 +48,10 @@ public class TagDAOImpl implements TagDAO {
         try {
             tag = jdbcTemplate.queryForObject(query, new TagRowMapper(), id);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(MESSAGE);
-            throw new EmptyResultDataAccessException(MESSAGE, 0);
+            logger.error(EXCEPTION_MESSAGE);
+            throw new EmptyResultDataAccessException(EXCEPTION_MESSAGE, 0);
         } catch (DataAccessException exception) {
-            logger.error(SELECT_MESSAGE);
+            logger.error(SELECT_EXCEPTION_MESSAGE);
         }
         return tag;
     }
@@ -62,10 +66,10 @@ public class TagDAOImpl implements TagDAO {
         try {
             tag = jdbcTemplate.queryForObject(query, new TagRowMapper(), name);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(MESSAGE);
-            throw new EmptyResultDataAccessException(MESSAGE, 0);
+            logger.error(EXCEPTION_MESSAGE);
+            throw new EmptyResultDataAccessException(EXCEPTION_MESSAGE, 0);
         } catch (DataAccessException exception) {
-            logger.error(SELECT_MESSAGE);
+            logger.error(SELECT_EXCEPTION_MESSAGE);
         }
         return tag;
     }
@@ -114,8 +118,8 @@ public class TagDAOImpl implements TagDAO {
             findById(id);
             jdbcTemplate.update(query, id);
         } catch (EmptyResultDataAccessException exception) {
-            logger.error(MESSAGE);
-            throw new EmptyResultDataAccessException(MESSAGE, 0);
+            logger.error(EXCEPTION_MESSAGE);
+            throw new EmptyResultDataAccessException(EXCEPTION_MESSAGE, 0);
         } catch (DataAccessException exception) {
             logger.error("Deleting tag has failed");
         }

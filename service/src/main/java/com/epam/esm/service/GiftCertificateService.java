@@ -16,17 +16,20 @@ import java.util.List;
 @Service
 public class GiftCertificateService {
 
-    @Autowired
     private GiftCertificateDAO giftCertificateDAO;
+    private GiftCertificateMapper giftCertificateMapper;
 
     @Autowired
-    private GiftCertificateMapper giftCertificateMapper;
+    public GiftCertificateService(GiftCertificateDAO giftCertificateDAO, GiftCertificateMapper giftCertificateMapper) {
+        this.giftCertificateDAO = giftCertificateDAO;
+        this.giftCertificateMapper = giftCertificateMapper;
+    }
 
     /**
      * Finds {@code giftCertificate} of given id value.
      * @param id                            int id value
      * @return gift certificate             gift certificate of given id value
-     * @throws IllegalArgumentException     in cas of invalid param
+     * @throws IllegalArgumentException     in case of invalid param
      */
     public GiftCertificateDTO getById(int id) throws IllegalArgumentException {
         if (id <= 0) {

@@ -17,12 +17,14 @@ import java.util.List;
 @Service
 public class TagService {
 
-    @Autowired
     private TagDAOImpl tagDAO;
-
-    @Autowired
     private TagMapper tagMapper;
 
+    @Autowired
+    public TagService(TagDAOImpl tagDAO, TagMapper tagMapper) {
+        this.tagDAO = tagDAO;
+        this.tagMapper = tagMapper;
+    }
 
     /**
      * Finds {@code tag} of given id value.

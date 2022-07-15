@@ -23,7 +23,6 @@ import javax.sql.DataSource;
 @PropertySource(value={"classpath:jdbc.properties"})
 public class DataSourceConfig {
 
-    @Autowired
     private final Environment environment;
 
     @Autowired
