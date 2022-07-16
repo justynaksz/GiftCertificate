@@ -25,17 +25,16 @@ import java.util.*;
 @Repository
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
-    private JdbcTemplate jdbcTemplate;
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private static final String EXCEPTION_MESSAGE = "No tag of requested id has been found.";
+    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     public GiftCertificateDAOImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
-
-    private final Logger logger = Logger.getLogger(getClass().getName());
-    private static final String EXCEPTION_MESSAGE = "No tag of requested id has been found.";
 
     /**
      * {@inheritDoc}

@@ -16,8 +16,8 @@ import java.util.List;
 @Service
 public class GiftCertificateService {
 
-    private GiftCertificateDAO giftCertificateDAO;
-    private GiftCertificateMapper giftCertificateMapper;
+    private final GiftCertificateDAO giftCertificateDAO;
+    private final GiftCertificateMapper giftCertificateMapper;
 
     @Autowired
     public GiftCertificateService(GiftCertificateDAO giftCertificateDAO, GiftCertificateMapper giftCertificateMapper) {

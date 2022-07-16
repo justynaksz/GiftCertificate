@@ -26,8 +26,11 @@ import java.util.Objects;
 @Repository
 public class TagDAOImpl implements TagDAO {
 
-    private JdbcTemplate jdbcTemplate;
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private static final String EXCEPTION_MESSAGE = "No tag of requested id has been found.";
+    private static final String SELECT_EXCEPTION_MESSAGE = "Selecting tag has failed.";
+    private final Logger logger = Logger.getLogger(getClass().getName());
+    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     public TagDAOImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -35,9 +38,6 @@ public class TagDAOImpl implements TagDAO {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
-    private static final String EXCEPTION_MESSAGE = "No tag of requested id has been found.";
-    private static final String SELECT_EXCEPTION_MESSAGE = "Selecting tag has failed.";
     /**
      * {@inheritDoc}
      */

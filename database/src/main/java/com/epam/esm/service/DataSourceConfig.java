@@ -70,7 +70,6 @@ public class DataSourceConfig {
         return dataBase;
     }
 
-
     /**
      * Generates the context for the application.
      * @return application context

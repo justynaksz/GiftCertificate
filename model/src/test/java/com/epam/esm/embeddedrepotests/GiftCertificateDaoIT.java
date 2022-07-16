@@ -3,7 +3,14 @@ package com.epam.esm.embeddedrepotests;
 import com.epam.esm.dao.impl.GiftCertificateDAOImpl;
 import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.service.DataSourceConfig;
-import org.junit.jupiter.api.*;
+
+import org.assertj.core.api.SoftAssertions;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -35,6 +42,7 @@ class GiftCertificateDaoIT {
 
     List<GiftCertificate> giftCertificatesInDb = new ArrayList<>();
 
+    SoftAssertions softAssertions = new SoftAssertions();
 
     @Test
     @Order(1)
@@ -136,9 +144,10 @@ class GiftCertificateDaoIT {
         // WHEN
         giftCertificatesInDb = giftCertificateDAOImpl.sortAscending();
         // THEN
-        assertEquals(3, giftCertificatesInDb.size());
-        assertEquals("Gift card to cafe", giftCertificatesInDb.get(2).getDescription());
-        assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(0).getDescription());
+        softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
+        softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(2).getDescription());
+        softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(0).getDescription());
+        softAssertions.assertAll();
     }
 
     @Test
@@ -150,9 +159,10 @@ class GiftCertificateDaoIT {
         // WHEN
         giftCertificatesInDb = giftCertificateDAOImpl.sortDescending();
         // THEN
-        assertEquals(3, giftCertificatesInDb.size());
-        assertEquals("Gift card to cafe", giftCertificatesInDb.get(0).getDescription());
-        assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(2).getDescription());
+        softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
+        softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(0).getDescription());
+        softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(2).getDescription());
+        softAssertions.assertAll();
     }
 
     @Test
@@ -169,14 +179,15 @@ class GiftCertificateDaoIT {
         // WHEN
         giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
         // THEN
-        assertTrue(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted));
-        assertEquals(giftCertificate, giftCertificateInserted);
-        assertEquals(initialDbSize + expectedDBSizeChange, giftCertificateDAOImpl.findAll().size());
+        softAssertions.assertThat(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted)).isTrue();
+        softAssertions.assertThat(giftCertificate).isEqualTo(giftCertificateInserted);
+        softAssertions.assertThat(initialDbSize + expectedDBSizeChange).isEqualTo(giftCertificateDAOImpl.findAll().size());
+        softAssertions.assertAll();
     }
 
     @Test
     @Order(11)
-    @DisplayName("gift certificate is correctly updated")
+    @DisplayName("update - gift certificate is correctly updated")
     void sizeOfDbIsNotChangedAndGiftCertificateIsCorrectlyUpdated() {
         // GIVEN
         int initDatabaseSize = giftCertificateDAOImpl.findAll().size();
@@ -185,13 +196,14 @@ class GiftCertificateDaoIT {
         // WHEN
         giftCertificateDAOImpl.updateGiftCertificate(giftCertificate);
         // THEN
-        assertEquals(initDatabaseSize, giftCertificateDAOImpl.findAll().size());
-        assertEquals(giftCertificate, giftCertificateDAOImpl.findById(1));
+        softAssertions.assertThat(initDatabaseSize).isEqualTo(giftCertificateDAOImpl.findAll().size());
+        softAssertions.assertThat(giftCertificate).isEqualTo(giftCertificateDAOImpl.findById(1));
+        softAssertions.assertAll();
     }
 
     @Test
     @Order(12)
-    @DisplayName("update non existing gift certificate")
+    @DisplayName("update - update non existing gift certificate")
     void updateNonExistingGiftCertificateShouldTrowException() {
         // GIVEN
 
@@ -207,28 +219,31 @@ class GiftCertificateDaoIT {
 
     @Test
     @Order(13)
-    @DisplayName("gift certificate is correctly removed")
+    @DisplayName("delete - gift certificate is correctly removed")
     void countOfGiftCertificatesInDbHasShrunkAfterDeletingAndGiftCertificateIsNotPresentInDb() {
         // GIVEN
         int dbSize = giftCertificateDAOImpl.findAll().size();
         int expectedDBSizeChange = 1;
+        int requestedId = 1;
         // WHEN
-        giftCertificate = giftCertificateDAOImpl.findById(1);
-        giftCertificateDAOImpl.deleteGiftCertificate(1);
+        giftCertificate = giftCertificateDAOImpl.findById(requestedId);
+        giftCertificateDAOImpl.deleteGiftCertificate(requestedId);
         // THEN
-        assertEquals(dbSize - expectedDBSizeChange, giftCertificateDAOImpl.findAll().size());
-        assertFalse(giftCertificateDAOImpl.findAll().contains(giftCertificate));
+        softAssertions.assertThat(dbSize - expectedDBSizeChange).isEqualTo(giftCertificateDAOImpl.findAll().size());
+        softAssertions.assertThat(giftCertificateDAOImpl.findAll().contains(giftCertificate)).isFalse();
+        softAssertions.assertAll();
+
     }
 
     @Test
     @Order(14)
-    @DisplayName("delete non existing gift certificate test")
+    @DisplayName("delete - delete non existing gift certificate test")
     void deleteNonExistingGiftCertificateShouldTrowException() {
         // GIVEN
-        int id = 999;
+        int requestedId = 999;
         // WHEN
 
         // THEN
-        assertThrows(EmptyResultDataAccessException.class, () -> giftCertificateDAOImpl.deleteGiftCertificate(id));
+        assertThrows(EmptyResultDataAccessException.class, () -> giftCertificateDAOImpl.deleteGiftCertificate(requestedId));
     }
 }

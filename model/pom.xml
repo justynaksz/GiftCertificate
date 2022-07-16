@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>model</artifactId>
 
     <parent>
         <artifactId>GiftCertificate</artifactId>
@@ -11,11 +10,14 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <artifactId>model</artifactId>
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <junit.version>5.9.0-M1</junit.version>
         <dbh2.version>2.1.214</dbh2.version>
+        <assertj.version>3.23.1</assertj.version>
     </properties>
 
     <dependencies>
@@ -34,6 +36,12 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>${dbh2.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

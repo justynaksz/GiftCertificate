@@ -17,8 +17,8 @@ import java.util.List;
 @Service
 public class TagService {
 
-    private TagDAOImpl tagDAO;
-    private TagMapper tagMapper;
+    private final TagDAOImpl tagDAO;
+    private final TagMapper tagMapper;
 
     @Autowired
     public TagService(TagDAOImpl tagDAO, TagMapper tagMapper) {

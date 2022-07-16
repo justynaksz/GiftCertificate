@@ -161,7 +161,7 @@ class TagServiceTest {
     @DisplayName("create tag tests")
     class createTagTests {
         @Test
-        @DisplayName("tag id correctly inserted")
+        @DisplayName("tag correctly inserted")
         void createTagShouldInsertNewTagAndReturnInsertedTag() {
             // GIVEN
             Tag tagToBeInserted = new Tag();
@@ -221,7 +221,6 @@ class TagServiceTest {
             invalidTag.setName(name);
             // THEN
             assertThrows(IllegalArgumentException.class, () -> tagService.addTag(invalidTag));
-
         }
     }
 

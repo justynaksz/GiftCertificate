@@ -3,7 +3,13 @@ package com.epam.esm.embeddedrepotests;
 import com.epam.esm.dao.impl.TagDAOImpl;
 import com.epam.esm.model.Tag;
 import com.epam.esm.service.DataSourceConfig;
-import org.junit.jupiter.api.*;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -30,6 +36,8 @@ class TagDaoIT {
     Tag tagInserted;
     @Autowired
     Tag tagRetrieved;
+
+    SoftAssertions softAssertions = new SoftAssertions();
 
     @Nested
     @DisplayName("find by id tests")
@@ -111,8 +119,9 @@ class TagDaoIT {
         // WHEN
         tagInserted = tagDAOImpl.createTag(tag);
         // THEN
-        assertTrue(tagDAOImpl.findAll().contains(tagInserted));
-        assertEquals(7, tagDAOImpl.findAll().size());
+        softAssertions.assertThat(tagDAOImpl.findAll().contains(tagInserted)).isTrue();
+        softAssertions.assertThat(7).isEqualTo(tagDAOImpl.findAll().size());
+        softAssertions.assertAll();
     }
 
     @Nested
@@ -131,8 +140,10 @@ class TagDaoIT {
             // WHEN
             tagDAOImpl.deleteTag(id);
             // THEN
-            assertEquals(dbSize-expectedDBSizeChange, tagDAOImpl.findAll().size());
-            assertFalse(tagDAOImpl.findAll().contains(tag));}
+            softAssertions.assertThat(dbSize-expectedDBSizeChange).isEqualTo(tagDAOImpl.findAll().size());
+            softAssertions.assertThat(tagDAOImpl.findAll().contains(tag)).isFalse();
+            softAssertions.assertAll();
+        }
 
         @Test
         @Order(8)
