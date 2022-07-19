@@ -13,8 +13,8 @@
     <artifactId>service</artifactId>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <javaxservlet.version>4.0.1</javaxservlet.version>
         <javaxvalidation.version>2.0.1.Final</javaxvalidation.version>
         <junit.version>5.9.0-M1</junit.version>
