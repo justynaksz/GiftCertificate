@@ -1,52 +1,61 @@
 package com.epam.esm.embeddedrepotests;
 
 import com.epam.esm.dao.impl.GiftCertificateDAOImpl;
-import com.epam.esm.embeddeddbconfig.EmbeddedDbConfig;
 import com.epam.esm.model.GiftCertificate;
-import org.junit.jupiter.api.*;
+import com.epam.esm.service.DataSourceConfig;
+
+import org.assertj.core.api.SoftAssertions;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import static org.junit.jupiter.api.Assertions.*;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Tests CRUD operations on GiftCertificateTag entity.
- */
+import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {EmbeddedDbConfig.class}, loader = AnnotationConfigContextLoader.class)
+@ContextConfiguration(classes = {DataSourceConfig.class}, loader = AnnotationConfigContextLoader.class)
 @ActiveProfiles("dev")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class GiftCertificateDaoIT {
+class GiftCertificateDaoIT {
 
     @Autowired
-    GiftCertificateDAOImpl giftCertificateDAOImpl = new GiftCertificateDAOImpl();
-
+    GiftCertificateDAOImpl giftCertificateDAOImpl;
+    @Autowired
     GiftCertificate giftCertificate;
+    @Autowired
     GiftCertificate giftCertificateInserted;
+    @Autowired
     GiftCertificate giftCertificateRetrieved;
-    List <GiftCertificate> giftCertificatesInDb = new ArrayList<>();
 
-    /**
-     * Tests findById method, which should return giftCertificate with given id (unique).
-     * Checks if retrieved giftCertificate is correct.
-     */
+    List<GiftCertificate> giftCertificatesInDb = new ArrayList<>();
+
+    SoftAssertions softAssertions = new SoftAssertions();
+
     @Test
     @Order(1)
-    @DisplayName("find gift certificate by id test")
-    public void shouldReturnSpecifiedGiftCertificate() {
+    @DisplayName("find by id - gift certificate is correctly found")
+    void findByIdShouldReturnCorrectGiftCertificate() {
         // GIVEN
 
         // WHEN
         giftCertificateRetrieved = giftCertificateDAOImpl.findById(1);
-        giftCertificate = new GiftCertificate("H&M gift card", "Gift card to the fashion store", 100.00, Duration.ofDays(90));
+        giftCertificate.setName("H&M gift card");
+        giftCertificate.setDescription("Gift card to the fashion store");
+        giftCertificate.setPrice(100.00);
+        giftCertificate.setDuration(90);
         giftCertificate.setId(1);
         giftCertificate.setCreateDate(LocalDateTime.parse("2022-06-22T18:31:44.574"));
         giftCertificate.setLastUpdateDate(null);
@@ -54,32 +63,46 @@ public class GiftCertificateDaoIT {
         assertEquals(giftCertificate, giftCertificateRetrieved);
     }
 
-    /**
-     * Tests findByTag method, which should return list of giftCertificates
-     * with given tag name (unique).
-     * Checks if number of records is correct according to sql script.
-     */
     @Test
     @Order(2)
-    @DisplayName("find gift certificates by tag test")
-    public void shouldReturnListOfGiftCertificatesWithSpecifiedTag() {
+    @DisplayName("find by id - gift certificate of given id doesn't exist")
+    void findByIdShouldThrowExceptionIfGiftCertificateDoesNotExist() {
         // GIVEN
-
+        int id = 999;
         // WHEN
-        giftCertificatesInDb = giftCertificateDAOImpl.findByTag("shopping");
+
+        // THEN
+        assertThrows(EmptyResultDataAccessException.class, () -> giftCertificateDAOImpl.findById(id));
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("find by tag - gift certificates are correctly found")
+    void findByTagShouldReturnListOfGiftCertificatesWithSpecifiedTag() {
+        // GIVEN
+        String requestedName = "shopping";
+        // WHEN
+        giftCertificatesInDb = giftCertificateDAOImpl.findByTag(requestedName);
         // THEN
         assertEquals(2, giftCertificatesInDb.size());
     }
 
-    /**
-     * Tests findByNameOrDescription method, which should return list of giftCertificates
-     * with given text included in name or description column.
-     * Checks if number of records is correct according to sql script.
-     */
     @Test
-    @Order(3)
-    @DisplayName("find gift certificates by key word in name or description test")
-    public void shouldReturnListOfGiftCertificatesWithKeyWordInNameOrDescription() {
+    @Order(4)
+    @DisplayName("find by tag - no matching gift certificate found")
+    void findByTagShouldReturnEmptyListWhenNoGiftCertificateMatchRequest() {
+        // GIVEN
+        String requestedName = "football";
+        // WHEN
+
+        // THEN
+        assertTrue(giftCertificateDAOImpl.findByTag(requestedName).isEmpty());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("find by name or description - gift certificates are correctly found")
+    void findByNameOrDescriptionShouldReturnListOfGiftCertificatesWithKeyWordInNameOrDescription() {
         // GIVEN
 
         // WHEN
@@ -88,14 +111,22 @@ public class GiftCertificateDaoIT {
         assertEquals(2, giftCertificatesInDb.size());
     }
 
-    /**
-     * Tests findAll method, which should return list of all giftCertificates records in database.
-     * Checks if number of records is correct according to sql script.
-     */
     @Test
-    @Order(4)
+    @Order(6)
+    @DisplayName("find by name or description - no matching gift certificate found")
+    void findByNameOrDescriptionShouldReturnEmptyListWhenNoGiftCertificateMatchRequest() {
+        // GIVEN
+        String key = "swimming";
+        // WHEN
+
+        // THEN
+        assertTrue(giftCertificateDAOImpl.findByNameOrDescription(key).isEmpty());
+    }
+
+    @Test
+    @Order(7)
     @DisplayName("find all gift certificates test ")
-    public void shouldReturnListOfAllGiftCertificates() {
+    void shouldReturnListOfAllGiftCertificates() {
         // GIVEN
 
         // WHEN
@@ -104,77 +135,60 @@ public class GiftCertificateDaoIT {
         assertEquals(3, giftCertificatesInDb.size());
     }
 
-
-    /**
-     * Tests sortAscending method, which should return list of all giftCertificates records in database in ascending order.
-     * Checks if number of records is correct according to sql script,
-     * checks if the first and the last giftCertificate are in correct position.
-     */
     @Test
-    @Order(5)
+    @Order(8)
     @DisplayName("sort in ascending order test")
-    public void checksIfListSizeAndASCOrderIsCorrect() {
+    void checksIfListSizeAndASCOrderIsCorrect() {
         // GIVEN
 
         // WHEN
         giftCertificatesInDb = giftCertificateDAOImpl.sortAscending();
         // THEN
-        assertEquals(3, giftCertificatesInDb.size());
-        assertEquals("Gift card to cafe", giftCertificatesInDb.get(2).getDescription());
-        assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(0).getDescription());
+        softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
+        softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(2).getDescription());
+        softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(0).getDescription());
+        softAssertions.assertAll();
     }
 
-    /**
-     * Tests sortDescending method, which should return list of all giftCertificates records in database in descending order.
-     * Checks if number of records is correct according to sql script,
-     * checks if the first and the last giftCertificate are in correct position.
-     */
     @Test
-    @Order(6)
+    @Order(9)
     @DisplayName("sort in descending order test")
-    public void checksIfListSizeAndDSCOrderIsCorrect() {
+    void checksIfListSizeAndDSCOrderIsCorrect() {
         // GIVEN
 
         // WHEN
         giftCertificatesInDb = giftCertificateDAOImpl.sortDescending();
         // THEN
-        assertEquals(3, giftCertificatesInDb.size());
-        assertEquals("Gift card to cafe", giftCertificatesInDb.get(0).getDescription());
-        assertEquals("Gift card to the fashion store", giftCertificatesInDb.get(2).getDescription());
+        softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
+        softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(0).getDescription());
+        softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(2).getDescription());
+        softAssertions.assertAll();
     }
 
-    /**
-     * Tests createGiftCertificate method, which should insert new giftCertificate into database
-     * and return inserted giftCertificate object.
-     * Checks if list of all giftCertificate records contains inserted giftCertificate,
-     * checks if the name and description of inserted giftCertificate is correct,
-     * checks if the number of all giftCertificate records is correct (+1).
-     */
     @Test
-    @Order(7)
+    @Order(10)
     @DisplayName("create gift certificate test")
-    public void specificGiftCertificateIsPresentInDbAndCountOfGiftCertificatesInDbIsCorrect() {
+    void specificGiftCertificateIsPresentInDbAndCountOfGiftCertificatesInDbIsCorrect() {
         // GIVEN
-        giftCertificate = new GiftCertificate("Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180));
+        giftCertificate.setName("Paintball voucher");
+        giftCertificate.setDescription("2 hours of paintball match in Paintball-World");
+        giftCertificate.setPrice(49.99);
+        giftCertificate.setDuration(180);
         int initialDbSize = giftCertificateDAOImpl.findAll().size();
         int expectedDBSizeChange = 1;
         // WHEN
         giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
         // THEN
-        assertTrue(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted));
-        assertEquals(giftCertificate, giftCertificateInserted);
-        assertEquals(initialDbSize + expectedDBSizeChange, giftCertificateDAOImpl.findAll().size());
+        softAssertions.assertThat(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted)).isTrue();
+        softAssertions.assertThat(giftCertificate).isEqualTo(giftCertificateInserted);
+        softAssertions.assertThat(initialDbSize + expectedDBSizeChange).isEqualTo(giftCertificateDAOImpl.findAll().size());
+        softAssertions.assertAll();
     }
 
-    /**
-     * Tests updateGiftCertificate method, which should update giftCertificate in database.
-     * Checks if list of all giftCertificate records remains the same size,
-     * checks if the name and description of updated giftCertificate is correct.
-     */
     @Test
-    @Order(8)
-    @DisplayName("update gift certificate test")
-    public void sizeOfDbIsNotChangedAndGiftCertificateIsCorrectlyUpdated() {
+    @Order(11)
+    @DisplayName("update - gift certificate is correctly updated")
+    void sizeOfDbIsNotChangedAndGiftCertificateIsCorrectlyUpdated() {
         // GIVEN
         int initDatabaseSize = giftCertificateDAOImpl.findAll().size();
         giftCertificate = giftCertificateDAOImpl.findById(1);
@@ -182,27 +196,54 @@ public class GiftCertificateDaoIT {
         // WHEN
         giftCertificateDAOImpl.updateGiftCertificate(giftCertificate);
         // THEN
-        assertEquals(initDatabaseSize, giftCertificateDAOImpl.findAll().size());
-        assertEquals(giftCertificate, giftCertificateDAOImpl.findById(1));
+        softAssertions.assertThat(initDatabaseSize).isEqualTo(giftCertificateDAOImpl.findAll().size());
+        softAssertions.assertThat(giftCertificate).isEqualTo(giftCertificateDAOImpl.findById(1));
+        softAssertions.assertAll();
     }
 
-    /**
-     * Tests deleteGiftCertificate method, which should remove giftCertificate from database.
-     * Checks if the number of all giftCertificate records is correct (-1),
-     * checks if removed giftCertificate is not present in database.
-     */
     @Test
-    @Order(9)
-    @DisplayName("delete gift certificate test")
-    public void countOfGiftCertificatesInDbHasShrunkAfterDeletingAndGiftCertificateIsNotPresentInDb() {
+    @Order(12)
+    @DisplayName("update - update non existing gift certificate")
+    void updateNonExistingGiftCertificateShouldTrowException() {
+        // GIVEN
+
+        // WHEN
+        giftCertificate.setName("Paintball voucher");
+        giftCertificate.setDescription("2 hours of paintball match in Paintball-World");
+        giftCertificate.setPrice(49.99);
+        giftCertificate.setDuration(180);
+        giftCertificate.setId(999);
+        // THEN
+        assertThrows(EmptyResultDataAccessException.class, () -> giftCertificateDAOImpl.updateGiftCertificate(giftCertificate));
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("delete - gift certificate is correctly removed")
+    void countOfGiftCertificatesInDbHasShrunkAfterDeletingAndGiftCertificateIsNotPresentInDb() {
         // GIVEN
         int dbSize = giftCertificateDAOImpl.findAll().size();
         int expectedDBSizeChange = 1;
+        int requestedId = 1;
         // WHEN
-        giftCertificate = giftCertificateDAOImpl.findById(1);
-        giftCertificateDAOImpl.deleteGiftCertificate(1);
+        giftCertificate = giftCertificateDAOImpl.findById(requestedId);
+        giftCertificateDAOImpl.deleteGiftCertificate(requestedId);
         // THEN
-        assertEquals(dbSize-expectedDBSizeChange, giftCertificateDAOImpl.findAll().size());
-        assertFalse(giftCertificateDAOImpl.findAll().contains(giftCertificate));
+        softAssertions.assertThat(dbSize - expectedDBSizeChange).isEqualTo(giftCertificateDAOImpl.findAll().size());
+        softAssertions.assertThat(giftCertificateDAOImpl.findAll().contains(giftCertificate)).isFalse();
+        softAssertions.assertAll();
+
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("delete - delete non existing gift certificate test")
+    void deleteNonExistingGiftCertificateShouldTrowException() {
+        // GIVEN
+        int requestedId = 999;
+        // WHEN
+
+        // THEN
+        assertThrows(EmptyResultDataAccessException.class, () -> giftCertificateDAOImpl.deleteGiftCertificate(requestedId));
     }
 }

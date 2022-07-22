@@ -1,5 +1,8 @@
 package com.epam.esm.model;
 
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -7,12 +10,13 @@ import java.util.Objects;
 /**
  * GiftCertificate entity with methods defined in Object class.
  */
+@Component
 public class GiftCertificate {
 
     private int id;
     private String name;
     private String description;
-    private double price;
+    private BigDecimal price;
     private Duration duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
@@ -42,11 +46,11 @@ public class GiftCertificate {
     }
 
     public double getPrice() {
-        return price;
+        return price.doubleValue();
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.price = BigDecimal.valueOf(price);
     }
 
     public long getDuration() {
@@ -73,22 +77,18 @@ public class GiftCertificate {
         this.lastUpdateDate = lastUpdateDate;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GiftCertificate that = (GiftCertificate) o;
-        if (lastUpdateDate != null) {
-            return id == that.id && Double.compare(that.price, price) == 0 && name.equals(that.name) && description.equals(that.description) && duration.equals(that.duration) && createDate.equals(that.createDate) && lastUpdateDate.equals(that.lastUpdateDate);
-        } else {
-            return id == that.id && Double.compare(that.price, price) == 0 && name.equals(that.name) && description.equals(that.description) && duration.equals(that.duration) && createDate.equals(that.createDate) && this.lastUpdateDate == null;
-        }
+        return id == that.id && name.equals(that.name) && description.equals(that.description) && price.equals(that.price) && duration.equals(that.duration);
     }
-
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price, duration, createDate, lastUpdateDate);
+        return Objects.hash(id, name, description, price, duration);
     }
 
     @Override
@@ -102,15 +102,5 @@ public class GiftCertificate {
                 ", createDate=" + getCreateDate() +
                 ", lastUpdateDate=" + getLastUpdateDate() +
                 ']';
-    }
-
-    public GiftCertificate() {
-    }
-
-    public GiftCertificate(String name, String description, double price, Duration duration) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.duration = duration;
     }
 }
