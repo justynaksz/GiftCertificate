@@ -44,7 +44,7 @@ Using GiftCertificate requires:
   `Ctrl + Shift + F10`
 
 ### 3.3. Run application - Run/Debug Configuration 
-![img.png](img.png)
+![Tomcat.png](Tomcat.png)
 
 ## 4. TODO List
 

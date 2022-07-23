@@ -16,7 +16,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,20 +31,6 @@ class TagServiceTest {
 
     @Mock
     private TagMapper tagMapper;
-
-    private Tag setUpTag(int id, String name) {
-        Tag tag = new Tag();
-        tag.setId(id);
-        tag.setName(name);
-        return tag;
-    }
-
-    private TagDTO setUpTagDTO(int id, String name) {
-        TagDTO tagDTO = new TagDTO();
-        tagDTO.setId(id);
-        tagDTO.setName(name);
-        return tagDTO;
-    }
 
     @Nested
     @DisplayName("find by id tests")
@@ -248,5 +235,19 @@ class TagServiceTest {
             // THEN
             assertThrows(EmptyResultDataAccessException.class, () -> tagService.deleteTag(id));
         }
+    }
+
+    private Tag setUpTag(int id, String name) {
+        Tag tag = new Tag();
+        tag.setId(id);
+        tag.setName(name);
+        return tag;
+    }
+
+    private TagDTO setUpTagDTO(int id, String name) {
+        TagDTO tagDTO = new TagDTO();
+        tagDTO.setId(id);
+        tagDTO.setName(name);
+        return tagDTO;
     }
 }

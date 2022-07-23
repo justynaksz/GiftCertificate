@@ -70,18 +70,17 @@ public class TagController {
     /**
      * Creates new {@code tag}.
      * Handles POST http-request.
-     * @param  tagDTO        tag to be inserted into database
+     * @param  tagDTOToInsert        tag to be inserted into database
      * @return TagDTO        tag that has been inserted into database
      */
     @PostMapping()
-    public TagDTO createTag (@RequestBody TagDTO tagDTO) {
-        TagDTO tagDTOCreated = null;
+    public TagDTO createTag (@RequestBody TagDTO tagDTOToInsert) {
         try {
-            tagDTOCreated = tagService.addTag(tagDTO);
+            tagDTO = tagService.addTag(tagDTOToInsert);
         } catch (Exception exception) {
             logger.error(exception.getMessage());
         }
-        return tagDTOCreated;
+        return tagDTO;
     }
 
     /**

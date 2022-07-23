@@ -4,12 +4,9 @@ import com.epam.esm.dao.impl.TagDAOImpl;
 import com.epam.esm.model.Tag;
 import com.epam.esm.service.DataSourceConfig;
 import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {DataSourceConfig.class}, loader = AnnotationConfigContextLoader.class)
 @ActiveProfiles("dev")
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TagDaoIT {
 
     @Autowired
@@ -37,14 +34,13 @@ class TagDaoIT {
     @Autowired
     Tag tagRetrieved;
 
-    SoftAssertions softAssertions = new SoftAssertions();
+    private final SoftAssertions softAssertions = new SoftAssertions();
 
     @Nested
     @DisplayName("find by id tests")
     class findByIdTest {
 
         @Test
-        @Order(1)
         @DisplayName("tag is correctly found")
         void findByIdShouldReturnCorrectTag() {
             // GIVEN
@@ -56,7 +52,6 @@ class TagDaoIT {
         }
 
         @Test
-        @Order(2)
         @DisplayName("tag of given id doesn't exist")
         void findByIdShouldThrowExceptionIfTagDoesNotExist() {
             // GIVEN
@@ -73,7 +68,6 @@ class TagDaoIT {
     class findByName {
 
         @Test
-        @Order(3)
         @DisplayName("tag is correctly found")
         void findByNameShouldReturnCorrectTag() {
             // GIVEN
@@ -86,7 +80,6 @@ class TagDaoIT {
         }
 
         @Test
-        @Order(4)
         @DisplayName("tag of given name doesn't exist")
         void findByNameShouldThrowExceptionIfTagDoesNotExist() {
             // GIVEN
@@ -98,8 +91,41 @@ class TagDaoIT {
         }
     }
 
+    @Nested
+    @DisplayName("find by gift certificate id test")
+    class findByGiftCertificateId {
+
+        @Test
+        @DisplayName("tags are correctly found")
+        void findByGiftCertificateIdShouldReturnAllWiredTags() {
+            // GIVEN
+            int giftCertificateId = 1;
+            List<Tag> tagsWiredWithGiftCertificate = new ArrayList<>();
+            Tag fashion = new Tag(2, "fashion");
+            Tag jewellery = new Tag(3, "jewellery");
+            Tag shopping = new Tag(6, "shopping");
+            tagsWiredWithGiftCertificate.add(fashion);
+            tagsWiredWithGiftCertificate.add(jewellery);
+            tagsWiredWithGiftCertificate.add(shopping);
+            // WHEN
+            List<Tag> retrievedTags = tagDAOImpl.findTagsByGiftCertificateId(giftCertificateId);
+            // THEN
+            assertEquals(tagsWiredWithGiftCertificate, retrievedTags);
+        }
+
+        @Test
+        @DisplayName("no tags connected to given giftCertificate")
+        void findByGiftCertificateIdWithNonExistingGiftCertificateShouldReturnEmptyList() {
+            // GIVEN
+            int giftCertificateId = 999;
+            // WHEN
+            List<Tag> retrievedTags = tagDAOImpl.findTagsByGiftCertificateId(giftCertificateId);
+            // THEN
+            assertTrue(retrievedTags.isEmpty());
+        }
+    }
+
     @Test
-    @Order(5)
     @DisplayName("find all tags test")
     void findAllShouldReturnListOfAllTags() {
         // GIVEN
@@ -111,7 +137,6 @@ class TagDaoIT {
     }
 
     @Test
-    @Order(6)
     @DisplayName("create tag test")
     void specificTagIsPresentInDbAndCountOfTagInDbIsCorrect() {
         // GIVEN
@@ -122,6 +147,7 @@ class TagDaoIT {
         softAssertions.assertThat(tagDAOImpl.findAll().contains(tagInserted)).isTrue();
         softAssertions.assertThat(7).isEqualTo(tagDAOImpl.findAll().size());
         softAssertions.assertAll();
+        tagDAOImpl.deleteTag(tagInserted.getId());
     }
 
     @Nested
@@ -129,7 +155,6 @@ class TagDaoIT {
     class deleteTagTest {
 
         @Test
-        @Order(7)
         @DisplayName("tag is correctly removed")
         void deleteTagShouldRemoveTagOfGivenIdFromDatabase(){
             // GIVEN
@@ -146,7 +171,6 @@ class TagDaoIT {
         }
 
         @Test
-        @Order(8)
         @DisplayName("delete non existing tag test")
         void deleteNonExistingTagShouldTrowException(){
             // GIVEN

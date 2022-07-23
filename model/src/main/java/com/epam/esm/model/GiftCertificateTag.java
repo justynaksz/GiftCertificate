@@ -1,10 +1,13 @@
 package com.epam.esm.model;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Objects;
 
 /**
  * GiftCertificateTag entity with methods defined in Object class.
  */
+@Component
 public class GiftCertificateTag {
 
     private int id;
@@ -41,6 +44,12 @@ public class GiftCertificateTag {
     }
 
     public GiftCertificateTag() {
+    }
+
+    public GiftCertificateTag(int id, int giftCertificateId, int tagId) {
+        this.id = id;
+        this.giftCertificateId = giftCertificateId;
+        this.tagId = tagId;
     }
 
     @Override

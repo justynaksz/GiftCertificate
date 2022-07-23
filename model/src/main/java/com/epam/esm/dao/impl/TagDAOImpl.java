@@ -15,10 +15,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Implements CRD operations for {@code Tag} entity.
@@ -44,7 +41,7 @@ public class TagDAOImpl implements TagDAO {
     @Override
     public Tag findById(int id) throws EmptyResultDataAccessException {
         String query = "SELECT id, name FROM tag WHERE id = ?";
-        Tag tag = null;
+        Tag tag = new Tag();
         try {
             tag = jdbcTemplate.queryForObject(query, new TagRowMapper(), id);
         } catch (EmptyResultDataAccessException exception) {
@@ -62,7 +59,7 @@ public class TagDAOImpl implements TagDAO {
     @Override
     public Tag findByName(String name) throws EmptyResultDataAccessException {
         String query = "SELECT id, name FROM tag WHERE UPPER (name) LIKE UPPER ( ? )" ;
-        Tag tag = null;
+        Tag tag = new Tag();
         try {
             tag = jdbcTemplate.queryForObject(query, new TagRowMapper(), name);
         } catch (EmptyResultDataAccessException exception) {
@@ -75,12 +72,31 @@ public class TagDAOImpl implements TagDAO {
     }
 
     /**
+     * Finds giftCertificateTags of given giftCertificateId value.
+     * @param  giftCertificateId                int giftCertificateId value
+     * @return list of giftCertificateTags      giftCertificateTags of given giftCertificateId value
+     */
+    @Override
+    public List<Tag> findTagsByGiftCertificateId(int giftCertificateId) {
+        String query = "SELECT tag.id, tag.name FROM gift_certificate_tag " +
+                "JOIN tag ON gift_certificate_tag.tag_id = tag.id " +
+                "WHERE gift_certificate_id = ?";
+        List<Tag> tags = new ArrayList<>();
+        try {
+            tags = jdbcTemplate.query(query, new TagRowMapper(), giftCertificateId);
+        } catch (DataAccessException exception) {
+            logger.error(SELECT_EXCEPTION_MESSAGE);
+        }
+        return tags;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public List<Tag> findAll() {
         String query = "SELECT id, name FROM tag";
-        List<Tag> tags = null;
+        List<Tag> tags = new ArrayList<>();
         try {
             tags = jdbcTemplate.query(query, new TagRowMapper());
         } catch (DataAccessException exception) {
@@ -105,7 +121,8 @@ public class TagDAOImpl implements TagDAO {
             tag.setId(tagId);
         } catch (DataAccessException exception) {
             logger.error("Creating tag has failed");
-        } return tag;
+        }
+        return tag;
     }
 
     /**

@@ -20,10 +20,9 @@ public class GiftCertificateTagRowMapper implements RowMapper<GiftCertificateTag
      * @param rs                    ResultSet to be mapped
      * @param rowNum                the number of current row
      * @return giftCertificateTag   GiftCertificateTag instance
-     * @throws SQLException
      */
     @Override
-    public GiftCertificateTag mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public GiftCertificateTag mapRow(ResultSet rs, int rowNum) {
         GiftCertificateTag giftCertificateTag = new GiftCertificateTag();
         try {
         giftCertificateTag.setId(rs.getInt("id"));

@@ -1,9 +1,11 @@
 package com.epam.esm.dto;
 
+import com.epam.esm.model.Tag;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * DTO class fo GiftCertificate.
@@ -18,6 +20,7 @@ public class GiftCertificateDTO {
     private Duration duration;
     private LocalDateTime createDate;
     private LocalDateTime lastUpdateDate;
+    private List<Tag> tags;
 
     public int getId() {
         return id;
@@ -47,6 +50,10 @@ public class GiftCertificateDTO {
         return lastUpdateDate;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -73,5 +80,9 @@ public class GiftCertificateDTO {
 
     public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

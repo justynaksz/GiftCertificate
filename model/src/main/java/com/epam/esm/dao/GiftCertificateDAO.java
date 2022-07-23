@@ -51,6 +51,18 @@ public interface GiftCertificateDAO {
     List<GiftCertificate> sortDescending();
 
     /**
+     * Sorts all {@code giftCertificate} by ascending order by date.
+     * @return giftCertificates lists in ascending order by date
+     */
+    List<GiftCertificate> sortAscendingByDate();
+
+    /**
+     * Sorts all {@code giftCertificate} by descending order by date.
+     * @return giftCertificates lists in descending order by date
+     */
+    List<GiftCertificate> sortDescendingByDate();
+
+    /**
      * Creates new {@code giftCertificate} entity.
      * @param giftCertificate     GiftCertificate instance to be inserted into database
      * @return giftCertificate    GiftCertificate instance with specified id value that has been inserted into database
