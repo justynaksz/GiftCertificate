@@ -11,6 +11,7 @@ import com.epam.esm.model.GiftCertificateTag;
 import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +145,7 @@ public class GiftCertificateService {
      * @return giftCertificate              GiftCertificate instance with specified id value that has been inserted into database
      * @throws InvalidInputException     in case of invalid param
      */
+    @Transactional
     public GiftCertificateDTO addGiftCertificate(GiftCertificateDTO giftCertificateDTO) throws InvalidInputException {
         if (giftCertificateDTO.getName() == null || giftCertificateDTO.getName().trim().isEmpty()
         || giftCertificateDTO.getDescription() == null || giftCertificateDTO.getDescription().trim().isEmpty()
@@ -163,6 +165,7 @@ public class GiftCertificateService {
      * Updates {@code giftCertificate} contained in database.
      * @param giftCertificateDTO    GiftCertificate instance to be updated in database
      */
+    @Transactional
     public void updateGiftCertificate(GiftCertificateDTO giftCertificateDTO) {
         if (giftCertificateDTO.getName() == null || giftCertificateDTO.getName().trim().isEmpty()
                 || giftCertificateDTO.getDescription() == null || giftCertificateDTO.getDescription().trim().isEmpty()
