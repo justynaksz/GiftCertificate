@@ -1,6 +1,7 @@
 import com.epam.esm.dao.impl.TagDAOImpl;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.exceptions.AlreadyExistException;
+import com.epam.esm.exceptions.InvalidInputException;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Tag;
 import com.epam.esm.service.TagService;
@@ -70,7 +71,7 @@ class TagServiceTest {
             // WHEN
 
             // THEN
-            assertThrows(IllegalArgumentException.class, () -> tagService.getById(id));
+            assertThrows(InvalidInputException.class, () -> tagService.getById(id));
         }
     }
 
@@ -195,7 +196,7 @@ class TagServiceTest {
             // WHEN
             invalidTag.setName(name);
             // THEN
-            assertThrows(IllegalArgumentException.class, () -> tagService.addTag(invalidTag));
+            assertThrows(InvalidInputException.class, () -> tagService.addTag(invalidTag));
         }
 
         @Test
@@ -207,7 +208,7 @@ class TagServiceTest {
             // WHEN
             invalidTag.setName(name);
             // THEN
-            assertThrows(IllegalArgumentException.class, () -> tagService.addTag(invalidTag));
+            assertThrows(InvalidInputException.class, () -> tagService.addTag(invalidTag));
         }
     }
 

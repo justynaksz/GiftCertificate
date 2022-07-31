@@ -2,20 +2,18 @@ package com.epam.esm.controllers;
 
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.service.TagService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * Rest controller for {@code tag}  objects.
+ * Spring REST controllers for processing requests {@code tag} resource.
  */
 @RestController
 @RequestMapping("/tags")
 public class TagController {
 
-    private final Logger logger = Logger.getLogger(getClass().getName());
     private final TagService tagService;
     private TagDTO tagDTO;
 
@@ -28,22 +26,19 @@ public class TagController {
     /**
      * Finds {@code tag}  with requested id.
      * Handles GET http-request.
-     * @param id        requested id
+     *
+     * @param id requested id
      * @return TagDTO   of given id
      */
     @GetMapping("/{id}")
-    public TagDTO getById (@PathVariable int id){
-       try {
-           tagDTO = tagService.getById(id);
-       } catch (Exception exception) {
-           logger.error(exception.getMessage());
-       }
-        return tagDTO;
+    public TagDTO getById(@PathVariable int id) {
+        return tagService.getById(id);
     }
 
     /**
      * Gets all {@code tag}.
      * Handles GET http-request.
+     *
      * @return tags   list of all tags in database
      */
     @GetMapping
@@ -54,46 +49,35 @@ public class TagController {
     /**
      * Finds {@code tag}  with requested name.
      * Handles GET http-request.
-     * @param name       requested id
+     *
+     * @param name requested id
      * @return TagDTO    of given name
      */
     @GetMapping("name/{name}")
-    public TagDTO getByName (@PathVariable String name) {
-        try {
-            tagDTO = tagService.getByName(name);
-        } catch (Exception exception) {
-            logger.error(exception.getMessage());
-        }
-        return tagDTO;
+    public TagDTO getByName(@PathVariable String name) {
+        return tagService.getByName(name);
     }
 
     /**
      * Creates new {@code tag}.
      * Handles POST http-request.
-     * @param  tagDTOToInsert        tag to be inserted into database
+     *
+     * @param tagDTOToInsert tag to be inserted into database
      * @return TagDTO        tag that has been inserted into database
      */
     @PostMapping()
-    public TagDTO createTag (@RequestBody TagDTO tagDTOToInsert) {
-        try {
-            tagDTO = tagService.addTag(tagDTOToInsert);
-        } catch (Exception exception) {
-            logger.error(exception.getMessage());
-        }
-        return tagDTO;
+    public TagDTO createTag(@RequestBody TagDTO tagDTOToInsert) {
+        return tagService.addTag(tagDTOToInsert);
     }
 
     /**
      * Deletes {@code tag} with requested id.
      * Handles DELETE http-request.
-     * @param id        requested id
+     *
+     * @param id requested id
      */
     @DeleteMapping("/{id}")
-    public void deleteTag (@PathVariable int id) {
-        try {
-            tagService.deleteTag(id);
-        } catch (Exception exception) {
-            logger.error(exception.getMessage());
-        }
+    public void deleteTag(@PathVariable int id) {
+        tagService.deleteTag(id);
     }
 }

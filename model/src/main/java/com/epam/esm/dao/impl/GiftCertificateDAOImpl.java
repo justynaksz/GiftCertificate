@@ -25,9 +25,7 @@ import java.util.*;
 @Repository
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
-
-
-    private static final String EXCEPTION_MESSAGE = "No tag of requested id has been found.";
+    private static final String EXCEPTION_MESSAGE = "No gift certificate of requested id has been found.";
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;

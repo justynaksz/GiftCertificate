@@ -5,7 +5,7 @@ package com.epam.esm.exceptions;
  */
 public class AlreadyExistException extends RuntimeException {
 
-    public AlreadyExistException(String message) {
-        super(message);
+    public AlreadyExistException(String name) {
+        super("Tag of name \"" + name + "\" already exists in data base.");
     }
 }

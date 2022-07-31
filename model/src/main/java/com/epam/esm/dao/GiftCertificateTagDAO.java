@@ -3,7 +3,6 @@ package com.epam.esm.dao;
 import com.epam.esm.model.GiftCertificateTag;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-
 public interface GiftCertificateTagDAO {
 
     /**

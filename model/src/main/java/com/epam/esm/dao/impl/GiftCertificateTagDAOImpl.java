@@ -43,14 +43,14 @@ public class GiftCertificateTagDAOImpl implements GiftCertificateTagDAO {
     public GiftCertificateTag findGiftCertificateTagById(int id) {
         String query = "SELECT id, gift_certificate_id, tag_id FROM gift_certificate_tag WHERE id = ?";
         GiftCertificateTag giftCertificateTag = new GiftCertificateTag();
-            try {
-                giftCertificateTag = jdbcTemplate.queryForObject(query, new GiftCertificateTagRowMapper(), id);
-            } catch (EmptyResultDataAccessException exception) {
-                logger.error(EXCEPTION_MESSAGE);
-                throw new EmptyResultDataAccessException(EXCEPTION_MESSAGE, 0);
-            } catch (DataAccessException exception) {
-                logger.error("Selecting giftCertificateTag has failed.");
-            }
+        try {
+            giftCertificateTag = jdbcTemplate.queryForObject(query, new GiftCertificateTagRowMapper(), id);
+        } catch (EmptyResultDataAccessException exception) {
+            logger.error(EXCEPTION_MESSAGE);
+            throw new EmptyResultDataAccessException(EXCEPTION_MESSAGE, 0);
+        } catch (DataAccessException exception) {
+            logger.error("Selecting giftCertificateTag has failed.");
+        }
         return giftCertificateTag;
     }
 
@@ -79,16 +79,18 @@ public class GiftCertificateTagDAOImpl implements GiftCertificateTagDAO {
     @Override
     public GiftCertificateTag createGiftCertificateTag(GiftCertificateTag giftCertificateTag) {
         String query = "INSERT INTO gift_certificate_tag (gift_certificate_id, tag_id) " +
-             "VALUES (:gift_certificate_id, :tag_id)";
+                "VALUES (:gift_certificate_id, :tag_id)";
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("gift_certificate_id", giftCertificateTag.getGiftCertificateId());
-            map.put("tag_id", giftCertificateTag.getTagId());
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            SqlParameterSource parameterSource = new MapSqlParameterSource(map);
-            namedParameterJdbcTemplate.update(query, parameterSource, keyHolder, new String[] { "id" });
-            int id = Objects.requireNonNull(keyHolder.getKey()).intValue();
-            giftCertificateTag.setId(id);
+            if (!isInDataBase(giftCertificateTag)) {
+                map.put("gift_certificate_id", giftCertificateTag.getGiftCertificateId());
+                map.put("tag_id", giftCertificateTag.getTagId());
+                KeyHolder keyHolder = new GeneratedKeyHolder();
+                SqlParameterSource parameterSource = new MapSqlParameterSource(map);
+                namedParameterJdbcTemplate.update(query, parameterSource, keyHolder, new String[]{"id"});
+                int id = Objects.requireNonNull(keyHolder.getKey()).intValue();
+                giftCertificateTag.setId(id);
+            }
         } catch (DataAccessException exception) {
             logger.error("Creating giftCertificateTag has failed.");
         }
@@ -109,5 +111,15 @@ public class GiftCertificateTagDAOImpl implements GiftCertificateTagDAO {
         } catch (DataAccessException exception) {
             logger.error("Deleting giftCertificateTag has failed.");
         }
+    }
+
+    private boolean isInDataBase(GiftCertificateTag giftCertificateTag) {
+        boolean givenGiftCertificateTagAlreadyExists = true;
+        try {
+            findGiftCertificateTagByIds(giftCertificateTag.getGiftCertificateId(), giftCertificateTag.getTagId());
+        } catch (EmptyResultDataAccessException exception) {
+            givenGiftCertificateTagAlreadyExists = false;
+        }
+        return givenGiftCertificateTagAlreadyExists;
     }
 }

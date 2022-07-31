@@ -4,6 +4,7 @@ import com.epam.esm.dao.GiftCertificateDAO;
 import com.epam.esm.dao.GiftCertificateTagDAO;
 import com.epam.esm.dao.TagDAO;
 import com.epam.esm.dto.GiftCertificateDTO;
+import com.epam.esm.exceptions.InvalidInputException;
 import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.model.GiftCertificate;
 import com.epam.esm.model.GiftCertificateTag;
@@ -39,15 +40,16 @@ public class GiftCertificateService {
      * Finds {@code giftCertificate} of given id value.
      * @param id                            int id value
      * @return gift certificate             gift certificate of given id value
-     * @throws IllegalArgumentException     in case of invalid param
+     * @throws InvalidInputException     in case of invalid param
      */
-    public GiftCertificateDTO getById(int id) throws IllegalArgumentException {
+    public GiftCertificateDTO getById(int id) throws InvalidInputException {
         if (id <= 0) {
-            throw new IllegalArgumentException("Id value must be greater than 0.");
+            throw new InvalidInputException("Id value must be greater than 0.");
         }
         GiftCertificate giftCertificate = giftCertificateDAO.findById(id);
-        return giftCertificateMapper.toDTO(giftCertificate);
-
+        GiftCertificateDTO giftCertificateDTO = giftCertificateMapper.toDTO(giftCertificate);
+        giftCertificateDTO.setTags(getTagsList(giftCertificateDTO.getId()));
+        return giftCertificateDTO;
     }
 
     /**
@@ -59,6 +61,7 @@ public class GiftCertificateService {
         List<GiftCertificate> giftCertificates = giftCertificateDAO.findByTag(tagName);
         List<GiftCertificateDTO> giftCertificateDTOs = new ArrayList<>();
         giftCertificates.forEach(giftCertificate -> giftCertificateDTOs.add(giftCertificateMapper.toDTO(giftCertificate)));
+        giftCertificateDTOs.forEach(giftCertificateDTO -> giftCertificateDTO.setTags(getTagsList(giftCertificateDTO.getId())));
         return giftCertificateDTOs;
     }
 
@@ -71,6 +74,7 @@ public class GiftCertificateService {
         List<GiftCertificate> giftCertificates = giftCertificateDAO.findByNameOrDescription(key);
         List<GiftCertificateDTO> giftCertificateDTOs = new ArrayList<>();
         giftCertificates.forEach(giftCertificate -> giftCertificateDTOs.add(giftCertificateMapper.toDTO(giftCertificate)));
+        giftCertificateDTOs.forEach(giftCertificateDTO -> giftCertificateDTO.setTags(getTagsList(giftCertificateDTO.getId())));
         return giftCertificateDTOs;
     }
 
@@ -82,6 +86,7 @@ public class GiftCertificateService {
         List<GiftCertificate> giftCertificates = giftCertificateDAO.findAll();
         List<GiftCertificateDTO> giftCertificateDTOs = new ArrayList<>();
         giftCertificates.forEach(giftCertificate -> giftCertificateDTOs.add(giftCertificateMapper.toDTO(giftCertificate)));
+        giftCertificateDTOs.forEach(giftCertificateDTO -> giftCertificateDTO.setTags(getTagsList(giftCertificateDTO.getId())));
         return giftCertificateDTOs;
     }
 
@@ -93,6 +98,7 @@ public class GiftCertificateService {
         List<GiftCertificate> giftCertificates = giftCertificateDAO.sortAscending();
         List<GiftCertificateDTO> giftCertificateDTOs = new ArrayList<>();
         giftCertificates.forEach(giftCertificate -> giftCertificateDTOs.add(giftCertificateMapper.toDTO(giftCertificate)));
+        giftCertificateDTOs.forEach(giftCertificateDTO -> giftCertificateDTO.setTags(getTagsList(giftCertificateDTO.getId())));
         return giftCertificateDTOs;
     }
 
@@ -104,6 +110,7 @@ public class GiftCertificateService {
         List<GiftCertificate> giftCertificates = giftCertificateDAO.sortDescending();
         List<GiftCertificateDTO> giftCertificateDTOs = new ArrayList<>();
         giftCertificates.forEach(giftCertificate -> giftCertificateDTOs.add(giftCertificateMapper.toDTO(giftCertificate)));
+        giftCertificateDTOs.forEach(giftCertificateDTO -> giftCertificateDTO.setTags(getTagsList(giftCertificateDTO.getId())));
         return giftCertificateDTOs;
     }
 
@@ -115,6 +122,7 @@ public class GiftCertificateService {
         List<GiftCertificate> giftCertificates = giftCertificateDAO.sortAscendingByDate();
         List<GiftCertificateDTO> giftCertificateDTOs = new ArrayList<>();
         giftCertificates.forEach(giftCertificate -> giftCertificateDTOs.add(giftCertificateMapper.toDTO(giftCertificate)));
+        giftCertificateDTOs.forEach(giftCertificateDTO -> giftCertificateDTO.setTags(getTagsList(giftCertificateDTO.getId())));
         return giftCertificateDTOs;
     }
 
@@ -126,6 +134,7 @@ public class GiftCertificateService {
         List<GiftCertificate> giftCertificates = giftCertificateDAO.sortDescendingByDate();
         List<GiftCertificateDTO> giftCertificateDTOs = new ArrayList<>();
         giftCertificates.forEach(giftCertificate -> giftCertificateDTOs.add(giftCertificateMapper.toDTO(giftCertificate)));
+        giftCertificateDTOs.forEach(giftCertificateDTO -> giftCertificateDTO.setTags(getTagsList(giftCertificateDTO.getId())));
         return giftCertificateDTOs;
     }
 
@@ -133,18 +142,18 @@ public class GiftCertificateService {
      * Creates new {@code giftCertificate} entity.
      * @param giftCertificateDTO            GiftCertificate instance to be inserted into database
      * @return giftCertificate              GiftCertificate instance with specified id value that has been inserted into database
-     * @throws IllegalArgumentException     in case of invalid param
+     * @throws InvalidInputException     in case of invalid param
      */
-    public GiftCertificateDTO addGiftCertificate(GiftCertificateDTO giftCertificateDTO) throws IllegalArgumentException {
+    public GiftCertificateDTO addGiftCertificate(GiftCertificateDTO giftCertificateDTO) throws InvalidInputException {
         if (giftCertificateDTO.getName() == null || giftCertificateDTO.getName().trim().isEmpty()
         || giftCertificateDTO.getDescription() == null || giftCertificateDTO.getDescription().trim().isEmpty()
         || giftCertificateDTO.getPrice() == 0 || giftCertificateDTO.getDuration() == 0) {
-            throw new IllegalArgumentException("At least one of given parameter is null or empty.");
+            throw new InvalidInputException("At least one of given parameter is null or empty.");
         }
         GiftCertificate giftCertificate = giftCertificateMapper.toModel(giftCertificateDTO);
         GiftCertificate giftCertificateInserted = giftCertificateDAO.createGiftCertificate(giftCertificate);
         connectTagToGiftCertificate(giftCertificateDTO.getTags(), giftCertificateInserted.getId());
-        List<Tag> tags = tagDAO.findTagsByGiftCertificateId(giftCertificateInserted.getId());
+        List<Tag> tags = getTagsList(giftCertificateInserted.getId());
         GiftCertificateDTO giftCertificateDTOInserted = giftCertificateMapper.toDTO(giftCertificateInserted);
         giftCertificateDTOInserted.setTags(tags);
         return giftCertificateDTOInserted;
@@ -158,12 +167,12 @@ public class GiftCertificateService {
         if (giftCertificateDTO.getName() == null || giftCertificateDTO.getName().trim().isEmpty()
                 || giftCertificateDTO.getDescription() == null || giftCertificateDTO.getDescription().trim().isEmpty()
                 || giftCertificateDTO.getPrice() == 0 || giftCertificateDTO.getDuration() == 0) {
-            throw new IllegalArgumentException("At least one of given parameter is null or empty.");
+            throw new InvalidInputException("At least one of given parameter is null or empty.");
         }
         GiftCertificate giftCertificate = giftCertificateMapper.toModel(giftCertificateDTO);
-        List<Tag> initialTags = tagDAO.findTagsByGiftCertificateId(giftCertificateDTO.getId());
+        List<Tag> initialTags = getTagsList(giftCertificateDTO.getId());
         giftCertificateDAO.updateGiftCertificate(giftCertificate);
-        updateTagsForGiftCertificate(initialTags, giftCertificateDTO.getTags(), giftCertificateDTO.getId());
+        updateTagsForGiftCertificate(initialTags, getUpdateTagListWithCorrectId(giftCertificateDTO.getTags()), giftCertificateDTO.getId());
     }
 
     /**
@@ -171,9 +180,23 @@ public class GiftCertificateService {
      * @param id    int id value of giftCertificate instance to be removed
      */
     public void deleteGiftCertificate(int id) {
+        disconnectTagListFromGiftCertificate(getTagsList(id), id);
         giftCertificateDAO.deleteGiftCertificate(id);
     }
 
+    private List<Tag> getTagsList(int giftCertificateId) {
+        return tagDAO.findTagsByGiftCertificateId(giftCertificateId);
+    }
+
+    private List<Tag> getUpdateTagListWithCorrectId(List<Tag> updateTagList) {
+        List<Tag> updateTagListWithCorrectId = new ArrayList<>();
+        for (Tag tag : updateTagList) {
+            if (checkIfTagExistInDatabase(tag)) {
+                updateTagListWithCorrectId.add(tagDAO.findByName(tag.getName()));
+            }
+        }
+        return updateTagListWithCorrectId;
+    }
 
     private void connectTagToGiftCertificate(List<Tag> tags, int giftCertificateId) {
         for (Tag tag : tags) {
@@ -200,7 +223,9 @@ public class GiftCertificateService {
 
         connectTagToGiftCertificate(tagsToConnectToCertificate, giftCertificateId);
 
-        List<Tag> tagsToDisconnectFromCertificate = initialTags.stream()
+        List<Tag> actualTags = getTagsList(giftCertificateId);
+
+        List<Tag> tagsToDisconnectFromCertificate = actualTags.stream()
                 .filter(tag -> !updatedTags.contains(tag))
                 .collect(Collectors.toList());
 
