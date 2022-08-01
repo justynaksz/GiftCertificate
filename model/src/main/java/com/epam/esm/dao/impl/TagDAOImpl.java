@@ -72,9 +72,7 @@ public class TagDAOImpl implements TagDAO {
     }
 
     /**
-     * Finds giftCertificateTags of given giftCertificateId value.
-     * @param  giftCertificateId                int giftCertificateId value
-     * @return list of giftCertificateTags      giftCertificateTags of given giftCertificateId value
+     * {@inheritDoc}
      */
     @Override
     public List<Tag> findTagsByGiftCertificateId(int giftCertificateId) {

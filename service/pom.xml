@@ -13,12 +13,13 @@
     <artifactId>service</artifactId>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <javaxservlet.version>4.0.1</javaxservlet.version>
         <javaxvalidation.version>2.0.1.Final</javaxvalidation.version>
         <junit.version>5.9.0-M1</junit.version>
         <mockito.version>4.6.1</mockito.version>
+        <assesrtj.version>3.23.1</assesrtj.version>
     </properties>
 
     <dependencies>
@@ -59,7 +60,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
+            <version>${assesrtj.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
