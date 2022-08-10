@@ -45,19 +45,21 @@ class GiftCertificateServiceTest {
     @Mock
     private GiftCertificateTagDAOImpl giftCertificateTagDAO;
 
-
-
     @Nested
     @DisplayName("find by id tests")
     class findByIdTest {
 
         @Test
         @DisplayName("gift certificate is correctly found")
-            void findByIdShouldReturnCorrectGiftCertificate() {
+        void findByIdShouldReturnCorrectGiftCertificate() {
             // GIVEN
             int id = 1;
-            GiftCertificate giftCertificate = new GiftCertificate(id, "Paintball voucher", "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99), Duration.ofDays(180), null, null);
-            GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO(id, "Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180), null, null, new ArrayList<>());
+            GiftCertificate giftCertificate = new GiftCertificate(id, "Paintball voucher",
+                    "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99),
+                    Duration.ofDays(180), null, null);
+            GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO(id, "Paintball voucher",
+                    "2 hours of paintball match in Paintball-World", 49.99,
+                    Duration.ofDays(180), null, null, new ArrayList<>());
             // WHEN
             when(giftCertificateDAO.findById(id)).thenReturn(giftCertificate);
             when(giftCertificateMapper.toDTO(giftCertificate)).thenReturn(giftCertificateDTO);
@@ -97,13 +99,21 @@ class GiftCertificateServiceTest {
         void findByTagShouldReturnCorrectListOfGiftCertificates() {
             // GIVEN
             String requestedTag = "sport";
-            GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99), Duration.ofDays(180), null, null);
-            GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00), Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
+            GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher",
+                    "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99),
+                    Duration.ofDays(180), null, null);
+            GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun",
+                    "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00),
+                    Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
             List<GiftCertificate> giftCertificateByTag = new ArrayList<>();
             giftCertificateByTag.add(paintballCertificate);
             giftCertificateByTag.add(aquaparkCertificate);
-            GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180), null, null, new ArrayList<>());
-            GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90), "2022-03-18T12:24:47.241", null, new ArrayList<>());
+            GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher",
+                    "2 hours of paintball match in Paintball-World", 49.99,
+                    Duration.ofDays(180), null, null, new ArrayList<>());
+            GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun",
+                    "3 hours in the biggest auqapark in PL", 30.00,
+                    Duration.ofDays(90), "2022-03-18T12:24:47.241", null, new ArrayList<>());
             List<GiftCertificateDTO> giftCertificateDTOByTag = new ArrayList<>();
             giftCertificateDTOByTag.add(paintballCertificateDTO);
             giftCertificateDTOByTag.add(aquaparkCertificateDTO);
@@ -136,13 +146,21 @@ class GiftCertificateServiceTest {
         void findByNameOrDescriptionShouldReturnCorrectListOfGiftCertificates() {
             // GIVEN
             String keyWord = "hours";
-            GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99), Duration.ofDays(180), null, null);
-            GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00), Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
+            GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher",
+                    "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99),
+                    Duration.ofDays(180), null, null);
+            GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun",
+                    "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00),
+                    Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
             List<GiftCertificate> giftCertificateByKey = new ArrayList<>();
             giftCertificateByKey.add(paintballCertificate);
             giftCertificateByKey.add(aquaparkCertificate);
-            GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180), null, null, new ArrayList<>());
-            GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90), "2022-03-18T12:24:47.241", null, new ArrayList<>());
+            GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher",
+                    "2 hours of paintball match in Paintball-World", 49.99,
+                    Duration.ofDays(180), null, null, new ArrayList<>());
+            GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun",
+                    "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90),
+                    "2022-03-18T12:24:47.241", null, new ArrayList<>());
             List<GiftCertificateDTO> giftCertificateDTOByKey = new ArrayList<>();
             giftCertificateDTOByKey.add(paintballCertificateDTO);
             giftCertificateDTOByKey.add(aquaparkCertificateDTO);
@@ -170,13 +188,21 @@ class GiftCertificateServiceTest {
     @DisplayName("find all test")
     void findAllShouldReturnListOfAllGiftCertificatesInDb() {
         // GIVEN
-        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99), Duration.ofDays(180), null, null);
-        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00), Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
+        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99),
+                Duration.ofDays(180), null, null);
+        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00),
+                Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         giftCertificates.add(paintballCertificate);
         giftCertificates.add(aquaparkCertificate);
-        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180), null, null, new ArrayList<>());
-        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90), "2022-03-18T12:24:47.241", null, new ArrayList<>());
+        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180),
+                null, null, new ArrayList<>());
+        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90),
+                "2022-03-18T12:24:47.241", null, new ArrayList<>());
         List<GiftCertificateDTO> giftCertificatesDTO = new ArrayList<>();
         giftCertificatesDTO.add(paintballCertificateDTO);
         giftCertificatesDTO.add(aquaparkCertificateDTO);
@@ -192,16 +218,28 @@ class GiftCertificateServiceTest {
     @DisplayName("sort ascending test")
     void sortAscendingShouldReturnAllGiftCertificatesInAscendingOrder() {
         // GIVEN
-        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99), Duration.ofDays(180), null, null);
-        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00), Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
-        GiftCertificate movieCertificate = new GiftCertificate(3, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99),
+                Duration.ofDays(180), null, null);
+        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00),
+                Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
+        GiftCertificate movieCertificate = new GiftCertificate(3, "Movie night",
+                "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         giftCertificates.add(aquaparkCertificate);
         giftCertificates.add(movieCertificate);
         giftCertificates.add(paintballCertificate);
-        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180), null, null, new ArrayList<>());
-        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90), "2022-03-18T12:24:47.241", null, new ArrayList<>());
-        GiftCertificateDTO movieCertificateDTO = new GiftCertificateDTO(3, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180),
+                null, null, new ArrayList<>());
+        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90),
+                "2022-03-18T12:24:47.241", null, new ArrayList<>());
+        GiftCertificateDTO movieCertificateDTO = new GiftCertificateDTO(3, "Movie night",
+                "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
         List<GiftCertificateDTO> giftCertificatesDTO = new ArrayList<>();
         giftCertificatesDTO.add(aquaparkCertificateDTO);
         giftCertificatesDTO.add(movieCertificateDTO);
@@ -219,16 +257,28 @@ class GiftCertificateServiceTest {
     @DisplayName("sort descending test")
     void sortDescendingShouldReturnAllGiftCertificatesInDescendingOrder() {
         // GIVEN
-        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99), Duration.ofDays(180), null, null);
-        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00), Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
-        GiftCertificate movieCertificate = new GiftCertificate(3, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99),
+                Duration.ofDays(180), null, null);
+        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00),
+                Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
+        GiftCertificate movieCertificate = new GiftCertificate(3, "Movie night",
+                "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         giftCertificates.add(paintballCertificate);
         giftCertificates.add(movieCertificate);
         giftCertificates.add(aquaparkCertificate);
-        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180), null, null, new ArrayList<>());
-        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90), "2022-03-18T12:24:47.241", null, new ArrayList<>());
-        GiftCertificateDTO movieCertificateDTO = new GiftCertificateDTO(3, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180),
+                null, null, new ArrayList<>());
+        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90),
+                "2022-03-18T12:24:47.241", null, new ArrayList<>());
+        GiftCertificateDTO movieCertificateDTO = new GiftCertificateDTO(3, "Movie night",
+                "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
         List<GiftCertificateDTO> giftCertificatesDTO = new ArrayList<>();
         giftCertificatesDTO.add(paintballCertificateDTO);
         giftCertificatesDTO.add(movieCertificateDTO);
@@ -246,16 +296,28 @@ class GiftCertificateServiceTest {
     @DisplayName("sort ascending by date test")
     void sortAscendingByDateShouldReturnAllGiftCertificatesInAscendingOrderByDate() {
         // GIVEN
-        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99), Duration.ofDays(180), LocalDateTime.parse("2019-03-18T12:24:47.241"), null);
-        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00), Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
-        GiftCertificate movieCertificate = new GiftCertificate(3, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2021-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99),
+                Duration.ofDays(180), LocalDateTime.parse("2019-03-18T12:24:47.241"), null);
+        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00), Duration.ofDays(90),
+                LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
+        GiftCertificate movieCertificate = new GiftCertificate(3, "Movie night",
+                "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                LocalDateTime.parse("2021-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         giftCertificates.add(paintballCertificate);
         giftCertificates.add(movieCertificate);
         giftCertificates.add(aquaparkCertificate);
-        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180), "2019-03-18T12:24:47.241", null, new ArrayList<>());
-        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90), "2022-03-18T12:24:47.241", null, new ArrayList<>());
-        GiftCertificateDTO movieCertificateDTO = new GiftCertificateDTO(3, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2021-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180),
+                "2019-03-18T12:24:47.241", null, new ArrayList<>());
+        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90),
+                "2022-03-18T12:24:47.241", null, new ArrayList<>());
+        GiftCertificateDTO movieCertificateDTO = new GiftCertificateDTO(3, "Movie night",
+                "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                "2021-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
         List<GiftCertificateDTO> giftCertificatesDTO = new ArrayList<>();
         giftCertificatesDTO.add(paintballCertificateDTO);
         giftCertificatesDTO.add(movieCertificateDTO);
@@ -273,16 +335,28 @@ class GiftCertificateServiceTest {
     @DisplayName("sort descending by date test")
     void sortDescendingByDateShouldReturnAllGiftCertificatesInDescendingOrderByDate() {
         // GIVEN
-        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99), Duration.ofDays(180), LocalDateTime.parse("2019-03-18T12:24:47.241"), null);
-        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00), Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
-        GiftCertificate movieCertificate = new GiftCertificate(3, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2021-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+        GiftCertificate paintballCertificate = new GiftCertificate(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", BigDecimal.valueOf(49.99),
+                Duration.ofDays(180), LocalDateTime.parse("2019-03-18T12:24:47.241"), null);
+        GiftCertificate aquaparkCertificate = new GiftCertificate(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", BigDecimal.valueOf(30.00),
+                Duration.ofDays(90), LocalDateTime.parse("2022-03-18T12:24:47.241"), null);
+        GiftCertificate movieCertificate = new GiftCertificate(3, "Movie night",
+                "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                LocalDateTime.parse("2021-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
         List<GiftCertificate> giftCertificates = new ArrayList<>();
         giftCertificates.add(aquaparkCertificate);
         giftCertificates.add(movieCertificate);
         giftCertificates.add(paintballCertificate);
-        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher", "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180), "2019-03-18T12:24:47.241", null, new ArrayList<>());
-        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun", "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90), "2022-03-18T12:24:47.241", null, new ArrayList<>());
-        GiftCertificateDTO movieCertificateDTO = new GiftCertificateDTO(3, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2021-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+        GiftCertificateDTO paintballCertificateDTO = new GiftCertificateDTO(1, "Paintball voucher",
+                "2 hours of paintball match in Paintball-World", 49.99, Duration.ofDays(180),
+                "2019-03-18T12:24:47.241", null, new ArrayList<>());
+        GiftCertificateDTO aquaparkCertificateDTO = new GiftCertificateDTO(2, "Aquapark Fun",
+                "3 hours in the biggest auqapark in PL", 30.00, Duration.ofDays(90),
+                "2022-03-18T12:24:47.241", null, new ArrayList<>());
+        GiftCertificateDTO movieCertificateDTO = new GiftCertificateDTO(3, "Movie night",
+                "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                "2021-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
         List<GiftCertificateDTO> giftCertificatesDTO = new ArrayList<>();
         giftCertificatesDTO.add(aquaparkCertificateDTO);
         giftCertificatesDTO.add(movieCertificateDTO);
@@ -305,12 +379,20 @@ class GiftCertificateServiceTest {
         void createGiftCertificateShouldInsertNewGiftCertificateWithNewTagsAndReturnInsertedGiftCertificate() {
             // GIVEN
             List<Tag> tags = setUpTags(Arrays.asList("cinema", "date", "movie"), false);
-            GiftCertificate giftToBeInserted = new GiftCertificate(0, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
-            GiftCertificateDTO giftToBeInsertedDTO = new GiftCertificateDTO(0, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", tags);
+            GiftCertificate giftToBeInserted = new GiftCertificate(0, "Movie night",
+                    "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                    LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+            GiftCertificateDTO giftToBeInsertedDTO = new GiftCertificateDTO(0, "Movie night",
+                    "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                    "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", tags);
             giftToBeInsertedDTO.setTags(tags);
             List<Tag> tagsInserted = setUpTags(Arrays.asList("cinema", "date", "movie"), true);
-            GiftCertificate giftInserted = new GiftCertificate(3, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
-            GiftCertificateDTO giftInsertedDTO = new GiftCertificateDTO(3, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", tagsInserted);
+            GiftCertificate giftInserted = new GiftCertificate(3, "Movie night",
+                    "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                    LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+            GiftCertificateDTO giftInsertedDTO = new GiftCertificateDTO(3, "Movie night",
+                    "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                    "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", tagsInserted);
             giftInsertedDTO.setTags(tagsInserted);
             // WHEN
             when(giftCertificateMapper.toModel(giftToBeInsertedDTO)).thenReturn(giftToBeInserted);
@@ -319,9 +401,12 @@ class GiftCertificateServiceTest {
             when(tagDAO.createTag(new Tag(0, "cinema"))).thenReturn(new Tag(1, "cinema"));
             when(tagDAO.createTag(new Tag(0, "date"))).thenReturn(new Tag(2, "date"));
             when(tagDAO.createTag(new Tag(0, "movie"))).thenReturn(new Tag(3, "movie"));
-            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 1))).thenReturn(new GiftCertificateTag(1,3,1));
-            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3,2))).thenReturn(new GiftCertificateTag(2,3,2));
-            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 3))).thenReturn(new GiftCertificateTag(3,3,3));
+            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 1)))
+                    .thenReturn(new GiftCertificateTag(1, 3, 1));
+            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 2)))
+                    .thenReturn(new GiftCertificateTag(2, 3, 2));
+            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 3)))
+                    .thenReturn(new GiftCertificateTag(3, 3, 3));
             when(tagDAO.findTagsByGiftCertificateId(giftInserted.getId())).thenReturn(tagsInserted);
             when(giftCertificateMapper.toDTO(giftInserted)).thenReturn(giftInsertedDTO);
             // THEN
@@ -333,12 +418,20 @@ class GiftCertificateServiceTest {
         void createGiftCertificateShouldInsertNewGiftCertificateWithExistingTagsAndReturnInsertedGiftCertificate() {
             // GIVEN
             List<Tag> tags = setUpTags(Arrays.asList("cinema", "date", "movie"), false);
-            GiftCertificate giftToBeInserted = new GiftCertificate(0, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
-            GiftCertificateDTO giftToBeInsertedDTO = new GiftCertificateDTO(0, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", tags);
+            GiftCertificate giftToBeInserted = new GiftCertificate(0, "Movie night",
+                    "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                    LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+            GiftCertificateDTO giftToBeInsertedDTO = new GiftCertificateDTO(0, "Movie night",
+                    "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                    "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", tags);
             giftToBeInsertedDTO.setTags(tags);
             List<Tag> tagsInserted = setUpTags(Arrays.asList("cinema", "date", "movie"), true);
-            GiftCertificate giftInserted = new GiftCertificate(3, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
-            GiftCertificateDTO giftInsertedDTO = new GiftCertificateDTO(3, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", tagsInserted);
+            GiftCertificate giftInserted = new GiftCertificate(3, "Movie night",
+                    "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                    LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+            GiftCertificateDTO giftInsertedDTO = new GiftCertificateDTO(3, "Movie night",
+                    "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                    "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", tagsInserted);
             giftInsertedDTO.setTags(tagsInserted);
             Tag existingInDbMovie = new Tag(29, "movie");
             Tag existingInDbDate = new Tag(7, "date");
@@ -349,9 +442,12 @@ class GiftCertificateServiceTest {
             when(tagDAO.createTag(new Tag(0, "cinema"))).thenReturn(new Tag(45, "cinema"));
             when(tagDAO.findByName("date")).thenReturn(existingInDbDate);
             when(tagDAO.findByName("movie")).thenReturn(existingInDbMovie);
-            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 45))).thenReturn(new GiftCertificateTag(1,3,1));
-            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3,7))).thenReturn(new GiftCertificateTag(2,3,2));
-            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 29))).thenReturn(new GiftCertificateTag(3,3,3));
+            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 45)))
+                    .thenReturn(new GiftCertificateTag(1, 3, 1));
+            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 7)))
+                    .thenReturn(new GiftCertificateTag(2, 3, 2));
+            when(giftCertificateTagDAO.createGiftCertificateTag(new GiftCertificateTag(3, 29)))
+                    .thenReturn(new GiftCertificateTag(3, 3, 3));
             when(tagDAO.findTagsByGiftCertificateId(giftInserted.getId())).thenReturn(tagsInserted);
             when(giftCertificateMapper.toDTO(giftInserted)).thenReturn(giftInsertedDTO);
             // THEN
@@ -363,7 +459,8 @@ class GiftCertificateServiceTest {
         void createGiftCertificateWithInvalidInputShouldThrowException() {
             // GIVEN
             String name = null;
-           GiftCertificateDTO giftToBeInsertedDTO = new GiftCertificateDTO(0, name, "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+            GiftCertificateDTO giftToBeInsertedDTO = new GiftCertificateDTO(0, name, "Movie session in Cinema City",
+                    15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
             // WHEN
 
             // THEN
@@ -375,7 +472,8 @@ class GiftCertificateServiceTest {
         @DisplayName("create gift certificate with empty input")
         void createGiftCertificateWithEmptyInputShouldThrowException() {
             // GIVEN
-            GiftCertificateDTO giftToBeInsertedDTO = new GiftCertificateDTO(0, "Movie night", "   ", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+            GiftCertificateDTO giftToBeInsertedDTO = new GiftCertificateDTO(0, "Movie night", "   ", 15.00,
+                    Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
             // WHEN
 
             // THEN
@@ -391,8 +489,12 @@ class GiftCertificateServiceTest {
         @DisplayName("gift certificate correctly updated")
         void updateGiftCertificateShouldCorrectlyUpdateSpecifiedParam() {
             // GIVEN
-            GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO(3, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
-            GiftCertificate giftCertificate = new GiftCertificate(3, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+            GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO(3, "Movie night",
+                    "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                    "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+            GiftCertificate giftCertificate = new GiftCertificate(3, "Movie night",
+                    "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                    LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
             // WHEN
             when(giftCertificateMapper.toModel(giftCertificateDTO)).thenReturn(giftCertificate);
             doThrow(new EmptyResultDataAccessException(0)).when(giftCertificateDAO).updateGiftCertificate(giftCertificate);
@@ -403,8 +505,12 @@ class GiftCertificateServiceTest {
         @Test
         @DisplayName("update non existing gift certificate")
         void updateNonExistingGiftCertificateShouldTrowException() {
-            GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO(3, "Movie night", "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
-            GiftCertificate giftCertificate = new GiftCertificate(3, "Movie night", "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200), LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
+            GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO(3, "Movie night",
+                    "Movie session in Cinema City", 15.00, Duration.ofDays(200),
+                    "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+            GiftCertificate giftCertificate = new GiftCertificate(3, "Movie night",
+                    "Movie session in Cinema City", BigDecimal.valueOf(15.00), Duration.ofDays(200),
+                    LocalDateTime.parse("2022-03-18T12:24:47.241"), LocalDateTime.parse("2022-06-18T12:24:47.241"));
             // WHEN
             when(giftCertificateMapper.toModel(giftCertificateDTO)).thenReturn(giftCertificate);
             doThrow(new EmptyResultDataAccessException(0)).when(giftCertificateDAO).updateGiftCertificate(giftCertificate);
@@ -417,7 +523,8 @@ class GiftCertificateServiceTest {
         void updateGiftCertificateWithInvalidInputShouldTrowException() {
             // GIVEN
             String name = null;
-            GiftCertificateDTO giftToBeUpdatedDTO = new GiftCertificateDTO(0, name, "Movie session in Cinema City", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+            GiftCertificateDTO giftToBeUpdatedDTO = new GiftCertificateDTO(0, name, "Movie session in Cinema City",
+                    15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
             // WHEN
 
             // THEN
@@ -428,7 +535,8 @@ class GiftCertificateServiceTest {
         @DisplayName("update gift certificate with empty input")
         void updateGiftCertificateWithEmptyInputShouldTrowException() {
             // GIVEN
-            GiftCertificateDTO giftToBeUpdatedDTO = new GiftCertificateDTO(0, "Movie night", "     ", 15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
+            GiftCertificateDTO giftToBeUpdatedDTO = new GiftCertificateDTO(0, "Movie night", "     ",
+                    15.00, Duration.ofDays(200), "2022-03-18T12:24:47.241", "2022-06-18T12:24:47.241", new ArrayList<>());
             // WHEN
 
             // THEN
@@ -442,18 +550,18 @@ class GiftCertificateServiceTest {
 
         @Test
         @DisplayName("gift certificate correctly removed")
-        void deleteGiftCertificateShouldCorrectlyRemoveGiftCertificate () {
+        void deleteGiftCertificateShouldCorrectlyRemoveGiftCertificate() {
             // GIVEN
             int giftCertificateIdToDelete = 5;
             // WHEN
             giftCertificateService.deleteGiftCertificate(giftCertificateIdToDelete);
             // THEN
-            verify(giftCertificateDAO).deleteGiftCertificate(giftCertificateIdToDelete);
+            verify(giftCertificateDAO, times(1)).deleteGiftCertificate(giftCertificateIdToDelete);
         }
 
         @Test
         @DisplayName("delete non existing gift certificate")
-        void deleteNonExistingGiftCertificateShouldThrowException () {
+        void deleteNonExistingGiftCertificateShouldThrowException() {
             // GIVEN
             int giftCertificateIdToDelete = 5;
             // WHEN
@@ -463,7 +571,7 @@ class GiftCertificateServiceTest {
         }
     }
 
-    private List<Tag> setUpTags (List<String> tagsNames, boolean isInserted) {
+    private List<Tag> setUpTags(List<String> tagsNames, boolean isInserted) {
         List<Tag> tags = new ArrayList<>();
         int id = 1;
         for (String name : tagsNames) {

@@ -16,7 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,8 +33,6 @@ class GiftCertificateDaoIT {
     GiftCertificate giftCertificateInserted;
     @Autowired
     GiftCertificate giftCertificateRetrieved;
-
-    private List<GiftCertificate> giftCertificatesInDb = new ArrayList<>();
 
     private final SoftAssertions softAssertions = new SoftAssertions();
 
@@ -81,7 +78,7 @@ class GiftCertificateDaoIT {
             // GIVEN
             String requestedName = "shopping";
             // WHEN
-            giftCertificatesInDb = giftCertificateDAOImpl.findByTag(requestedName);
+            List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.findByTag(requestedName);
             // THEN
             assertEquals(2, giftCertificatesInDb.size());
         }
@@ -107,7 +104,7 @@ class GiftCertificateDaoIT {
             // GIVEN
 
             // WHEN
-            giftCertificatesInDb = giftCertificateDAOImpl.findByNameOrDescription("store");
+            List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.findByNameOrDescription("store");
             // THEN
             assertEquals(2, giftCertificatesInDb.size());
         }
@@ -130,8 +127,7 @@ class GiftCertificateDaoIT {
         // GIVEN
 
         // WHEN
-        giftCertificatesInDb = giftCertificateDAOImpl.findAll();
-        System.out.println(giftCertificateDAOImpl.findAll());
+        List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.findAll();
         // THEN
         assertEquals(3, giftCertificatesInDb.size());
     }
@@ -142,7 +138,7 @@ class GiftCertificateDaoIT {
         // GIVEN
 
         // WHEN
-        giftCertificatesInDb = giftCertificateDAOImpl.sortAscending();
+        List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortAscending();
         // THEN
         softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
         softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(2).getDescription());
@@ -156,7 +152,7 @@ class GiftCertificateDaoIT {
         // GIVEN
 
         // WHEN
-        giftCertificatesInDb = giftCertificateDAOImpl.sortDescending();
+        List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortDescending();
         // THEN
         softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
         softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(0).getDescription());
@@ -170,7 +166,7 @@ class GiftCertificateDaoIT {
         // GIVEN
 
         // WHEN
-        giftCertificatesInDb = giftCertificateDAOImpl.sortAscendingByDate();
+        List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortAscendingByDate();
         // THEN
         softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
         softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(2).getDescription());
@@ -184,7 +180,7 @@ class GiftCertificateDaoIT {
         // GIVEN
 
         // WHEN
-        giftCertificatesInDb = giftCertificateDAOImpl.sortDescendingByDate();
+        List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortDescendingByDate();
         // THEN
         softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
         softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(2).getDescription());

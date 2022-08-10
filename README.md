@@ -4,8 +4,55 @@
 
 GiftCertificate Application is a part of a training project described in [here.](https://github.com/mjc-school/MJC-School/blob/old/stage%20%233/java/module%20%232.%20REST%20API%20Basics/rest_api_basics_task.md)
 
+Application is designed to manage a database of gift certificates. Every gift certificate can be described with multiple tags. 
 
-## 1. Technology stack
+## 1. Functionalities
+
+### 1.1. Searching gift certificates: 
++ find all  
+  http://localhost:8080/web/gift_certificates
++ find by **key** word in name or description
+  http://localhost:8080/web/gift_certificates/key/key
++ find by **id**  
+  http://localhost:8080/web/gift_certificates/id
++ find by **tag**  
+  http://localhost:8080/web/gift_certificates/tag/tag
+
+### 1.2. Sorting gift certificates:
++ sort ascending by name  
+  http://localhost:8080/web/gift_certificates/asc
++ sort descending by name  
+  http://localhost:8080/web/gift_certificates/desc
++ sort ascending by date  
+http://localhost:8080/web/gift_certificates/asc/date
++ sort descending by date  
+  http://localhost:8080/web/gift_certificates/desc/date
+
+### 1.3. Adding gift certificate with tag 
++ http://localhost:8080/web/gift_certificates
+
+### 1.4. Updating gift certificate 
++ http://localhost:8080/web/gift_certificates
+
+### 1.5. Deleting gift certificate 
++ http://localhost:8080/web/gift_certificates/id
+
+### 1.6. Searching tags
++ find all   
+  http://localhost:8080/web/tags
++ find by **id**   
+  http://localhost:8080/web/tags/id
++ find by **name**  
+  http://localhost:8080/web/tags/name/name
+
+### 1.7. Adding tag
++ http://localhost:8080/web/tags/
+
+### 1.8. Deleting tag
++ http://localhost:8080/web/tags/18
+
+
+## 2. Technology stack
 
 ***
 
@@ -14,12 +61,12 @@ GiftCertificate uses following technologies:
 2. Maven v.3.8.4
 3. Spring Framework v.5.3.21
 4. Hikari Connection Pool v.4.0.3
-5. Smart Tomcat v.8.5.81
+5. Apache Tomcat v.9.0.65
 6. PostgreSQL JDBC v.42.3.6 and H2 v.2.1.214
 7. JUnit v.5.9.0-M1, AssertJ v.3.23.1, Mockito v.4.6.1
 
 
-## 2. Prerequisites
+## 3. Prerequisites
 
 ***
 
@@ -28,29 +75,29 @@ Using GiftCertificate requires:
 2. Smart Tomcat Plugin
 3. PostgreSQL
 
-## 3. Build and run application 
+## 4. Build and run application 
 ***
 
-### 3.1. Build project
+### 4.1. Build project
 + from terminal:
   `mvn clean install`
 + from Intellij IDEA:
   `Ctrl + F9`
 
-### 3.2. Run tests
+### 4.2. Run tests
 + from terminal:
   `mvn verify`
 + from IntelliJ IDEA:
   `Ctrl + Shift + F10`
 
-### 3.3. Run application - Run/Debug Configuration 
+### 4.3. Run application - Run/Debug Configuration 
 ![Tomcat.png](Tomcat.PNG)
 
-## 4. TODO List
+## 5. TODO List
 
 ***
 
-### 4.1. Business requirements
+### 5.1. Business requirements
 
 - [x] Develop web service for Gift Certificates system with the following entities (many-to-many) 
   - [x] CreateDate, LastUpdateDate - format ISO 8601 (https://en.wikipedia.org/wiki/ISO_8601). Example: 2018-08-29T06:12:15.156. More discussion here: https://stackoverflow.com/questions/3914404/how-to-get-current-moment-in-iso-8601-format-with-date-hour-and-minute
@@ -63,7 +110,7 @@ Using GiftCertificate requires:
     - [x] search by part of name/description (can be implemented, using DB function call)
     - [x] sort by date or by name ASC/DESC (extra task: implement ability to apply both sort type at the same time).
 
-### 4.2. Application requirements
+### 5.2. Application requirements
 
 - [x] JDK version: 8 – use Streams, java.time.*, etc. where it is possible. (the JDK version can be increased in agreement with the mentor/group coordinator/run coordinator)
 - [x] Application packages root: com.epam.esm
@@ -79,7 +126,7 @@ Using GiftCertificate requires:
 - [x] Service layer should be covered with unit tests not less than 80%.
 - [x] Repository layer should be tested using integration tests with an in-memory embedded database (all operations with certificates).
 
-### 4.3. General requirements
+### 5.3. General requirements
 - [x] Code should be clean and should not contain any “developer-purpose” constructions.
 - [x] App should be designed and written with respect to OOD and SOLID principles.
 - [x] Code should contain valuable comments where appropriate.

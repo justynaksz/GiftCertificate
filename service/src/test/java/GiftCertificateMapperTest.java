@@ -2,6 +2,7 @@ import com.epam.esm.dto.GiftCertificateDTO;
 import com.epam.esm.mapper.GiftCertificateMapper;
 import com.epam.esm.model.GiftCertificate;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,9 +10,9 @@ import java.time.LocalDateTime;
 
 class GiftCertificateMapperTest {
 
-    private final GiftCertificateMapper giftCertificateMapper = new GiftCertificateMapper();
-    private final GiftCertificate giftCertificate = new GiftCertificate();
-    private final GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
+    private GiftCertificateMapper giftCertificateMapper;
+    private GiftCertificate giftCertificate;
+    private GiftCertificateDTO giftCertificateDTO;
 
     private final SoftAssertions softAssertions = new SoftAssertions();
 
@@ -22,6 +23,13 @@ class GiftCertificateMapperTest {
     private final long duration = 180;
     private final String createDate = "2022-03-18T12:24:47.241";
     private final String lastUpdateDate = "2022-06-28T09:28:57.241";
+
+    @BeforeEach
+    void initEach() {
+        giftCertificateMapper = new GiftCertificateMapper();
+        giftCertificate = new GiftCertificate();
+        giftCertificateDTO = new GiftCertificateDTO();
+    }
 
     @Test
     @DisplayName("to DTO test")

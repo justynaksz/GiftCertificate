@@ -1,6 +1,7 @@
 package com.epam.esm.dao;
 
 import com.epam.esm.model.GiftCertificate;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public interface GiftCertificateDAO {
      * Sorts all {@code giftCertificate} by ascending order by date.
      * @return giftCertificates lists in ascending order by date
      */
-    List<GiftCertificate> sortAscendingByDate();
+    List<GiftCertificate> sortAscendingByDate() throws DataAccessException;
 
     /**
      * Sorts all {@code giftCertificate} by descending order by date.

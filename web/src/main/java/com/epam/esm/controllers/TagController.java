@@ -15,12 +15,10 @@ import java.util.List;
 public class TagController {
 
     private final TagService tagService;
-    private TagDTO tagDTO;
 
     @Autowired
     public TagController(TagService tagService, TagDTO tagDTO) {
         this.tagService = tagService;
-        this.tagDTO = tagDTO;
     }
 
     /**

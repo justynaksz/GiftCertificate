@@ -223,7 +223,7 @@ class TagServiceTest {
             // WHEN
             tagService.deleteTag(id);
             // THEN
-            verify(tagDAO).deleteTag(id);
+            verify(tagDAO, times(1)).deleteTag(id);
         }
 
         @Test

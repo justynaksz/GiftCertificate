@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.epam.esm</groupId>
             <artifactId>service</artifactId>
-            <version>${version}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

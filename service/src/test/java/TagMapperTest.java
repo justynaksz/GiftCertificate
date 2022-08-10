@@ -2,16 +2,24 @@ import com.epam.esm.dto.TagDTO;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Tag;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class TagMapperTest {
 
-    private final TagMapper tagMapper = new TagMapper();
-    private final Tag tag = new Tag();
-    private final TagDTO tagDTO = new TagDTO();
+    private TagMapper tagMapper;
+    private Tag tag;
+    private TagDTO tagDTO;
 
     private final SoftAssertions softAssertions = new SoftAssertions();
+
+    @BeforeEach
+    void initEach() {
+        tagMapper = new TagMapper();
+        tag = new Tag();
+        tagDTO = new TagDTO();
+    }
 
     @Test
     @DisplayName("to DTO test")

@@ -31,7 +31,7 @@ public class TagService {
      * Finds {@code tag} of given id value.
      * @param  id                           int id value
      * @return tag                          tag of given id value
-     * @throws InvalidInputException     in cas of invalid param
+     * @throws InvalidInputException        in case of invalid param
      */
     public TagDTO getById(int id) throws InvalidInputException {
         if (id <= 0) {

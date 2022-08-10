@@ -15,6 +15,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mechanism for exceptions handling.
+ */
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -22,6 +25,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private static final String ERROR_MESSAGE = "error message";
     private static final String ERROR_CODE = "error code";
 
+    /**
+     * Handles InvalidInputException.
+     * @param exception         thrown InvalidInputException
+     * @param webRequest        actual webRequest
+     * @return responseEntity   with specified body (time and date, error message and code)
+     *                          and http status
+     */
     @ExceptionHandler(InvalidInputException.class)
     public ResponseEntity<Object> handleInvalidInput(InvalidInputException exception, WebRequest webRequest) {
         Map<String, Object> body = new HashMap<>();
@@ -31,6 +41,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles AlreadyExistException.
+     * @param exception         thrown AlreadyExistException
+     * @param webRequest        actual webRequest
+     * @return responseEntity   with specified body (time and date, error message and code)
+     *                          and http status
+     */
     @ExceptionHandler (AlreadyExistException.class)
     public ResponseEntity<Object> handleAlreadyExistsInDb(AlreadyExistException exception, WebRequest webRequest) {
         Map<String, Object> body = new HashMap<>();
@@ -40,6 +57,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles EmptyResultDataAccessException.
+     * @param exception         thrown EmptyResultDataAccessException
+     * @param webRequest        actual webRequest
+     * @return responseEntity   with specified body (time and date, error message and code)
+     *                          and http status
+     */
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<Object> handleDataNotFound(EmptyResultDataAccessException exception, WebRequest webRequest) {
         Map<String, Object> body = new HashMap<>();

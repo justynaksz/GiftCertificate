@@ -21,7 +21,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <springframework.version>5.3.21</springframework.version>
+        <springframework.version>5.3.22</springframework.version>
         <log4j.version>1.2.17</log4j.version>
         <surfire.version>3.0.0-M4</surfire.version>
         <failsafe.version>3.0.0-M4</failsafe.version>

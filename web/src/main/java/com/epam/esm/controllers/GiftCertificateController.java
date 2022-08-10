@@ -15,16 +15,14 @@ import java.util.List;
 public class GiftCertificateController {
 
     private final GiftCertificateService giftCertificateService;
-    private GiftCertificateDTO giftCertificateDTO;
 
     @Autowired
     public GiftCertificateController(GiftCertificateService giftCertificateService, GiftCertificateDTO giftCertificateDTO) {
         this.giftCertificateService = giftCertificateService;
-        this.giftCertificateDTO = giftCertificateDTO;
     }
 
     /**
-     * Finds {@code giftCertificate}  with requested id.
+     * Finds {@code giftCertificate} with requested id.
      * Handles GET http-request.
      *
      * @param id requested id
@@ -36,7 +34,7 @@ public class GiftCertificateController {
     }
 
     /**
-     * Finds {@code giftCertificate}  with requested key word in name or description.
+     * Finds {@code giftCertificate} with requested key word in name or description.
      * Handles GET http-request.
      *
      * @param key requested key word
@@ -48,7 +46,7 @@ public class GiftCertificateController {
     }
 
     /**
-     * Finds {@code giftCertificate}  with requested tag name.
+     * Finds {@code giftCertificate} with requested tag name.
      * Handles GET http-request.
      *
      * @param tag requested tag name
@@ -123,8 +121,7 @@ public class GiftCertificateController {
      */
     @PostMapping
     public GiftCertificateDTO addGiftCertificate(@RequestBody GiftCertificateDTO giftCertificateDTOToInsert) {
-        giftCertificateDTO = giftCertificateService.addGiftCertificate(giftCertificateDTOToInsert);
-        return giftCertificateDTO;
+        return giftCertificateService.addGiftCertificate(giftCertificateDTOToInsert);
     }
 
     /**
