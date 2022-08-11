@@ -28,8 +28,6 @@ class TagDaoIT {
     @Autowired
     TagDAOImpl tagDAOImpl;
 
-    private final SoftAssertions softAssertions = new SoftAssertions();
-
     @Nested
     @DisplayName("find by id tests")
     class findByIdTest {
@@ -140,6 +138,7 @@ class TagDaoIT {
         // WHEN
         Tag tagInserted = tagDAOImpl.createTag(tag);
         // THEN
+        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(tagDAOImpl.findAll().contains(tagInserted)).isTrue();
         softAssertions.assertThat(7).isEqualTo(tagDAOImpl.findAll().size());
         softAssertions.assertAll();
@@ -152,7 +151,7 @@ class TagDaoIT {
 
         @Test
         @DisplayName("tag is correctly removed")
-        void deleteTagShouldRemoveTagOfGivenIdFromDatabase(){
+        void deleteTagShouldRemoveTagOfGivenIdFromDatabase() {
             // GIVEN
             int id = 5;
             Tag tag = tagDAOImpl.findById(id);
@@ -161,14 +160,15 @@ class TagDaoIT {
             // WHEN
             tagDAOImpl.deleteTag(id);
             // THEN
-            softAssertions.assertThat(dbSize-expectedDBSizeChange).isEqualTo(tagDAOImpl.findAll().size());
+            SoftAssertions softAssertions = new SoftAssertions();
+            softAssertions.assertThat(dbSize - expectedDBSizeChange).isEqualTo(tagDAOImpl.findAll().size());
             softAssertions.assertThat(tagDAOImpl.findAll().contains(tag)).isFalse();
             softAssertions.assertAll();
         }
 
         @Test
         @DisplayName("delete non existing tag test")
-        void deleteNonExistingTagShouldTrowException(){
+        void deleteNonExistingTagShouldTrowException() {
             // GIVEN
             int id = 999;
             // WHEN

@@ -28,8 +28,6 @@ class GiftCertificateDaoIT {
     @Autowired
     GiftCertificateDAOImpl giftCertificateDAOImpl;
 
-    private final SoftAssertions softAssertions = new SoftAssertions();
-
     @Nested
     @DisplayName("find by id test")
     class findByIdTest {
@@ -95,7 +93,7 @@ class GiftCertificateDaoIT {
     class findByNameOrDescription {
         @Test
         @DisplayName("gift certificates are correctly found")
-        void findByNameOrDescriptionShouldReturnListOfGiftCertificatesWithKeyWordInNameOrDescription () {
+        void findByNameOrDescriptionShouldReturnListOfGiftCertificatesWithKeyWordInNameOrDescription() {
             // GIVEN
 
             // WHEN
@@ -106,7 +104,7 @@ class GiftCertificateDaoIT {
 
         @Test
         @DisplayName("no matching gift certificate found")
-        void findByNameOrDescriptionShouldReturnEmptyListWhenNoGiftCertificateMatchRequest () {
+        void findByNameOrDescriptionShouldReturnEmptyListWhenNoGiftCertificateMatchRequest() {
             // GIVEN
             String key = "swimming";
             // WHEN
@@ -135,6 +133,7 @@ class GiftCertificateDaoIT {
         // WHEN
         List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortAscending();
         // THEN
+        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
         softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(2).getDescription());
         softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(0).getDescription());
@@ -149,6 +148,7 @@ class GiftCertificateDaoIT {
         // WHEN
         List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortDescending();
         // THEN
+        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
         softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(0).getDescription());
         softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(2).getDescription());
@@ -163,6 +163,7 @@ class GiftCertificateDaoIT {
         // WHEN
         List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortAscendingByDate();
         // THEN
+        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
         softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(2).getDescription());
         softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(0).getDescription());
@@ -177,6 +178,7 @@ class GiftCertificateDaoIT {
         // WHEN
         List<GiftCertificate> giftCertificatesInDb = giftCertificateDAOImpl.sortDescendingByDate();
         // THEN
+        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(3).isEqualTo(giftCertificatesInDb.size());
         softAssertions.assertThat("Gift card to cafe").isEqualTo(giftCertificatesInDb.get(2).getDescription());
         softAssertions.assertThat("Gift card to the fashion store").isEqualTo(giftCertificatesInDb.get(0).getDescription());
@@ -197,6 +199,7 @@ class GiftCertificateDaoIT {
         // WHEN
         GiftCertificate giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
         // THEN
+        SoftAssertions softAssertions = new SoftAssertions();
         softAssertions.assertThat(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted)).isTrue();
         softAssertions.assertThat(giftCertificate).isEqualTo(giftCertificateInserted);
         softAssertions.assertThat(initialDbSize + expectedDBSizeChange).isEqualTo(giftCertificateDAOImpl.findAll().size());
@@ -218,6 +221,7 @@ class GiftCertificateDaoIT {
             // WHEN
             giftCertificateDAOImpl.updateGiftCertificate(giftCertificate);
             // THEN
+            SoftAssertions softAssertions = new SoftAssertions();
             softAssertions.assertThat(initDatabaseSize).isEqualTo(giftCertificateDAOImpl.findAll().size());
             softAssertions.assertThat(giftCertificate).isEqualTo(giftCertificateDAOImpl.findById(2));
             softAssertions.assertAll();

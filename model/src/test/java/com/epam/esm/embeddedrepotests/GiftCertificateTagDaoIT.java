@@ -26,8 +26,6 @@ class GiftCertificateTagDaoIT {
     @Autowired
     GiftCertificateTagDAOImpl giftCertificateTagDAOImpl;
 
-    private final SoftAssertions softAssertions = new SoftAssertions();
-
     @Nested
     @DisplayName("find by id test")
     class findByIdTest {
@@ -40,6 +38,7 @@ class GiftCertificateTagDaoIT {
             // WHEN
             GiftCertificateTag giftCertificateTagRetrieved = giftCertificateTagDAOImpl.findGiftCertificateTagById(id);
             // THEN
+            SoftAssertions softAssertions = new SoftAssertions();
             softAssertions.assertThat(1).isEqualTo(giftCertificateTagRetrieved.getGiftCertificateId());
             softAssertions.assertThat(2).isEqualTo(giftCertificateTagRetrieved.getTagId());
             softAssertions.assertAll();
@@ -93,17 +92,18 @@ class GiftCertificateTagDaoIT {
     @Test
     @DisplayName("create giftCertificateTag test")
     public void specificGiftCertificateTagIsPresentInDbAndCountOfAllGiftCertificateTagsIsCorrect() {
-            // GIVEN
-            GiftCertificateTag giftCertificateTag = new GiftCertificateTag();
-            giftCertificateTag.setGiftCertificateId(3);
-            giftCertificateTag.setTagId(1);
-            //WHEN
-            GiftCertificateTag giftCertificateTagInserted = giftCertificateTagDAOImpl.createGiftCertificateTag(giftCertificateTag);
-            // THEN
-            softAssertions.assertThat(giftCertificateTag.getGiftCertificateId()).isEqualTo(giftCertificateTagInserted.getGiftCertificateId());
-            softAssertions.assertThat(giftCertificateTag.getTagId()).isEqualTo(giftCertificateTagInserted.getTagId());
-            softAssertions.assertThat(giftCertificateTagInserted).isEqualTo(giftCertificateTagDAOImpl.findGiftCertificateTagByIds(3, 1));
-            softAssertions.assertAll();
+        // GIVEN
+        GiftCertificateTag giftCertificateTag = new GiftCertificateTag();
+        giftCertificateTag.setGiftCertificateId(3);
+        giftCertificateTag.setTagId(1);
+        //WHEN
+        GiftCertificateTag giftCertificateTagInserted = giftCertificateTagDAOImpl.createGiftCertificateTag(giftCertificateTag);
+        // THEN
+        SoftAssertions softAssertions = new SoftAssertions();
+        softAssertions.assertThat(giftCertificateTag.getGiftCertificateId()).isEqualTo(giftCertificateTagInserted.getGiftCertificateId());
+        softAssertions.assertThat(giftCertificateTag.getTagId()).isEqualTo(giftCertificateTagInserted.getTagId());
+        softAssertions.assertThat(giftCertificateTagInserted).isEqualTo(giftCertificateTagDAOImpl.findGiftCertificateTagByIds(3, 1));
+        softAssertions.assertAll();
     }
 
     @Nested
