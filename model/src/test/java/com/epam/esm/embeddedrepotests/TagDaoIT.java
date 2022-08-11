@@ -27,12 +27,6 @@ class TagDaoIT {
 
     @Autowired
     TagDAOImpl tagDAOImpl;
-    @Autowired
-    Tag tag;
-    @Autowired
-    Tag tagInserted;
-    @Autowired
-    Tag tagRetrieved;
 
     private final SoftAssertions softAssertions = new SoftAssertions();
 
@@ -46,7 +40,7 @@ class TagDaoIT {
             // GIVEN
             int id = 1;
             // WHEN
-            tagRetrieved = tagDAOImpl.findById(id);
+            Tag tagRetrieved = tagDAOImpl.findById(id);
             // THEN
             assertEquals("sweets", tagRetrieved.getName());
         }
@@ -71,10 +65,11 @@ class TagDaoIT {
         @DisplayName("tag is correctly found")
         void findByNameShouldReturnCorrectTag() {
             // GIVEN
+            Tag tag = new Tag();
             tag.setId(2);
             tag.setName("fashion");
             // WHEN
-            tagRetrieved = tagDAOImpl.findByName("fashion");
+            Tag tagRetrieved = tagDAOImpl.findByName("fashion");
             // THEN
             assertEquals(tag.getId(), tagRetrieved.getId());
         }
@@ -140,9 +135,10 @@ class TagDaoIT {
     @DisplayName("create tag test")
     void specificTagIsPresentInDbAndCountOfTagInDbIsCorrect() {
         // GIVEN
+        Tag tag = new Tag();
         tag.setName("family time");
         // WHEN
-        tagInserted = tagDAOImpl.createTag(tag);
+        Tag tagInserted = tagDAOImpl.createTag(tag);
         // THEN
         softAssertions.assertThat(tagDAOImpl.findAll().contains(tagInserted)).isTrue();
         softAssertions.assertThat(7).isEqualTo(tagDAOImpl.findAll().size());
@@ -159,7 +155,7 @@ class TagDaoIT {
         void deleteTagShouldRemoveTagOfGivenIdFromDatabase(){
             // GIVEN
             int id = 5;
-            tag = tagDAOImpl.findById(id);
+            Tag tag = tagDAOImpl.findById(id);
             int dbSize = tagDAOImpl.findAll().size();
             int expectedDBSizeChange = 1;
             // WHEN

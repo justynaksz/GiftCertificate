@@ -27,12 +27,6 @@ class GiftCertificateDaoIT {
 
     @Autowired
     GiftCertificateDAOImpl giftCertificateDAOImpl;
-    @Autowired
-    GiftCertificate giftCertificate;
-    @Autowired
-    GiftCertificate giftCertificateInserted;
-    @Autowired
-    GiftCertificate giftCertificateRetrieved;
 
     private final SoftAssertions softAssertions = new SoftAssertions();
 
@@ -45,7 +39,8 @@ class GiftCertificateDaoIT {
             // GIVEN
 
             // WHEN
-            giftCertificateRetrieved = giftCertificateDAOImpl.findById(1);
+            GiftCertificate giftCertificateRetrieved = giftCertificateDAOImpl.findById(1);
+            GiftCertificate giftCertificate = new GiftCertificate();
             giftCertificate.setName("H&M gift card");
             giftCertificate.setDescription("Gift card to the fashion store");
             giftCertificate.setPrice(100.00);
@@ -192,6 +187,7 @@ class GiftCertificateDaoIT {
     @DisplayName("create gift certificate test")
     void specificGiftCertificateIsPresentInDbAndCountOfGiftCertificatesInDbIsCorrect() {
         // GIVEN
+        GiftCertificate giftCertificate = new GiftCertificate();
         giftCertificate.setName("Paintball voucher");
         giftCertificate.setDescription("2 hours of paintball match in Paintball-World");
         giftCertificate.setPrice(49.99);
@@ -199,7 +195,7 @@ class GiftCertificateDaoIT {
         int initialDbSize = giftCertificateDAOImpl.findAll().size();
         int expectedDBSizeChange = 1;
         // WHEN
-        giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
+        GiftCertificate giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
         // THEN
         softAssertions.assertThat(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted)).isTrue();
         softAssertions.assertThat(giftCertificate).isEqualTo(giftCertificateInserted);
@@ -217,7 +213,7 @@ class GiftCertificateDaoIT {
         void sizeOfDbIsNotChangedAndGiftCertificateIsCorrectlyUpdated() {
             // GIVEN
             int initDatabaseSize = giftCertificateDAOImpl.findAll().size();
-            giftCertificate = giftCertificateDAOImpl.findById(2);
+            GiftCertificate giftCertificate = giftCertificateDAOImpl.findById(2);
             giftCertificate.setDescription("Gift card to the Mont Blanc cafe");
             // WHEN
             giftCertificateDAOImpl.updateGiftCertificate(giftCertificate);
@@ -233,6 +229,7 @@ class GiftCertificateDaoIT {
             // GIVEN
 
             // WHEN
+            GiftCertificate giftCertificate = new GiftCertificate();
             giftCertificate.setName("Paintball voucher");
             giftCertificate.setDescription("2 hours of paintball match in Paintball-World");
             giftCertificate.setPrice(49.99);
@@ -252,12 +249,13 @@ class GiftCertificateDaoIT {
         void afterDeleteGiftCertificateIsNotPresentInDb() {
             // GIVEN
             int dbSize = giftCertificateDAOImpl.findAll().size();
+            GiftCertificate giftCertificate = new GiftCertificate();
             giftCertificate.setName("Photo session");
             giftCertificate.setDescription("Outdoor photo session");
             giftCertificate.setPrice(250.00);
             giftCertificate.setDuration(250);
             // WHEN
-            giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
+            GiftCertificate giftCertificateInserted = giftCertificateDAOImpl.createGiftCertificate(giftCertificate);
             giftCertificateDAOImpl.deleteGiftCertificate(giftCertificateInserted.getId());
             // THEN
             assertFalse(giftCertificateDAOImpl.findAll().contains(giftCertificateInserted));

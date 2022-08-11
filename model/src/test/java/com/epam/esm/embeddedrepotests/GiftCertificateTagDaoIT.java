@@ -25,12 +25,6 @@ class GiftCertificateTagDaoIT {
 
     @Autowired
     GiftCertificateTagDAOImpl giftCertificateTagDAOImpl;
-    @Autowired
-    GiftCertificateTag giftCertificateTag;
-    @Autowired
-    GiftCertificateTag giftCertificateTagRetrieved;
-    @Autowired
-    GiftCertificateTag giftCertificateTagInserted;
 
     private final SoftAssertions softAssertions = new SoftAssertions();
 
@@ -44,7 +38,7 @@ class GiftCertificateTagDaoIT {
             // GIVEN
             int id = 1;
             // WHEN
-            giftCertificateTagRetrieved = giftCertificateTagDAOImpl.findGiftCertificateTagById(id);
+            GiftCertificateTag giftCertificateTagRetrieved = giftCertificateTagDAOImpl.findGiftCertificateTagById(id);
             // THEN
             softAssertions.assertThat(1).isEqualTo(giftCertificateTagRetrieved.getGiftCertificateId());
             softAssertions.assertThat(2).isEqualTo(giftCertificateTagRetrieved.getTagId());
@@ -73,11 +67,12 @@ class GiftCertificateTagDaoIT {
             // GIVEN
             int giftCertificateId = 2;
             int tagId = 1;
+            GiftCertificateTag giftCertificateTag = new GiftCertificateTag();
             giftCertificateTag.setTagId(tagId);
             giftCertificateTag.setGiftCertificateId(giftCertificateId);
             giftCertificateTag.setId(4);
             // WHEN
-            giftCertificateTagRetrieved = giftCertificateTagDAOImpl.findGiftCertificateTagByIds(giftCertificateId, tagId);
+            GiftCertificateTag giftCertificateTagRetrieved = giftCertificateTagDAOImpl.findGiftCertificateTagByIds(giftCertificateId, tagId);
             // THEN
             assertEquals(giftCertificateTag, giftCertificateTagRetrieved);
         }
@@ -99,10 +94,11 @@ class GiftCertificateTagDaoIT {
     @DisplayName("create giftCertificateTag test")
     public void specificGiftCertificateTagIsPresentInDbAndCountOfAllGiftCertificateTagsIsCorrect() {
             // GIVEN
+            GiftCertificateTag giftCertificateTag = new GiftCertificateTag();
             giftCertificateTag.setGiftCertificateId(3);
             giftCertificateTag.setTagId(1);
             //WHEN
-            giftCertificateTagInserted = giftCertificateTagDAOImpl.createGiftCertificateTag(giftCertificateTag);
+            GiftCertificateTag giftCertificateTagInserted = giftCertificateTagDAOImpl.createGiftCertificateTag(giftCertificateTag);
             // THEN
             softAssertions.assertThat(giftCertificateTag.getGiftCertificateId()).isEqualTo(giftCertificateTagInserted.getGiftCertificateId());
             softAssertions.assertThat(giftCertificateTag.getTagId()).isEqualTo(giftCertificateTagInserted.getTagId());
@@ -119,7 +115,7 @@ class GiftCertificateTagDaoIT {
         void deleteGiftCertificateTagShouldRemoveGiftCertificateTagOfGivenIdFromDatabase() {
             // GIVEN
             int id = 5;
-            giftCertificateTag = giftCertificateTagDAOImpl.findGiftCertificateTagById(5);
+            GiftCertificateTag giftCertificateTag = giftCertificateTagDAOImpl.findGiftCertificateTagById(5);
             // WHEN
             giftCertificateTagDAOImpl.deleteGiftCertificateTag(id);
             // THEN
