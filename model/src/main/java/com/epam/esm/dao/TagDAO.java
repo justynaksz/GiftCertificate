@@ -27,6 +27,13 @@ public interface TagDAO {
     Tag findByName(String name) throws EmptyResultDataAccessException;
 
     /**
+     * Finds all {@code tag} of given gift certificate id.
+     * @param  giftCertificateId                 id of requested gift certificate
+     * @return tags                              list of all tags associated with given gift certificate
+     */
+    List<Tag> findTagsByGiftCertificateId(int giftCertificateId);
+
+    /**
      * Finds all {@code tag}.
      * @return tags    list of all tags
      */

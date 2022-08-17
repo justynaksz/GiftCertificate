@@ -3,6 +3,7 @@ package com.epam.esm.service;
 import com.epam.esm.dao.impl.TagDAOImpl;
 import com.epam.esm.dto.TagDTO;
 import com.epam.esm.exceptions.AlreadyExistException;
+import com.epam.esm.exceptions.InvalidInputException;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.model.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,11 @@ public class TagService {
      * Finds {@code tag} of given id value.
      * @param  id                           int id value
      * @return tag                          tag of given id value
-     * @throws IllegalArgumentException     in cas of invalid param
+     * @throws InvalidInputException        in case of invalid param
      */
-    public TagDTO getById(int id) throws IllegalArgumentException {
+    public TagDTO getById(int id) throws InvalidInputException {
         if (id <= 0) {
-            throw new IllegalArgumentException("Id value must be greater than 0.");
+            throw new InvalidInputException("Id value must be greater than 0.");
         }
         Tag tag = tagDAO.findById(id);
         return tagMapper.toDTO(tag);
@@ -65,17 +66,17 @@ public class TagService {
      * Creates new {@code tag} entity.
      * @param  tagDTO                      TagDTO instance to be inserted into database
      * @return tagDTO                      TagDTO instance with specified id value that has been inserted into database
-     * @throws IllegalArgumentException    in case of null or empty tag name
+     * @throws InvalidInputException    in case of null or empty tag name
      * @throws AlreadyExistException       in case tag of this name already exists in database
      */
-    public TagDTO addTag(TagDTO tagDTO) throws IllegalArgumentException, AlreadyExistException {
+    public TagDTO addTag(TagDTO tagDTO) throws InvalidInputException, AlreadyExistException {
         if (tagDTO.getName() == null || tagDTO.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("At least one of given parameter is null or empty.");
+            throw new InvalidInputException("At least one of given parameter is null or empty.");
         }
         Tag tag = tagMapper.toModel(tagDTO);
         for (Tag tagInDb : tagDAO.findAll()) {
             if (tagInDb.getName().equals(tag.getName())) {
-                throw new AlreadyExistException("Tag of given name already exists.");
+                throw new AlreadyExistException(tag.getName());
             }
         }
         Tag tagInserted = tagDAO.createTag(tag);

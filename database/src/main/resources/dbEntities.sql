@@ -4,8 +4,8 @@ CREATE TABLE gift_certificate(
     description VARCHAR(200) NOT NULL,
     price DECIMAL(7, 2) NOT NULL,
     duration INT NOT NULL,
-    create_date TIMESTAMP(9) NOT NULL,
-    last_update_date TIMESTAMP(9)
+    create_date TIMESTAMP(6) NOT NULL,
+    last_update_date TIMESTAMP(6)
 );
 
 CREATE TABLE tag(

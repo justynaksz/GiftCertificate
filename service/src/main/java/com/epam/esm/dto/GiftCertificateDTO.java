@@ -1,9 +1,10 @@
 package com.epam.esm.dto;
 
+import com.epam.esm.model.Tag;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * DTO class fo GiftCertificate.
@@ -16,8 +17,24 @@ public class GiftCertificateDTO {
     private String description;
     private double price;
     private Duration duration;
-    private LocalDateTime createDate;
-    private LocalDateTime lastUpdateDate;
+    private String createDate;
+    private String lastUpdateDate;
+    private List<Tag> tags;
+
+    public GiftCertificateDTO() {
+    }
+
+    public GiftCertificateDTO(int id, String name, String description, double price,
+                              Duration duration, String createDate, String lastUpdateDate, List<Tag> tags) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.duration = duration;
+        this.createDate = createDate;
+        this.lastUpdateDate = lastUpdateDate;
+        this.tags = tags;
+    }
 
     public int getId() {
         return id;
@@ -39,12 +56,16 @@ public class GiftCertificateDTO {
         return duration.toDays();
     }
 
-    public LocalDateTime getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public LocalDateTime getLastUpdateDate() {
+    public String getLastUpdateDate() {
         return lastUpdateDate;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
     }
 
     public void setId(int id) {
@@ -67,11 +88,15 @@ public class GiftCertificateDTO {
         this.duration = Duration.ofDays(duration);
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
-    public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
+    public void setLastUpdateDate(String lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

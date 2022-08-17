@@ -25,7 +25,7 @@ import java.util.*;
 @Repository
 public class GiftCertificateDAOImpl implements GiftCertificateDAO {
 
-    private static final String EXCEPTION_MESSAGE = "No tag of requested id has been found.";
+    private static final String EXCEPTION_MESSAGE = "No gift certificate of requested id has been found.";
     private final Logger logger = Logger.getLogger(getClass().getName());
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -129,6 +129,36 @@ public class GiftCertificateDAOImpl implements GiftCertificateDAO {
             giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
         } catch (DataAccessException exception) {
             logger.error("Sorting giftCertificates in descending order has failed.");
+        }
+        return giftCertificates;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GiftCertificate> sortAscendingByDate() {
+        List<GiftCertificate> giftCertificates = new ArrayList<>();
+        String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate ORDER BY create_date ASC";
+        try {
+            giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
+        } catch (DataAccessException exception) {
+            logger.error("Sorting giftCertificates in ascending order by date has failed.");
+        }
+        return giftCertificates;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<GiftCertificate> sortDescendingByDate() {
+        List<GiftCertificate> giftCertificates = new ArrayList<>();
+        String query = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificate ORDER BY create_date DESC";
+        try {
+            giftCertificates = jdbcTemplate.query(query, new GiftCertificateRowMapper());
+        } catch (DataAccessException exception) {
+            logger.error("Sorting giftCertificates in descending order by date has failed.");
         }
         return giftCertificates;
     }
