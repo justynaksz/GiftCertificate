@@ -17,7 +17,7 @@ public class GiftCertificateController {
     private final GiftCertificateService giftCertificateService;
 
     @Autowired
-    public GiftCertificateController(GiftCertificateService giftCertificateService, GiftCertificateDTO giftCertificateDTO) {
+    public GiftCertificateController(GiftCertificateService giftCertificateService) {
         this.giftCertificateService = giftCertificateService;
     }
 
